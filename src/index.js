@@ -1,12 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { AppThemeProvider } from './app/providers/AppThemeProvider';
-import AppRouter from './app/routes/AppRouter';
+import App from './App';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <AppThemeProvider>
-      <AppRouter />
-    </AppThemeProvider>
+    <App />
   </React.StrictMode>
 );

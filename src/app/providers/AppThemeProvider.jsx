@@ -1,6 +1,6 @@
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import { railwayTheme } from '../theme/theme';
+import railwayTheme from '../theme/theme';
 
 const AppThemeProvider = ({ children }) => {
   return (
