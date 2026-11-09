@@ -1,79 +1,66 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { Box, Container, Grid, Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import { Navbar } from '../../../widgets/header/ui/Navbar';
 import { PassengerFormWidget } from '../../../features/passenger-details/ui/PassengerFormWidget';
 import { FareSummaryCard } from '../../../features/fare-summary/ui/FareSummaryCard';
-import { CoachLayoutWidget } from '../../../features/seat-selection/ui/CoachLayoutWidget'; // <-- NEW
 import { usePassengerState } from '../../../features/passenger-details/model/usePassengerState';
-import { useNavigate } from 'react-router-dom';
+import { useBooking } from '../../../app/providers/BookingProvider'; // <-- Import Context
 
 export const BookingPage = () => {
+  const navigate = useNavigate();
   const { passengers, addPassenger, removePassenger, updatePassenger } = usePassengerState();
   
-  // NEW: State to track visually selected seats
-  const [selectedSeats, setSelectedSeats] = useState([]);
+  // Pull data from Global Context
+  const { selectedTrain, selectedClass, setTransactionAmount, setPassengers: setGlobalPassengers } = useBooking();
 
-  const navigate = useNavigate();
-
-  const trainDetails = {
-    name: 'Mumbai Rajdhani Exp (12951)',
-    class: '3A',
-    date: '10 Nov 2026',
-    baseFare: 2450
-  };
+  // Security Check: If they navigated here directly without picking a train, send them back
+  useEffect(() => {
+    if (!selectedTrain) {
+      navigate('/');
+    }
+  }, [selectedTrain, navigate]);
 
   const handlePayment = () => {
-    const isValid = passengers.every(p => p.name.trim() !== '' && p.age !== '');
-    if (!isValid) {
-      alert('Please fill out all passenger names and ages.');
-      return;
-    }
-    if (selectedSeats.length !== passengers.length) {
-      alert(`Please select ${passengers.length} seats from the coach layout.`);
-      return;
-    }
+    // 1. Validation logic here...
     
-    // Route to the payment gateway
+    // 2. Save final passenger list and total amount to global memory before paying
+    setGlobalPassengers(passengers);
+    setTransactionAmount((passengers.length * selectedClass.price) + 35);
+    
+    // 3. Navigate to Payment
     navigate('/payment');
   };
+
+  if (!selectedTrain) return null; // Prevent rendering while redirecting
 
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
       <Navbar />
-
       <Container maxWidth="lg" sx={{ py: 4 }}>
-        <Typography variant="h4" fontWeight="bold" gutterBottom>
-          Review Booking
-        </Typography>
         
+        <Typography variant="h4" fontWeight="bold" gutterBottom>Review Booking</Typography>
+        
+        {/* Render dynamic data from the Context */}
+        <Typography variant="subtitle1" color="text.secondary" mb={4}>
+          {selectedTrain.trainName} ({selectedTrain.trainNumber}) | Class: {selectedClass.className}
+        </Typography>
+
         <Grid container spacing={4}>
-          
-          {/* Left Column: Forms & Seat Map */}
           <Grid item xs={12} md={8}>
             <PassengerFormWidget 
-              passengers={passengers}
-              addPassenger={addPassenger}
-              removePassenger={removePassenger}
-              updatePassenger={updatePassenger}
-            />
-            
-            {/* NEW: Interactive Seat Map */}
-            <CoachLayoutWidget 
-              selectedSeats={selectedSeats}
-              maxSelectable={passengers.length}
-              onSeatToggle={setSelectedSeats}
+              passengers={passengers} addPassenger={addPassenger} 
+              removePassenger={removePassenger} updatePassenger={updatePassenger}
             />
           </Grid>
-
-          {/* Right Column: Fare Summary */}
           <Grid item xs={12} md={4}>
+            {/* Pass the dynamic price to the Fare Summary */}
             <FareSummaryCard 
               passengerCount={passengers.length}
-              basePrice={trainDetails.baseFare}
+              basePrice={selectedClass.price} 
               onProceed={handlePayment}
             />
           </Grid>
-
         </Grid>
       </Container>
     </Box>
