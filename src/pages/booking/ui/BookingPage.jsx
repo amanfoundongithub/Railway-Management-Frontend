@@ -5,11 +5,19 @@ import { Navbar } from '../../../widgets/header/ui/Navbar';
 import { PassengerFormWidget } from '../../../features/passenger-details/ui/PassengerFormWidget';
 import { FareSummaryCard } from '../../../features/fare-summary/ui/FareSummaryCard';
 import { usePassengerState } from '../../../features/passenger-details/model/usePassengerState';
-import { useBooking } from '../../../app/providers/BookingProvider'; // <-- Import Context
+import { useBooking } from '../../../app/providers/BookingProvider';
 
 export const BookingPage = () => {
   const navigate = useNavigate();
-  const { passengers, addPassenger, removePassenger, updatePassenger } = usePassengerState();
+  
+  // 1. Pull importFromMasterList along with other state handlers from the custom hook
+  const { 
+    passengers, 
+    addPassenger, 
+    removePassenger, 
+    updatePassenger, 
+    importFromMasterList 
+  } = usePassengerState();
   
   // Pull data from Global Context
   const { selectedTrain, selectedClass, setTransactionAmount, setPassengers: setGlobalPassengers } = useBooking();
@@ -22,13 +30,18 @@ export const BookingPage = () => {
   }, [selectedTrain, navigate]);
 
   const handlePayment = () => {
-    // 1. Validation logic here...
-    
-    // 2. Save final passenger list and total amount to global memory before paying
+    // Basic validation
+    const isValid = passengers.every(p => p.name.trim() !== '' && p.age !== '');
+    if (!isValid) {
+      alert('Please fill out all passenger names and ages.');
+      return;
+    }
+
+    // Save final passenger list and total amount to global memory before paying
     setGlobalPassengers(passengers);
     setTransactionAmount((passengers.length * selectedClass.price) + 35);
     
-    // 3. Navigate to Payment
+    // Navigate to Payment
     navigate('/payment');
   };
 
@@ -48,9 +61,13 @@ export const BookingPage = () => {
 
         <Grid container spacing={4}>
           <Grid item xs={12} md={8}>
+            {/* 2. Pass importFromMasterList down into the PassengerFormWidget */}
             <PassengerFormWidget 
-              passengers={passengers} addPassenger={addPassenger} 
-              removePassenger={removePassenger} updatePassenger={updatePassenger}
+              passengers={passengers} 
+              addPassenger={addPassenger} 
+              removePassenger={removePassenger} 
+              updatePassenger={updatePassenger}
+              importFromMasterList={importFromMasterList}
             />
           </Grid>
           <Grid item xs={12} md={4}>

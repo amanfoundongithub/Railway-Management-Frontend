@@ -59,10 +59,16 @@ export const TicketHistoryCard = ({ ticket }) => {
               View Details
             </Button>
             {isUpcoming && (
-              <Button variant="text" color="error" size="small" fullWidth>
-                Cancel
-              </Button>
-            )}
+    <Button 
+      variant="text" 
+      color="error" 
+      size="small" 
+      fullWidth
+      onClick={() => navigate('/cancel')} // Route to cancellation flow
+    >
+      Cancel
+    </Button>
+  )}
           </Grid>
           
         </Grid>

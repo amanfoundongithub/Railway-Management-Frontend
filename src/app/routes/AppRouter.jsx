@@ -12,6 +12,9 @@ import { PnrStatusPage } from '../../pages/pnr-status/ui/PnrStatusPage';
 import { LoginPage } from '../../pages/auth/ui/LoginPage';
 import { MyTicketsPage } from '../../pages/my-tickets/ui/MyTicketsPage';
 import { PaymentPage } from '../../pages/payment/ui/PaymentPage';
+import { TrainSchedulePage } from '../../pages/train-schedule/ui/TrainSchedulePage';
+import { CancellationPage } from '../../pages/cancellation/ui/CancellationPage';
+import { UserProfilePage } from '../../pages/profile/ui/UserProfilePage';
 
 const AppRouter = () => {
   return (
@@ -41,6 +44,12 @@ const AppRouter = () => {
         <Route path="/my-tickets" element={<MyTicketsPage />} />
 
         <Route path="/payment" element={<PaymentPage />} />
+
+        <Route path="/schedule" element={<TrainSchedulePage />} />
+
+        <Route path="/cancel" element={<CancellationPage />} />
+
+        <Route path="/profile" element={<UserProfilePage />} />
         
         {/* Fallback route for 404s */}
         <Route path="*" element={
