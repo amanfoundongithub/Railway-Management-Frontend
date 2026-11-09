@@ -1,10 +1,13 @@
 import React from 'react';
 import { Card, CardContent, Typography, Box, Button, Divider } from '@mui/material';
+import { useBooking } from '../../../app/providers/BookingProvider';
 
 export const FareSummaryCard = ({ passengerCount, basePrice, onProceed }) => {
+  const { mealTotal } = useBooking(); // <-- Get meal total
   const totalBaseFare = passengerCount * basePrice;
   const convenienceFee = 35; // Standard mock fee
-  const grandTotal = totalBaseFare + convenienceFee;
+  const grandTotal = totalBaseFare + convenienceFee + mealTotal;
+
 
   return (
     <Card elevation={3} sx={{ borderRadius: 2, position: 'sticky', top: 80 }}>
@@ -17,6 +20,13 @@ export const FareSummaryCard = ({ passengerCount, basePrice, onProceed }) => {
           <Typography variant="body2">Ticket Fare ({passengerCount} x ₹{basePrice})</Typography>
           <Typography variant="body2">₹ {totalBaseFare}</Typography>
         </Box>
+
+        {mealTotal > 0 && (
+          <Box display="flex" justifyContent="space-between" mb={1} color="secondary.main">
+            <Typography variant="body2">Food & Catering</Typography>
+            <Typography variant="body2">₹ {mealTotal}</Typography>
+          </Box>
+        )}
         
         <Box display="flex" justifyContent="space-between" mb={2}>
           <Typography variant="body2">Convenience Fee</Typography>

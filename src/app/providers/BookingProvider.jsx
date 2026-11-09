@@ -14,10 +14,13 @@ export const BookingProvider = ({ children }) => {
   // 3. The passengers they add on the booking page
   const [passengers, setPassengers] = useState([]);
 
-  // 4. The final calculated transaction amount
+  // 4. The final calculated transaction amount (Base Fare + Convenience)
   const [transactionAmount, setTransactionAmount] = useState(0);
 
-  // 5. The PNR generated after successful payment
+  // 5. NEW: E-Catering total
+  const [mealTotal, setMealTotal] = useState(0);
+
+  // 6. The PNR generated after successful payment
   const [finalPnr, setFinalPnr] = useState(null);
 
   // Helper to clear the state after a successful booking or if they cancel
@@ -26,6 +29,7 @@ export const BookingProvider = ({ children }) => {
     setSelectedClass(null);
     setPassengers([]);
     setTransactionAmount(0);
+    setMealTotal(0); // Also reset meals
     setFinalPnr(null);
   };
 
@@ -35,6 +39,7 @@ export const BookingProvider = ({ children }) => {
       selectedClass, setSelectedClass,
       passengers, setPassengers,
       transactionAmount, setTransactionAmount,
+      mealTotal, setMealTotal, // <-- This is what was missing!
       finalPnr, setFinalPnr,
       resetBookingFlow
     }}>

@@ -6,6 +6,7 @@ import { PassengerFormWidget } from '../../../features/passenger-details/ui/Pass
 import { FareSummaryCard } from '../../../features/fare-summary/ui/FareSummaryCard';
 import { usePassengerState } from '../../../features/passenger-details/model/usePassengerState';
 import { useBooking } from '../../../app/providers/BookingProvider';
+import { MealSelectionWidget } from '../../../features/e-catering/ui/MealSelectionWidget';
 
 export const BookingPage = () => {
   const navigate = useNavigate();
@@ -19,8 +20,14 @@ export const BookingPage = () => {
     importFromMasterList 
   } = usePassengerState();
   
-  // Pull data from Global Context
-  const { selectedTrain, selectedClass, setTransactionAmount, setPassengers: setGlobalPassengers } = useBooking();
+  // 2. Pull data from Global Context, now including mealTotal
+  const { 
+    selectedTrain, 
+    selectedClass, 
+    setTransactionAmount, 
+    setPassengers: setGlobalPassengers,
+    mealTotal 
+  } = useBooking();
 
   // Security Check: If they navigated here directly without picking a train, send them back
   useEffect(() => {
@@ -39,7 +46,9 @@ export const BookingPage = () => {
 
     // Save final passenger list and total amount to global memory before paying
     setGlobalPassengers(passengers);
-    setTransactionAmount((passengers.length * selectedClass.price) + 35);
+    
+    // 3. Include mealTotal in the final transaction calculation
+    setTransactionAmount((passengers.length * selectedClass.price) + mealTotal + 35);
     
     // Navigate to Payment
     navigate('/payment');
@@ -61,7 +70,7 @@ export const BookingPage = () => {
 
         <Grid container spacing={4}>
           <Grid item xs={12} md={8}>
-            {/* 2. Pass importFromMasterList down into the PassengerFormWidget */}
+            {/* Pass importFromMasterList down into the PassengerFormWidget */}
             <PassengerFormWidget 
               passengers={passengers} 
               addPassenger={addPassenger} 
@@ -69,7 +78,10 @@ export const BookingPage = () => {
               updatePassenger={updatePassenger}
               importFromMasterList={importFromMasterList}
             />
+            
+            <MealSelectionWidget />
           </Grid>
+          
           <Grid item xs={12} md={4}>
             {/* Pass the dynamic price to the Fare Summary */}
             <FareSummaryCard 

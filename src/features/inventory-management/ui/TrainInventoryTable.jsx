@@ -1,10 +1,11 @@
 import React from 'react';
-import { 
-  Card, CardContent, Typography, Table, TableBody, TableCell, 
+import {
+  Card, CardContent, Typography, Table, TableBody, TableCell,
   TableContainer, TableHead, TableRow, Chip, IconButton, Button, Box
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import BlockIcon from '@mui/icons-material/Block';
+import { useNavigate } from 'react-router-dom';
 
 const mockInventory = [
   { id: '12951', name: 'Mumbai Rajdhani', capacity: 1200, booked: 1180, status: 'Active' },
@@ -14,6 +15,7 @@ const mockInventory = [
 ];
 
 export const TrainInventoryTable = () => {
+  const navigate = useNavigate();
   const getStatusColor = (status) => {
     if (status === 'Active') return 'success';
     if (status === 'Full') return 'warning';
@@ -27,7 +29,12 @@ export const TrainInventoryTable = () => {
           <Typography variant="h6" fontWeight="bold">
             Train Inventory & Status
           </Typography>
-          <Button variant="contained" color="primary" size="small">
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            onClick={() => navigate('/admin/add-train')} // <--- Link it here
+          >
             + Add Train Route
           </Button>
         </Box>
@@ -55,10 +62,10 @@ export const TrainInventoryTable = () => {
                     </Typography>
                   </TableCell>
                   <TableCell align="center">
-                    <Chip 
-                      label={train.status} 
-                      color={getStatusColor(train.status)} 
-                      size="small" 
+                    <Chip
+                      label={train.status}
+                      color={getStatusColor(train.status)}
+                      size="small"
                       sx={{ fontWeight: 'bold' }}
                     />
                   </TableCell>

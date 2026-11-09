@@ -15,6 +15,7 @@ import { PaymentPage } from '../../pages/payment/ui/PaymentPage';
 import { TrainSchedulePage } from '../../pages/train-schedule/ui/TrainSchedulePage';
 import { CancellationPage } from '../../pages/cancellation/ui/CancellationPage';
 import { UserProfilePage } from '../../pages/profile/ui/UserProfilePage';
+import { TrainWizardPage } from '../../pages/admin-train-wizard/ui/TrainWizardPage';
 
 const AppRouter = () => {
   return (
@@ -50,6 +51,8 @@ const AppRouter = () => {
         <Route path="/cancel" element={<CancellationPage />} />
 
         <Route path="/profile" element={<UserProfilePage />} />
+
+        <Route path="/admin/add-train" element={<TrainWizardPage />} />
         
         {/* Fallback route for 404s */}
         <Route path="*" element={
