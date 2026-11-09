@@ -9,6 +9,9 @@ import { TicketConfirmationPage } from '../../pages/ticket-confirmation/ui/Ticke
 import { LiveStatusPage } from '../../pages/live-status/ui/LiveStatusPage';
 import { AdminDashboardPage } from '../../pages/admin-dashboard/ui/AdminDashboardPage';
 import { PnrStatusPage } from '../../pages/pnr-status/ui/PnrStatusPage';
+import { LoginPage } from '../../pages/auth/ui/LoginPage';
+import { MyTicketsPage } from '../../pages/my-tickets/ui/MyTicketsPage';
+import { PaymentPage } from '../../pages/payment/ui/PaymentPage';
 
 const AppRouter = () => {
   return (
@@ -32,6 +35,12 @@ const AppRouter = () => {
         <Route path="/admin" element={<AdminDashboardPage />} />
 
         <Route path="/pnr" element={<PnrStatusPage />} />
+
+        <Route path="/login" element={<LoginPage />} />
+
+        <Route path="/my-tickets" element={<MyTicketsPage />} />
+
+        <Route path="/payment" element={<PaymentPage />} />
         
         {/* Fallback route for 404s */}
         <Route path="*" element={

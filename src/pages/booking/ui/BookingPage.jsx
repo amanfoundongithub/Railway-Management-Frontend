@@ -5,12 +5,15 @@ import { PassengerFormWidget } from '../../../features/passenger-details/ui/Pass
 import { FareSummaryCard } from '../../../features/fare-summary/ui/FareSummaryCard';
 import { CoachLayoutWidget } from '../../../features/seat-selection/ui/CoachLayoutWidget'; // <-- NEW
 import { usePassengerState } from '../../../features/passenger-details/model/usePassengerState';
+import { useNavigate } from 'react-router-dom';
 
 export const BookingPage = () => {
   const { passengers, addPassenger, removePassenger, updatePassenger } = usePassengerState();
   
   // NEW: State to track visually selected seats
   const [selectedSeats, setSelectedSeats] = useState([]);
+
+  const navigate = useNavigate();
 
   const trainDetails = {
     name: 'Mumbai Rajdhani Exp (12951)',
@@ -25,14 +28,13 @@ export const BookingPage = () => {
       alert('Please fill out all passenger names and ages.');
       return;
     }
-    
-    // Validate they picked enough seats
     if (selectedSeats.length !== passengers.length) {
       alert(`Please select ${passengers.length} seats from the coach layout.`);
       return;
     }
-
-    alert(`Proceeding to payment with seats: ${selectedSeats.join(', ')}`);
+    
+    // Route to the payment gateway
+    navigate('/payment');
   };
 
   return (
