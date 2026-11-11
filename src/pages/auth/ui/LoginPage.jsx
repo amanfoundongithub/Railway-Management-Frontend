@@ -5,8 +5,8 @@ import { LoginForm } from '../../../features/authentication/ui/LoginForm';
 export const LoginPage = () => {
   return (
     <AuthSplitLayout 
-      title="Welcome Back" 
-      subtitle="Enter your credentials to access your account."
+      title = "Welcome Back, member!" 
+      subtitle = "Enter your credentials to access your account."
     >
       <LoginForm />
     </AuthSplitLayout>

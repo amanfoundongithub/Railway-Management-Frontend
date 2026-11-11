@@ -6,7 +6,6 @@ import { Link, useNavigate } from 'react-router-dom';
 const AuthActions = () => {
   const navigate = useNavigate();
   
-  // MOCK AUTH STATE (Replace with your useAuth() context or Redux selector)
   const isAuthenticated = false; 
   const user = { name: 'Aman Raj', role: 'PASSENGER' };
 

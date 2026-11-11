@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Grid, Typography, Paper } from '@mui/material';
 import TrainIcon from '@mui/icons-material/Train';
+import { APPLICATION_DESC, APPLICATION_NAME } from '../../../app/constants';
 
 export const AuthSplitLayout = ({ children, title, subtitle }) => {
   return (
@@ -24,11 +25,11 @@ export const AuthSplitLayout = ({ children, title, subtitle }) => {
         <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
           <TrainIcon sx={{ fontSize: 48, mr: 2 }} />
           <Typography variant="h3" fontWeight="bold" letterSpacing={2}>
-            NXT_RAIL
+            {APPLICATION_NAME}
           </Typography>
         </Box>
         <Typography variant="h6" sx={{ opacity: 0.8, textAlign: 'center', maxWidth: 400 }}>
-          The next generation of enterprise railway management and ticketing.
+            {APPLICATION_DESC}
         </Typography>
       </Grid>
 
