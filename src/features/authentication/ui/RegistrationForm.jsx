@@ -64,8 +64,8 @@ export const RegistrationForm = () => {
       };
 
       const response = await authService.register(payload);
-      const { token, user } = response.data;
-      
+      const token    = response.token
+      const { user } = response.data;
       cookieService.setToken(token);
       localStorage.setItem('user', JSON.stringify(user));
       

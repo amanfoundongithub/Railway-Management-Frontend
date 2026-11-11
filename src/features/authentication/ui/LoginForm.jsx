@@ -37,7 +37,8 @@ export const LoginForm = () => {
     setError('');
     try {
       const response        = await authService.login(credentials);
-      const { token, user } = response.data;
+      const token           = response.token;
+      const { user }        = response.data;
       cookieService.setToken(token);
       localStorage.setItem('user', JSON.stringify(user));
       navigate('/'); 
