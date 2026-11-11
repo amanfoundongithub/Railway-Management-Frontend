@@ -45,7 +45,7 @@ export const SearchFormProvider = ({ children }) => {
     if (
       formData.source && 
       formData.destination && 
-      (formData.source.code === formData.destination.code || formData.source._id === formData.destination._id)
+      (formData.source.stationCode === formData.destination.stationCode)
     ) {
       newErrors.general = "Source and Destination cannot be the same.";
     }
