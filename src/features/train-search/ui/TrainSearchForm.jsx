@@ -8,11 +8,21 @@ import SearchOptions from './components/SearchOptions';
 
 // Create an inner component to access the context for the form wrapper
 const FormWrapper = () => {
-  const { handleSubmit, errors } = useSearchForm();
+  // 1. Destructure the setter functions from your Context alongside handleSubmit and errors
+  const { 
+    handleSubmit, 
+    errors, 
+    setFromStation, 
+    setToStation 
+  } = useSearchForm();
 
   return (
     <form onSubmit={handleSubmit}>
-      <StationSelector />
+      
+      <StationSelector 
+        onFromStationChange={(station) => setFromStation(station)}
+        onToStationChange={(station) => setToStation(station)}
+      />
       
       {/* Show manual validation error */}
       {errors.general && (
@@ -36,7 +46,7 @@ export const TrainSearchForm = () => {
         mx: 'auto', 
         borderRadius: 3,
         overflow: 'visible',
-        mt: -8,
+        mt: -8, // Great UI choice to overlap the hero section
         position: 'relative',
         zIndex: 10
       }}

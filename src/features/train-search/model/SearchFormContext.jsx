@@ -10,9 +10,9 @@ export const SearchFormProvider = ({ children }) => {
 
   // 1. Manage State natively
   const [formData, setFormData] = useState({
-    source: '',
-    destination: '',
-    date: '2026-11-10', // Default date
+    source: null,      // Changed to null because Autocomplete returns an object
+    destination: null, // Changed to null
+    date: new Date().toISOString().split('T')[0], // Dynamically set to today's date
     travelClass: 'All Classes',
     quota: 'General',
     isFlexible: false,
@@ -30,6 +30,10 @@ export const SearchFormProvider = ({ children }) => {
     }
   };
 
+  // Helper setters for the StationSelector component to use
+  const setFromStation = (station) => handleChange('source', station);
+  const setToStation = (station) => handleChange('destination', station);
+
   // 3. Native Validation Logic
   const validate = () => {
     const newErrors = {};
@@ -37,7 +41,12 @@ export const SearchFormProvider = ({ children }) => {
     if (!formData.destination) newErrors.destination = "Destination is required";
     if (!formData.date) newErrors.date = "Date is required";
     
-    if (formData.source && formData.destination && formData.source === formData.destination) {
+    // Validate by comparing the unique station codes or IDs, since they are now objects
+    if (
+      formData.source && 
+      formData.destination && 
+      (formData.source.code === formData.destination.code || formData.source._id === formData.destination._id)
+    ) {
       newErrors.general = "Source and Destination cannot be the same.";
     }
 
@@ -49,9 +58,10 @@ export const SearchFormProvider = ({ children }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
+      // Extract the station ID or code to pass cleanly in the URL
       const params = new URLSearchParams({
-        src: formData.source,
-        dst: formData.destination,
+        src: formData.source._id || formData.source.code,
+        dst: formData.destination._id || formData.destination.code,
         date: formData.date,
         cls: formData.travelClass,
         qta: formData.quota
@@ -62,7 +72,16 @@ export const SearchFormProvider = ({ children }) => {
   };
 
   return (
-    <SearchFormContext.Provider value={{ formData, errors, handleChange, handleSubmit }}>
+    <SearchFormContext.Provider 
+      value={{ 
+        formData, 
+        errors, 
+        handleChange, 
+        handleSubmit,
+        setFromStation, 
+        setToStation   
+      }}
+    >
       {children}
     </SearchFormContext.Provider>
   );

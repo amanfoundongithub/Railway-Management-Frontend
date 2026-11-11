@@ -4,7 +4,6 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useSearchForm } from '../../model/SearchFormContext';
 
 const SearchOptions = () => {
-  // Pull state natively from context
   const { formData, handleChange } = useSearchForm();
 
   return (
