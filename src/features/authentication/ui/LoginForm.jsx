@@ -14,7 +14,8 @@ import { authService } from '../api/authService';
 import { cookieService } from '../../../utils/cookieService';
 import { parseApiError } from '../../../utils/errorHelper';
 
-export const LoginForm = () => {
+// Accept an optional onSuccess prop (defaults to a no-op function)
+export const LoginForm = ({ onSuccess = () => {} }) => {
 
   const navigate                      = useNavigate();
   const [credentials, setCredentials] = useState({
@@ -41,7 +42,14 @@ export const LoginForm = () => {
       const { user }        = response.data;
       cookieService.setToken(token);
       localStorage.setItem('user', JSON.stringify(user));
-      navigate('/'); 
+      
+      // 1. Call the success callback (closes modal if inside BookingPage)
+      onSuccess();
+
+      // 2. Fallback: navigate home only if no custom success action was provided
+      if (!onSuccess || onSuccess.name === 'emptyFunction') {
+        navigate('/'); 
+      }
     } catch (err) {
       setError(parseApiError(err));
     } finally {

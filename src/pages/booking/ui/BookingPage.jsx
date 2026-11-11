@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
-import { Box, Container, Grid, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Box, Container, Grid, Typography, Dialog, DialogContent, IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import { useNavigate } from 'react-router-dom';
 import { Navbar } from '../../../widgets/header/ui/Navbar';
 import { PassengerFormWidget } from '../../../features/passenger-details/ui/PassengerFormWidget';
@@ -7,11 +8,16 @@ import { FareSummaryCard } from '../../../features/fare-summary/ui/FareSummaryCa
 import { usePassengerState } from '../../../features/passenger-details/model/usePassengerState';
 import { useBooking } from '../../../app/providers/BookingProvider';
 import { MealSelectionWidget } from '../../../features/e-catering/ui/MealSelectionWidget';
+import { LoginForm }  from '../../../features/authentication/ui/LoginForm'; // Adjust import path to your login component
+import { cookieService } from '../../../utils/cookieService';
 
 export const BookingPage = () => {
   const navigate = useNavigate();
   
-  // 1. Pull importFromMasterList along with other state handlers from the custom hook
+  // Modal state for authentication intercept
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+
+  // 1. Pull passenger state handlers
   const { 
     passengers, 
     addPassenger, 
@@ -20,7 +26,7 @@ export const BookingPage = () => {
     importFromMasterList 
   } = usePassengerState();
   
-  // 2. Pull data from Global Context, now including mealTotal
+  // 2. Pull data from Global Context
   const { 
     selectedTrain, 
     selectedClass, 
@@ -29,12 +35,28 @@ export const BookingPage = () => {
     mealTotal 
   } = useBooking();
 
-  // Security Check: If they navigated here directly without picking a train, send them back
+  // Helper to check if user has a valid auth token stored
+  const checkAuth = () => {
+    return !!cookieService.getToken();
+  };
+
+  // Security Check on Mount
   useEffect(() => {
-    if (!selectedTrain) {
+    if (!selectedTrain || !selectedClass) {
       navigate('/');
+      return;
     }
-  }, [selectedTrain, navigate]);
+
+    // If user is not logged in, trigger the login modal instead of redirecting away
+    if (!checkAuth()) {
+      setIsAuthModalOpen(true);
+    }
+  }, [selectedTrain, selectedClass, navigate]);
+
+  // Callback triggered when login inside the modal succeeds
+  const handleLoginSuccess = () => {
+    setIsAuthModalOpen(false);
+  };
 
   const handlePayment = () => {
     // Basic validation
@@ -44,17 +66,18 @@ export const BookingPage = () => {
       return;
     }
 
-    // Save final passenger list and total amount to global memory before paying
+    // Save final passenger list to global memory
     setGlobalPassengers(passengers);
     
-    // 3. Include mealTotal in the final transaction calculation
-    setTransactionAmount((passengers.length * selectedClass.price) + mealTotal + 35);
+    // 3. Calculate total amount using live baseFare
+    const ticketTotal = passengers.length * (selectedClass.baseFare || 0);
+    setTransactionAmount(ticketTotal + (mealTotal || 0) + 35);
     
     // Navigate to Payment
     navigate('/payment');
   };
 
-  if (!selectedTrain) return null; // Prevent rendering while redirecting
+  if (!selectedTrain || !selectedClass) return null; // Prevent rendering while redirecting
 
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
@@ -63,14 +86,13 @@ export const BookingPage = () => {
         
         <Typography variant="h4" fontWeight="bold" gutterBottom>Review Booking</Typography>
         
-        {/* Render dynamic data from the Context */}
+        {/* Render dynamic data using live properties */}
         <Typography variant="subtitle1" color="text.secondary" mb={4}>
-          {selectedTrain.trainName} ({selectedTrain.trainNumber}) | Class: {selectedClass.className}
+          {selectedTrain.trainName} ({selectedTrain.trainNumber}) | Class: {selectedClass.classType}
         </Typography>
 
         <Grid container spacing={4}>
           <Grid item xs={12} md={8}>
-            {/* Pass importFromMasterList down into the PassengerFormWidget */}
             <PassengerFormWidget 
               passengers={passengers} 
               addPassenger={addPassenger} 
@@ -83,15 +105,39 @@ export const BookingPage = () => {
           </Grid>
           
           <Grid item xs={12} md={4}>
-            {/* Pass the dynamic price to the Fare Summary */}
             <FareSummaryCard 
               passengerCount={passengers.length}
-              basePrice={selectedClass.price} 
+              basePrice={selectedClass.baseFare} 
               onProceed={handlePayment}
             />
           </Grid>
         </Grid>
       </Container>
+
+      {/* Authentication Modal Dialog */}
+      <Dialog 
+        open={isAuthModalOpen} 
+        maxWidth="xs" 
+        fullWidth
+        disableEscapeKeyDown
+      >
+        <Box sx={{ p: 2, display: 'flex', justifyContent: 'flex-end', pb: 0 }}>
+          <IconButton onClick={() => navigate('/')} size="small">
+            <CloseIcon />
+          </IconButton>
+        </Box>
+        <DialogContent sx={{ px: 3, pb: 4, pt: 0 }}>
+          <Box textAlign="center" mb={2}>
+            <Typography variant="h6" fontWeight="bold">Sign In Required</Typography>
+            <Typography variant="body2" color="text.secondary">
+              Please sign in to continue with your ticket reservation.
+            </Typography>
+          </Box>
+          
+          {/* Render your existing Login component and pass success callback */}
+          <LoginForm onSuccess={handleLoginSuccess} />
+        </DialogContent>
+      </Dialog>
     </Box>
   );
 };
