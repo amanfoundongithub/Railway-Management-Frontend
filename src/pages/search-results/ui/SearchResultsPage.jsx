@@ -1,50 +1,51 @@
-import React from 'react';
-import { Box, Container, Typography, Paper } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Box, Container, Typography, Paper, CircularProgress, Alert } from '@mui/material';
 import { useSearchParams } from 'react-router-dom';
 import { Navbar } from '../../../widgets/header/ui/Navbar';
 import { TrainCard } from '../../../features/train-booking/ui/TrainCard';
-
-// MOCK DATA: Represents the response from your backend Search API
-const mockTrains = [
-  {
-    trainNumber: '12951',
-    trainName: 'Mumbai Rajdhani Exp',
-    source: 'BCT',
-    destination: 'NDLS',
-    departureTime: '17:00',
-    arrivalTime: '08:32',
-    duration: '15h 32m',
-    runsOn: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
-    availability: [
-      { className: '3A', price: 2450, status: 'AVAILABLE', seatsLabel: 'AVL 42' },
-      { className: '2A', price: 3400, status: 'WAITLIST', seatsLabel: 'WL 12' },
-      { className: '1A', price: 5200, status: 'AVAILABLE', seatsLabel: 'AVL 4' }
-    ]
-  },
-  {
-    trainNumber: '12903',
-    trainName: 'Golden Temple Mail',
-    source: 'BCT',
-    destination: 'NDLS',
-    departureTime: '18:45',
-    arrivalTime: '11:45',
-    duration: '17h 00m',
-    runsOn: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
-    availability: [
-      { className: 'SL', price: 650, status: 'WAITLIST', seatsLabel: 'WL 89' },
-      { className: '3A', price: 1750, status: 'AVAILABLE', seatsLabel: 'AVL 15' },
-      { className: '2A', price: 2450, status: 'AVAILABLE', seatsLabel: 'AVL 2' }
-    ]
-  }
-];
+import { trainService } from '../api/trainService';
+import { parseApiError } from '../../../utils/errorHelper';
 
 export const SearchResultsPage = () => {
   const [searchParams] = useSearchParams();
   
   // Extract params from URL
-  const src = searchParams.get('src') || 'Unknown';
-  const dst = searchParams.get('dst') || 'Unknown';
-  const date = searchParams.get('date') || 'Unknown Date';
+  const src = searchParams.get('src') || '';
+  const dst = searchParams.get('dst') || '';
+  const date = searchParams.get('date') || '';
+  const cls = searchParams.get('cls') || 'All Classes';
+  const qta = searchParams.get('qta') || 'General';
+
+  // API states
+  const [trains, setTrains] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  // Fetch trains when the component mounts or URL parameters change
+  useEffect(() => {
+    const fetchTrains = async () => {
+      // Prevent network call if essential query params are missing
+      if (!src || !dst) {
+        setError('Missing source or destination stations. Please try your search again.');
+        setLoading(false);
+        return;
+      }
+
+      setLoading(true);
+      setError('');
+
+      try {
+        const results = await trainService.searchTrains({ src, dst, date, cls, qta });
+        setTrains(results);
+      } catch (err) {
+        setError(parseApiError(err));
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTrains();
+  }, [src, dst, date, cls, qta]);
 
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
@@ -61,7 +62,7 @@ export const SearchResultsPage = () => {
             {src} to {dst}
           </Typography>
           <Typography variant="body2" sx={{ opacity: 0.8 }}>
-            Journey Date: {date} | Quota: General
+            Journey Date: {date} | Quota: {qta} | Class: {cls}
           </Typography>
         </Container>
       </Paper>
@@ -70,7 +71,7 @@ export const SearchResultsPage = () => {
       <Container maxWidth="lg" sx={{ py: 4 }}>
         <Box sx={{ display: 'flex', gap: 3 }}>
           
-          {/* Left Sidebar: Filters (Placeholder for later) */}
+          {/* Left Sidebar: Filters */}
           <Box sx={{ display: { xs: 'none', md: 'block' }, width: 280 }}>
             <Paper sx={{ p: 2, height: '100%' }}>
               <Typography variant="h6" gutterBottom>Filters</Typography>
@@ -82,15 +83,51 @@ export const SearchResultsPage = () => {
 
           {/* Right Main Area: Train List */}
           <Box sx={{ flexGrow: 1 }}>
-            <Typography variant="h6" gutterBottom>
-              {mockTrains.length} Trains Found
-            </Typography>
             
-            {mockTrains.map((train) => (
-              <TrainCard key={train.trainNumber} train={train} />
-            ))}
-          </Box>
+            {/* 1. Loading State */}
+            {loading && (
+              <Box display="flex" justifyContent="center" alignItems="center" py={10}>
+                <CircularProgress />
+                <Typography sx={{ ml: 2, color: 'text.secondary' }}>
+                  Searching available trains...
+                </Typography>
+              </Box>
+            )}
 
+            {/* 2. Error State (Backend down, Validation fail, etc.) */}
+            {!loading && error && (
+              <Alert severity="error" sx={{ mb: 3 }}>
+                {error}
+              </Alert>
+            )}
+
+            {/* 3. Empty State (API returned 200 but array is empty) */}
+            {!loading && !error && trains.length === 0 && (
+              <Paper sx={{ p: 5, textAlign: 'center', borderRadius: 2 }}>
+                <Typography variant="h6" color="text.secondary">
+                  No trains found running between these stations on this date.
+                </Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+                  Try changing your journey date or quota.
+                </Typography>
+              </Paper>
+            )}
+
+            {/* 4. Success State */}
+            {!loading && !error && trains.length > 0 && (
+              <>
+                <Typography variant="h6" gutterBottom>
+                  {trains.length} Trains Found
+                </Typography>
+                
+                {trains.map((train) => (
+                  // Using MongoDB's _id for the React key
+                  <TrainCard key={train._id} train={train} />
+                ))}
+              </>
+            )}
+
+          </Box>
         </Box>
       </Container>
     </Box>

@@ -60,8 +60,8 @@ export const SearchFormProvider = ({ children }) => {
     if (validate()) {
       // Extract the station ID or code to pass cleanly in the URL
       const params = new URLSearchParams({
-        src: formData.source._id || formData.source.code,
-        dst: formData.destination._id || formData.destination.code,
+        src: formData.source.stationCode,
+        dst: formData.destination.stationCode,
         date: formData.date,
         cls: formData.travelClass,
         qta: formData.quota
