@@ -1,4 +1,5 @@
 import axiosInstance from "../../../api/axiosInstance";
+import { cookieService } from "../../../utils/cookieService";
 
 export const authService = {
   login: async (credentials) => {
@@ -12,7 +13,7 @@ export const authService = {
   },
 
   logout: () => {
-    localStorage.removeItem('token');
+    cookieService.removeToken();
     localStorage.removeItem('user');
   }
 };

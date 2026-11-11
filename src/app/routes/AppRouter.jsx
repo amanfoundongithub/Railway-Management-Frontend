@@ -16,6 +16,7 @@ import { TrainSchedulePage } from '../../pages/train-schedule/ui/TrainSchedulePa
 import { CancellationPage } from '../../pages/cancellation/ui/CancellationPage';
 import { UserProfilePage } from '../../pages/profile/ui/UserProfilePage';
 import { TrainWizardPage } from '../../pages/admin-train-wizard/ui/TrainWizardPage';
+import { RegisterPage } from '../../pages/auth/ui/RegisterPage';
 
 const AppRouter = () => {
   return (
@@ -41,6 +42,8 @@ const AppRouter = () => {
         <Route path="/pnr" element={<PnrStatusPage />} />
 
         <Route path="/login" element={<LoginPage />} />
+
+        <Route path="/register" element={<RegisterPage />}/>
 
         <Route path="/my-tickets" element={<MyTicketsPage />} />
 
