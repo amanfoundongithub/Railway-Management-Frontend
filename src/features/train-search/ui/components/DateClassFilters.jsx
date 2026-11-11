@@ -1,27 +1,39 @@
 import React from 'react';
 import { TextField, MenuItem, Grid } from '@mui/material';
 
-const classes = ['All Classes', '1A (First AC)', '2A (Second AC)', '3A (Third AC)', 'SL (Sleeper)'];
+const classes = ['All Classes', '1A', '2A', '3A', 'SL', 'CC', '2S', 'UR'];
 const quotas = ['General', 'Tatkal', 'Premium Tatkal', 'Ladies', 'Senior Citizen'];
 
-const DateClassFilters = () => {
+export const DateClassFilters = ({ searchData, onChange, errors = {} }) => {
   return (
     <Grid container spacing={3} sx={{ mt: 1 }}>
       
-      {/* Date Picker (Using standard native date input for simplicity right now) */}
+      {/* Date Picker */}
       <Grid item xs={12} md={4}>
         <TextField
           fullWidth
           label="Journey Date"
           type="date"
-          defaultValue="2026-11-10" // Using a future date based on context
+          value={searchData.date}
+          onChange={(e) => onChange('date', e.target.value)}
+          error={!!errors.date}
+          helperText={errors.date}
           InputLabelProps={{ shrink: true }}
+          inputProps={{ 
+            min: new Date().toISOString().split('T')[0] // Prevents past dates
+          }}
         />
       </Grid>
 
       {/* Class Dropdown */}
       <Grid item xs={12} md={4}>
-        <TextField select fullWidth label="Class" defaultValue="All Classes">
+        <TextField 
+          select 
+          fullWidth 
+          label="Class" 
+          value={searchData.travelClass}
+          onChange={(e) => onChange('travelClass', e.target.value)}
+        >
           {classes.map((option) => (
             <MenuItem key={option} value={option}>
               {option}
@@ -32,7 +44,13 @@ const DateClassFilters = () => {
 
       {/* Quota Dropdown */}
       <Grid item xs={12} md={4}>
-        <TextField select fullWidth label="Quota" defaultValue="General">
+        <TextField 
+          select 
+          fullWidth 
+          label="Quota" 
+          value={searchData.quota}
+          onChange={(e) => onChange('quota', e.target.value)}
+        >
           {quotas.map((option) => (
             <MenuItem key={option} value={option}>
               {option}

@@ -8,12 +8,14 @@ import SearchOptions from './components/SearchOptions';
 
 // Create an inner component to access the context for the form wrapper
 const FormWrapper = () => {
-  // 1. Destructure the setter functions from your Context alongside handleSubmit and errors
+  // 1. Destructure formData, handleChange, and handlers from your Context
   const { 
+    formData, 
+    handleChange, 
     handleSubmit, 
     errors, 
     setFromStation, 
-    setToStation 
+    setToStation
   } = useSearchForm();
 
   return (
@@ -31,7 +33,12 @@ const FormWrapper = () => {
         </Typography>
       )}
 
-      <DateClassFilters />
+      {/* 2. Pass formData and handleChange down to DateClassFilters */}
+      <DateClassFilters 
+        searchData={formData} 
+        onChange={handleChange} 
+      />
+
       <SearchOptions />
     </form>
   );

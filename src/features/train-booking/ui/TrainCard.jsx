@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useBooking } from '../../../app/providers/BookingProvider'; 
 
 // Helper function for Days formatting
-const mapRunningDays = (daysArray) => {
+const mapRunningDays = (daysArray = []) => {
   const dayMap = { 0: 'S', 1: 'M', 2: 'T', 3: 'W', 4: 'T', 5: 'F', 6: 'S' };
   return [0, 1, 2, 3, 4, 5, 6].map(day => (
     <Typography 
@@ -118,8 +118,11 @@ export const TrainCard = ({ train }) => {
         {/* Bottom Row: Availability / Classes (Scrollable horizontally) */}
         <Box sx={{ display: 'flex', gap: 2, overflowX: 'auto', pb: 1 }}>
           {train.coachClasses.map((coachClass, index) => {
-            // Mocking status since the current API only gives totalSeats
-            const isAvailable = coachClass.totalSeats > 0;
+            // Using actual live data
+            const isAvailable = coachClass.availableSeats > 0;
+            const statusText = isAvailable 
+              ? `AVL ${coachClass.availableSeats}` 
+              : `WL ${coachClass.waitlistCount}`;
             
             return (
               <Card key={index} variant="outlined" sx={{ minWidth: 160 }}>
@@ -139,7 +142,7 @@ export const TrainCard = ({ train }) => {
                     color={isAvailable ? 'success.main' : 'error.main'}
                     sx={{ mb: 2 }}
                   >
-                    {isAvailable ? `AVL ${coachClass.totalSeats}` : 'WAITLIST'}
+                    {statusText}
                   </Typography>
                   
                   <Button 

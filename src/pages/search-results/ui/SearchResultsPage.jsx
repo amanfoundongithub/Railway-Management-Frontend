@@ -25,8 +25,8 @@ export const SearchResultsPage = () => {
   useEffect(() => {
     const fetchTrains = async () => {
       // Prevent network call if essential query params are missing
-      if (!src || !dst) {
-        setError('Missing source or destination stations. Please try your search again.');
+      if (!src || !dst || !date) { 
+        setError('Missing source, destination, or date. Please try your search again.');
         setLoading(false);
         return;
       }
