@@ -11,6 +11,8 @@ import {
 } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { authService } from '../api/authService';
+import { cookieService } from '../../../utils/cookieService';
+import { parseApiError } from '../../../utils/errorHelper';
 
 export const LoginForm = () => {
 
@@ -33,23 +35,14 @@ export const LoginForm = () => {
     e.preventDefault();
     setLoading(true);
     setError('');
-    
     try {
       const response        = await authService.login(credentials);
       const { token, user } = response.data;
-      
-      localStorage.setItem('token', token);
+      cookieService.setToken(token);
       localStorage.setItem('user', JSON.stringify(user));
-      
       navigate('/'); 
     } catch (err) {
-      if (err.response) {
-        setError(err.response.data?.message || 'Invalid email or password. Please try again.');
-      } else if (err.request) {
-        setError('Unable to connect to the server. Please check if the backend is running.');
-      } else {
-        setError('An unexpected error occurred. Please try again.');
-      }
+      setError(parseApiError(err));
     } finally {
       setLoading(false);
     }

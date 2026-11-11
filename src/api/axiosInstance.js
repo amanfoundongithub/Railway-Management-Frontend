@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { cookieService } from '../utils/cookieService';
 
 const axiosInstance = axios.create({
   baseURL: process.env.REACT_APP_API_URL, 
@@ -9,7 +10,7 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token');
+    const token = cookieService.getToken();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
