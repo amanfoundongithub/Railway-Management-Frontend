@@ -15,6 +15,13 @@ import { LoginForm } from '../../../features/authentication/ui/LoginForm';
 import { cookieService } from '../../../utils/cookieService';
 import { bookingService } from '../api/bookingService';
 
+// 1. Add this mapping object outside the component
+const genderMap = {
+  Male: 'M',
+  Female: 'F',
+  Transgender: 'T',
+};
+
 export const BookingPage = () => {
   const navigate = useNavigate();
   
@@ -22,7 +29,6 @@ export const BookingPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [bookingError, setBookingError] = useState('');
 
-  // 1. Pull passenger state handlers
   const { 
     passengers, 
     addPassenger, 
@@ -31,7 +37,6 @@ export const BookingPage = () => {
     importFromMasterList,
   } = usePassengerState();
   
-  // 2. Pull data from Global Context
   const { 
     selectedTrain, 
     selectedClass, 
@@ -85,16 +90,21 @@ export const BookingPage = () => {
     setIsSubmitting(true);
 
     try {
+      // 2. Strip out the timestamp to get purely YYYY-MM-DD
+      const formattedDateForApi = selectedTrain.journeyDate.includes('T')
+        ? selectedTrain.journeyDate.split('T')[0]
+        : selectedTrain.journeyDate;
+
       const payload = {
         trainId: selectedTrain.trainId || selectedTrain._id,
-        journeyDate: selectedTrain.journeyDate,
+        journeyDate: formattedDateForApi, // Use the formatted date
         sourceStation: selectedTrain.source,
         destinationStation: selectedTrain.destination,
         coachClass: selectedClass.classType,
         passengers: passengers.map(p => ({
           name: p.name.trim(),
           age: Number(p.age),
-          gender: p.gender,
+          gender: genderMap[p.gender] || p.gender, // 3. Use the map to send "M", "F", or "T"
           berthPreference: p.berth
         }))
       };
@@ -107,7 +117,13 @@ export const BookingPage = () => {
 
       navigate('/payment');
     } catch (err) {
-      setBookingError(err.response?.data?.message || 'Failed to reserve seats. Please try again.');
+      // Improved error handling to show array of validation messages if present
+      const apiErrors = err.response?.data?.errors;
+      if (Array.isArray(apiErrors) && apiErrors.length > 0) {
+        setBookingError(apiErrors.map(e => `${e.field}: ${e.message}`).join(' | '));
+      } else {
+        setBookingError(err.response?.data?.message || 'Failed to reserve seats. Please try again.');
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -126,7 +142,6 @@ export const BookingPage = () => {
           </Alert>
         )}
 
-        {/* Detailed Journey Summary Banner */}
         <Paper elevation={1} sx={{ p: 3, mb: 4, borderRadius: 2, bgcolor: 'background.paper' }}>
           <Grid container spacing={2} alignItems="center">
             <Grid item xs={12} md={6}>
@@ -176,7 +191,6 @@ export const BookingPage = () => {
           </Grid>
           
           <Grid item xs={12} md={4}>
-            {/* Pass loading={isSubmitting} down to FareSummaryCard */}
             <FareSummaryCard 
               passengerCount={passengers.length}
               basePrice={selectedClass.baseFare} 
@@ -187,7 +201,6 @@ export const BookingPage = () => {
         </Grid>
       </Container>
 
-      {/* Authentication Modal Dialog */}
       <Dialog 
         open={isAuthModalOpen} 
         maxWidth="xs" 

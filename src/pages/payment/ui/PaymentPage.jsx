@@ -5,7 +5,7 @@ import TrainIcon from '@mui/icons-material/Train';
 import { useNavigate } from 'react-router-dom';
 import { PaymentMethodsWidget } from '../../../widgets/checkout/ui/PaymentMethodsWidget';
 import { useBooking } from '../../../app/providers/BookingProvider';
-import { bookingService } from '../../../features/train-booking/api/bookingService';
+import { bookingService } from "../../booking/api/bookingService";
 import { parseApiError } from '../../../utils/errorHelper';
 
 export const PaymentPage = () => {
