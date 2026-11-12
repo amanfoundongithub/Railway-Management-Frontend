@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Card, CardContent, TextField, Button, Box, Typography } from '@mui/material';
+import { Card, CardContent, TextField, Button, Box, Typography, CircularProgress } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 
-export const PnrSearchForm = ({ onSearch }) => {
+export const PnrSearchForm = ({ onSearch, loading = false }) => {
   const [pnr, setPnr] = useState('');
   const [error, setError] = useState('');
 
@@ -37,16 +37,22 @@ export const PnrSearchForm = ({ onSearch }) => {
               error={!!error}
               helperText={error}
               inputProps={{ maxLength: 10 }}
+              disabled={loading}
             />
             <Button
               type="submit"
               variant="contained"
               color="secondary"
               size="large"
-              startIcon={<SearchIcon />}
+              disabled={loading}
               sx={{ minWidth: 150, height: 56 }}
             >
-              Check Status
+              {loading ? <CircularProgress size={24} color="inherit" /> : (
+                <>
+                  <SearchIcon sx={{ mr: 1 }} />
+                  Status
+                </>
+              )}
             </Button>
           </Box>
         </form>

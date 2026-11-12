@@ -1,29 +1,28 @@
 import React, { useState } from 'react';
-import { Box, Container } from '@mui/material';
+import { Box, Container, Alert, CircularProgress, Typography } from '@mui/material';
 import { Navbar } from '../../../widgets/header/ui/Navbar';
 import { PnrSearchForm } from '../../../features/pnr-enquiry/ui/PnrSearchForm';
 import { PnrDetailsCard } from '../../../features/pnr-enquiry/ui/PnrDetailsCard';
+import { bookingService } from '../../booking/api/bookingService';
 
 export const PnrStatusPage = () => {
   const [pnrData, setPnrData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handlePnrSearch = (pnr) => {
-    // MOCK API CALL: Simulating backend response based on the PNR
-    const mockResponse = {
-      pnrNumber: pnr,
-      trainNumber: '12951',
-      trainName: 'Mumbai Rajdhani',
-      date: '10 Nov 2026',
-      source: 'BCT',
-      destination: 'NDLS',
-      class: '3A',
-      quota: 'GN',
-      passengers: [
-        { bookingStatus: 'WL/12', currentStatus: 'CNF / B1 / 45' },
-        { bookingStatus: 'WL/13', currentStatus: 'CNF / B1 / 46' }
-      ]
-    };
-    setPnrData(mockResponse);
+  const handlePnrSearch = async (pnr) => {
+    setLoading(true);
+    setError('');
+    setPnrData(null);
+
+    try {
+      const data = await bookingService.getBookingByPNR(pnr);
+      setPnrData(data);
+    } catch (err) {
+      setError(err.response?.data?.message || 'Unable to fetch PNR status. Please check the PNR and try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -31,9 +30,22 @@ export const PnrStatusPage = () => {
       <Navbar />
       <Container maxWidth="lg" sx={{ py: 6 }}>
         
-        <PnrSearchForm onSearch={handlePnrSearch} />
+        <PnrSearchForm onSearch={handlePnrSearch} loading={loading} />
+
+        {error && (
+          <Alert severity="error" sx={{ maxWidth: 800, mx: 'auto', mb: 4 }}>
+            {error}
+          </Alert>
+        )}
+
+        {loading && (
+          <Box display="flex" flexDirection="column" alignItems="center" py={5}>
+            <CircularProgress size={40} mb={2} />
+            <Typography mt={2} color="text.secondary">Fetching status...</Typography>
+          </Box>
+        )}
         
-        {pnrData && <PnrDetailsCard pnrData={pnrData} />}
+        {!loading && pnrData && <PnrDetailsCard pnrData={pnrData} />}
 
       </Container>
     </Box>
