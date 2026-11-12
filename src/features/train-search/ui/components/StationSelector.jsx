@@ -60,7 +60,7 @@ const StationSelector = ({
   };
 
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexDirection: { xs: 'column', md: 'row' } }}>
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexDirection: { xs: 'column', md: 'row' } , mb : 3}}>
       <Autocomplete
         fullWidth
         options={options}

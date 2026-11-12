@@ -17,7 +17,7 @@ const FormWrapper = () => {
   } = useSearchForm();
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} >
       <StationSelector 
         onFromStationChange={(station) => {
           setFromStation(station)

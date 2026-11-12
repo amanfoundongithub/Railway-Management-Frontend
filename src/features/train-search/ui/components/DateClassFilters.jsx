@@ -18,7 +18,7 @@ export const DateClassFilters = ({ searchData, onChange, errors = {} }) => {
           helperText={errors.date}
           InputLabelProps={{ shrink: true }}
           inputProps={{ 
-            min: new Date().toISOString().split('T')[0] // Prevents past dates
+            min: new Date().toISOString().split('T')[0]
           }}
         />
       </Grid>
