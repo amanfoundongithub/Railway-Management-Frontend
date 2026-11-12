@@ -5,11 +5,9 @@ import { useSearchForm } from '../../model/SearchFormContext';
 
 const SearchOptions = () => {
   const { formData, handleChange } = useSearchForm();
-
   return (
     <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 4 }}>
       <Box sx={{ display: 'flex', gap: 2 }}>
-        
         <FormControlLabel 
           control={
             <Switch 
@@ -19,9 +17,7 @@ const SearchOptions = () => {
           } 
           label="Flexible with Date" 
         />
-        
       </Box>
-
       <Button 
         type="submit" 
         variant="contained" 

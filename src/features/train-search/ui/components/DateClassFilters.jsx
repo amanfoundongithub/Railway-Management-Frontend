@@ -7,8 +7,6 @@ const quotas = ['General', 'Tatkal', 'Premium Tatkal', 'Ladies', 'Senior Citizen
 export const DateClassFilters = ({ searchData, onChange, errors = {} }) => {
   return (
     <Grid container spacing={3} sx={{ mt: 1 }}>
-      
-      {/* Date Picker */}
       <Grid item xs={12} md={4}>
         <TextField
           fullWidth
@@ -24,8 +22,6 @@ export const DateClassFilters = ({ searchData, onChange, errors = {} }) => {
           }}
         />
       </Grid>
-
-      {/* Class Dropdown */}
       <Grid item xs={12} md={4}>
         <TextField 
           select 
@@ -41,8 +37,6 @@ export const DateClassFilters = ({ searchData, onChange, errors = {} }) => {
           ))}
         </TextField>
       </Grid>
-
-      {/* Quota Dropdown */}
       <Grid item xs={12} md={4}>
         <TextField 
           select 
@@ -58,7 +52,6 @@ export const DateClassFilters = ({ searchData, onChange, errors = {} }) => {
           ))}
         </TextField>
       </Grid>
-
     </Grid>
   );
 };

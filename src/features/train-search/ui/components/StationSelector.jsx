@@ -6,16 +6,16 @@ import SearchIcon from '@mui/icons-material/Search';
 import debounce from 'lodash/debounce';
 import { stationService } from '../../api/stationService';
 
-const StationSelector = ({
-  onFromStationChange,
+const StationSelector = ({ 
+  onFromStationChange, 
   onToStationChange
 }) => {
 
   const [fromStation, setFromStation] = useState(null);
-  const [toStation, setToStation] = useState(null);
+  const [toStation,     setToStation] = useState(null);
 
-  const [options, setOptions] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [options,         setOptions] = useState([]);
+  const [loading,         setLoading] = useState(false);
 
   const fetchStations = useMemo(
     () =>
@@ -49,22 +49,18 @@ const StationSelector = ({
 
   const handleSwap = () => {
     const temp = fromStation;
-
     setFromStation(toStation);
     if (onFromStationChange) {
       onFromStationChange(toStation);
     }
-
     setToStation(temp);
     if (onToStationChange) {
       onToStationChange(temp);
     }
-
   };
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexDirection: { xs: 'column', md: 'row' } }}>
-
       <Autocomplete
         fullWidth
         options={options}
@@ -99,7 +95,6 @@ const StationSelector = ({
           />
         )}
       />
-
       <IconButton
         color="secondary"
         onClick={handleSwap}
@@ -108,13 +103,12 @@ const StationSelector = ({
           bgcolor: 'action.hover',
           transition: 'transform 0.3s ease-in-out',
           '&:active': {
-            transform: { xs: 'rotate(270deg)', md: 'rotate(180deg)' } // Cool spin effect on click
+            transform: { xs: 'rotate(270deg)', md: 'rotate(180deg)' }
           }
         }}
       >
         <SwapHorizIcon fontSize="large" />
       </IconButton>
-
       <Autocomplete
         fullWidth
         options={options}
@@ -149,7 +143,6 @@ const StationSelector = ({
           />
         )}
       />
-
     </Box>
   );
 };

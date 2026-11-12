@@ -14,7 +14,7 @@ export const SearchFormProvider = ({ children }) => {
     destination: null, // Changed to null
     date: new Date().toISOString().split('T')[0], // Dynamically set to today's date
     travelClass: 'All Classes',
-    quota: 'General',
+    quota: 'General', 
     isFlexible: false,
     availableOnly: false,
   });
@@ -30,9 +30,14 @@ export const SearchFormProvider = ({ children }) => {
     }
   };
 
-  // Helper setters for the StationSelector component to use
-  const setFromStation = (station) => handleChange('source', station);
-  const setToStation = (station) => handleChange('destination', station);
+  const setFromStation = (station) => {
+    handleChange("source", station);
+  };
+
+  const setToStation = (station) => {
+    handleChange("destination", station);
+  };
+
 
   // 3. Native Validation Logic
   const validate = () => {
