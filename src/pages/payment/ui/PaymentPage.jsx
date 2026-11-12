@@ -35,9 +35,11 @@ export const PaymentPage = () => {
         paymentStatus: status, // Sends "SUCCESS" or "FAILED"
       });
 
+      console.log(result);
+
       if (status === 'SUCCESS' && result.pnr) {
         // Redirect to your confirmation or PNR status page with the generated 10-digit PNR
-        navigate(`/booking-confirmation?pnr=${result.pnr}`);
+        navigate(`/ticket/confirmation?pnr=${result.pnr}`);
       } else {
         setError('Payment failed. Your reserved seats have been released back to inventory.');
         setTimeout(() => navigate('/'), 3000);

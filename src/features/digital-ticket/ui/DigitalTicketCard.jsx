@@ -1,15 +1,30 @@
 import React from 'react';
 import { Card, Typography, Box, Grid, Divider, Chip } from '@mui/material';
 import TrainIcon from '@mui/icons-material/Train';
-import QrCode2Icon from '@mui/icons-material/QrCode2'; // Placeholder for actual QR code
+import QrCode2Icon from '@mui/icons-material/QrCode2'; 
 
-export const DigitalTicketCard = ({ pnr, trainName, source, dest, date, passengers }) => {
+export const DigitalTicketCard = ({ booking }) => {
+  if (!booking) return null;
+
+  const { pnr, train, sourceStation, destinationStation, journeyDate, passengers, coachClass } = booking;
+
+  // Extract precise timings and names from the populated route array
+  const sourceDetails = train.route?.find(r => r.stationCode === sourceStation) || {};
+  const destDetails = train.route?.find(r => r.stationCode === destinationStation) || {};
+
+  const formattedDate = new Date(journeyDate).toLocaleDateString('en-IN', {
+    weekday: 'short', year: 'numeric', month: 'short', day: 'numeric'
+  });
+
+  // Determine overall status based on whether any passenger is confirmed
+  const isConfirmed = passengers.some(p => p.status === 'CONFIRMED');
+
   return (
     <Card elevation={6} sx={{ borderRadius: 3, position: 'relative', overflow: 'hidden' }}>
       {/* Top Banner */}
-      <Box sx={{ bgcolor: 'success.main', color: 'white', p: 1.5, textAlign: 'center' }}>
+      <Box sx={{ bgcolor: isConfirmed ? 'success.main' : 'warning.main', color: 'white', p: 1.5, textAlign: 'center' }}>
         <Typography variant="subtitle1" fontWeight="bold">
-          Booking Confirmed
+          {isConfirmed ? 'Booking Confirmed' : 'Waitlisted'}
         </Typography>
       </Box>
 
@@ -19,26 +34,31 @@ export const DigitalTicketCard = ({ pnr, trainName, source, dest, date, passenge
           <Box display="flex" justifyContent="space-between" alignItems="flex-start" mb={3}>
             <Box>
               <Typography variant="h5" fontWeight="bold" color="primary.main" gutterBottom>
-                {trainName}
+                {train.trainName} ({train.trainNumber})
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                {date} | Class: 3A | Quota: General
+                {formattedDate} | Class: {coachClass} | Quota: General
               </Typography>
             </Box>
-            <Chip label="CONFIRMED" color="success" size="small" sx={{ fontWeight: 'bold' }} />
+            <Chip 
+              label={isConfirmed ? 'CONFIRMED' : 'WAITLISTED'} 
+              color={isConfirmed ? 'success' : 'warning'} 
+              size="small" 
+              sx={{ fontWeight: 'bold' }} 
+            />
           </Box>
 
           <Grid container spacing={2} mb={3}>
             <Grid item xs={5}>
-              <Typography variant="h6">{source}</Typography>
-              <Typography variant="body2">17:00</Typography>
+              <Typography variant="h6">{sourceDetails.stationName || sourceStation}</Typography>
+              <Typography variant="body2">{sourceDetails.departureTime || 'N/A'}</Typography>
             </Grid>
             <Grid item xs={2} display="flex" justifyContent="center" alignItems="center">
               <TrainIcon color="action" />
             </Grid>
             <Grid item xs={5} textAlign="right">
-              <Typography variant="h6">{dest}</Typography>
-              <Typography variant="body2">08:32 (+1)</Typography>
+              <Typography variant="h6">{destDetails.stationName || destinationStation}</Typography>
+              <Typography variant="body2">{destDetails.arrivalTime || 'N/A'}</Typography>
             </Grid>
           </Grid>
 
@@ -50,9 +70,13 @@ export const DigitalTicketCard = ({ pnr, trainName, source, dest, date, passenge
           
           {passengers.map((p, index) => (
             <Box key={index} display="flex" justifyContent="space-between" mb={1}>
-              <Typography variant="body2">{p.name} ({p.age} {p.gender.charAt(0)})</Typography>
-              <Typography variant="body2" fontWeight="bold">
-                Coach {p.coach}, Seat {p.seat} ({p.berth})
+              <Typography variant="body2">{p.name} ({p.age} {p.gender})</Typography>
+              <Typography 
+                variant="body2" 
+                fontWeight="bold"
+                color={p.status === 'CONFIRMED' ? 'success.main' : 'warning.main'}
+              >
+                {p.seatNumber} ({p.status})
               </Typography>
             </Box>
           ))}
