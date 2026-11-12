@@ -1,30 +1,29 @@
 import React, { useState } from 'react';
-import { Box, Container, Typography } from '@mui/material';
+import { Box, Container, Typography, Alert, CircularProgress } from '@mui/material';
 import { Navbar } from '../../../widgets/header/ui/Navbar';
 import { TrackerSearchWidget } from '../../../widgets/live-status-tracker/ui/TrackerSearchWidget';
 import { TrainTimelineWidget } from '../../../widgets/live-status-tracker/ui/TrainTimelineWidget';
-
-// Mock Route Data
-const mockTrackingData = {
-  name: 'Mumbai Rajdhani Exp',
-  number: '12951',
-  startDate: '10 Nov 2026',
-  totalDelay: 15,
-  route: [
-    { stationName: 'Mumbai Central', stationCode: 'BCT', arrivalTime: '17:00', status: 'PASSED', delay: 0 },
-    { stationName: 'Surat', stationCode: 'ST', arrivalTime: '19:43', status: 'PASSED', delay: 5 },
-    { stationName: 'Vadodara Jn', stationCode: 'BRC', arrivalTime: '21:03', status: 'CURRENT', delay: 15 },
-    { stationName: 'Ratlam Jn', stationCode: 'RTM', arrivalTime: '00:25', status: 'UPCOMING', delay: 0 },
-    { stationName: 'New Delhi', stationCode: 'NDLS', arrivalTime: '08:32', status: 'UPCOMING', delay: 0 },
-  ]
-};
+import { trainService } from '../../search-results/api/trainService';
 
 export const LiveStatusPage = () => {
   const [trackingData, setTrackingData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSearch = () => {
-    // In reality, this would be an async API call based on the input values
-    setTrackingData(mockTrackingData);
+  const handleSearch = async (trainNo, date) => {
+    setLoading(true);
+    setError('');
+    setTrackingData(null);
+
+    try {
+      // Pass the train number and relative date to your backend
+      const data = await trainService.getLiveStatus(trainNo, date);
+      setTrackingData(data);
+    } catch (err) {
+      setError(err.response?.data?.message || 'Unable to fetch live status. Please check the train number.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -39,10 +38,25 @@ export const LiveStatusPage = () => {
           Track your train's exact location, delay, and upcoming stops in real-time.
         </Typography>
 
-        <TrackerSearchWidget onSearch={handleSearch} />
+        <TrackerSearchWidget onSearch={handleSearch} loading={loading} />
 
-        {/* Will only render if a search has been executed */}
-        <TrainTimelineWidget trainData={trackingData} />
+        {error && (
+          <Alert severity="error" sx={{ mb: 4 }}>
+            {error}
+          </Alert>
+        )}
+
+        {loading && (
+          <Box display="flex" flexDirection="column" alignItems="center" py={5}>
+            <CircularProgress size={40} mb={2} />
+            <Typography mt={2} color="text.secondary">Locating train...</Typography>
+          </Box>
+        )}
+
+        {/* Render timeline only when data is successfully fetched */}
+        {!loading && trackingData && (
+          <TrainTimelineWidget trainData={trackingData} />
+        )}
 
       </Container>
     </Box>

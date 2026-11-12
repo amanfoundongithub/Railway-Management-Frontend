@@ -1,8 +1,16 @@
-import React from 'react';
-import { Card, CardContent, Grid, TextField, Button, MenuItem } from '@mui/material';
+import React, { useState } from 'react';
+import { Card, CardContent, Grid, TextField, Button, MenuItem, CircularProgress } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 
-export const TrackerSearchWidget = ({ onSearch }) => {
+export const TrackerSearchWidget = ({ onSearch, loading = false }) => {
+  const [trainNo, setTrainNo] = useState('');
+  const [journeyDate, setJourneyDate] = useState('Today');
+
+  const handleSearchClick = () => {
+    if (!trainNo.trim()) return;
+    onSearch(trainNo.trim(), journeyDate);
+  };
+
   return (
     <Card elevation={3} sx={{ borderRadius: 2, mb: 4 }}>
       <CardContent>
@@ -13,6 +21,9 @@ export const TrackerSearchWidget = ({ onSearch }) => {
               label="Train Number or Name" 
               placeholder="e.g. 12951 or Rajdhani"
               variant="outlined" 
+              value={trainNo}
+              onChange={(e) => setTrainNo(e.target.value)}
+              disabled={loading}
             />
           </Grid>
           <Grid item xs={12} md={4}>
@@ -20,7 +31,9 @@ export const TrackerSearchWidget = ({ onSearch }) => {
               select 
               fullWidth 
               label="Journey Start Date" 
-              defaultValue="Today"
+              value={journeyDate}
+              onChange={(e) => setJourneyDate(e.target.value)}
+              disabled={loading}
             >
               <MenuItem value="Yesterday">Yesterday</MenuItem>
               <MenuItem value="Today">Today</MenuItem>
@@ -33,11 +46,18 @@ export const TrackerSearchWidget = ({ onSearch }) => {
               variant="contained" 
               color="secondary" 
               size="large"
-              startIcon={<SearchIcon />}
-              onClick={() => onSearch()}
+              onClick={handleSearchClick}
+              disabled={loading || !trainNo.trim()}
               sx={{ py: 1.5 }}
             >
-              Track Train
+              {loading ? (
+                <CircularProgress size={24} color="inherit" />
+              ) : (
+                <>
+                  <SearchIcon sx={{ mr: 1 }} />
+                  Track Train
+                </>
+              )}
             </Button>
           </Grid>
         </Grid>
