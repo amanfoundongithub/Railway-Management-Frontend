@@ -3,24 +3,12 @@ import { Card, CardContent, Tabs, Tab, Box, Button, Typography, CircularProgress
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
-import { useNavigate } from 'react-router-dom';
 
 import { CreditCardForm } from '../../../features/payment-processing/ui/CreditCardForm';
 import { UpiPaymentForm } from '../../../features/payment-processing/ui/UpiPaymentForm';
 
-export const PaymentMethodsWidget = ({ amount }) => {
-  const navigate = useNavigate();
+export const PaymentMethodsWidget = ({ amount = 0, onPay, loading = false }) => {
   const [tabIndex, setTabIndex] = useState(0);
-  const [isProcessing, setIsProcessing] = useState(false);
-
-  const handlePay = () => {
-    setIsProcessing(true);
-    // Simulate a network request to a payment gateway (e.g., Razorpay, Stripe)
-    setTimeout(() => {
-      setIsProcessing(false);
-      navigate('/ticket/confirmation');
-    }, 2500);
-  };
 
   return (
     <Card elevation={3} sx={{ borderRadius: 2 }}>
@@ -32,9 +20,9 @@ export const PaymentMethodsWidget = ({ amount }) => {
             onChange={(e, v) => setTabIndex(v)} 
             variant="fullWidth"
           >
-            <Tab icon={<QrCodeScannerIcon />} label="UPI" />
-            <Tab icon={<CreditCardIcon />} label="Card" />
-            <Tab icon={<AccountBalanceIcon />} label="Net Banking" />
+            <Tab icon={<QrCodeScannerIcon />} label="UPI" disabled={loading} />
+            <Tab icon={<CreditCardIcon />} label="Card" disabled={loading} />
+            <Tab icon={<AccountBalanceIcon />} label="Net Banking" disabled={loading} />
           </Tabs>
         </Box>
 
@@ -52,11 +40,18 @@ export const PaymentMethodsWidget = ({ amount }) => {
             variant="contained"
             color="secondary"
             size="large"
-            disabled={isProcessing}
-            onClick={handlePay}
+            disabled={loading}
+            onClick={onPay}
             sx={{ mt: 4, py: 1.5, fontSize: '1.1rem' }}
           >
-            {isProcessing ? <CircularProgress size={24} color="inherit" /> : `Pay ₹ ${amount}`}
+            {loading ? (
+              <Box display="flex" alignItems="center" gap={1.5}>
+                <CircularProgress size={24} color="inherit" />
+                <span>Processing Payment...</span>
+              </Box>
+            ) : (
+              `Pay ₹ ${amount}`
+            )}
           </Button>
         </Box>
 

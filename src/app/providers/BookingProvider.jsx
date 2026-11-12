@@ -17,6 +17,9 @@ export const BookingProvider = ({ children }) => {
   // 4. The final calculated transaction amount (Base Fare + Convenience)
   const [transactionAmount, setTransactionAmount] = useState(0);
 
+  const [transactionId, setTransactionId] = useState(null);
+  const [bookingId, setBookingId] = useState(null);
+
   // 5. NEW: E-Catering total
   const [mealTotal, setMealTotal] = useState(0);
 
@@ -41,6 +44,10 @@ export const BookingProvider = ({ children }) => {
       transactionAmount, setTransactionAmount,
       mealTotal, setMealTotal, // <-- This is what was missing!
       finalPnr, setFinalPnr,
+      transactionId,
+      bookingId,
+      setTransactionId,
+      setBookingId,
       resetBookingFlow
     }}>
       {children}

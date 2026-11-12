@@ -1,13 +1,13 @@
 import React from 'react';
-import { Card, CardContent, Typography, Box, Button, Divider } from '@mui/material';
+import { Card, CardContent, Typography, Box, Button, Divider, CircularProgress } from '@mui/material';
 import { useBooking } from '../../../app/providers/BookingProvider';
 
-export const FareSummaryCard = ({ passengerCount, basePrice, onProceed }) => {
-  const { mealTotal } = useBooking(); // <-- Get meal total
+export const FareSummaryCard = ({ passengerCount, basePrice = 0, onProceed, loading = false }) => {
+  const { mealTotal = 0 } = useBooking();
+  
   const totalBaseFare = passengerCount * basePrice;
-  const convenienceFee = 35; // Standard mock fee
+  const convenienceFee = 35; // Standard IRCTC-style convenience fee
   const grandTotal = totalBaseFare + convenienceFee + mealTotal;
-
 
   return (
     <Card elevation={3} sx={{ borderRadius: 2, position: 'sticky', top: 80 }}>
@@ -48,8 +48,17 @@ export const FareSummaryCard = ({ passengerCount, basePrice, onProceed }) => {
           color="secondary" 
           size="large"
           onClick={onProceed}
+          disabled={loading}
+          sx={{ py: 1.2 }}
         >
-          Proceed to Payment
+          {loading ? (
+            <Box display="flex" alignItems="center" gap={1}>
+              <CircularProgress size={20} color="inherit" />
+              <span>Reserving Seats...</span>
+            </Box>
+          ) : (
+            'Proceed to Payment'
+          )}
         </Button>
       </CardContent>
     </Card>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Container, Grid, Typography, Dialog, DialogContent, IconButton, Paper } from '@mui/material';
+import { Box, Container, Grid, Typography, Dialog, DialogContent, IconButton, Paper, Alert } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import DirectionsRailwayIcon from '@mui/icons-material/DirectionsRailway';
 import EventSeatIcon from '@mui/icons-material/EventSeat';
@@ -13,12 +13,14 @@ import { useBooking } from '../../../app/providers/BookingProvider';
 import { MealSelectionWidget } from '../../../features/e-catering/ui/MealSelectionWidget';
 import { LoginForm } from '../../../features/authentication/ui/LoginForm'; 
 import { cookieService } from '../../../utils/cookieService';
+import { bookingService } from '../api/bookingService';
 
 export const BookingPage = () => {
   const navigate = useNavigate();
   
-  // Modal state for authentication intercept
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [bookingError, setBookingError] = useState('');
 
   // 1. Pull passenger state handlers
   const { 
@@ -26,24 +28,23 @@ export const BookingPage = () => {
     addPassenger, 
     removePassenger, 
     updatePassenger, 
-    importFromMasterList 
+    importFromMasterList,
   } = usePassengerState();
   
   // 2. Pull data from Global Context
   const { 
     selectedTrain, 
     selectedClass, 
-    setTransactionAmount, 
+    setTransactionAmount,
+    setTransactionId, 
     setPassengers: setGlobalPassengers,
-    mealTotal 
+    mealTotal
   } = useBooking();
 
-  // Helper to check if user has a valid auth token stored
   const checkAuth = () => {
     return !!cookieService.getToken();
   };
 
-  // Security Check on Mount
   useEffect(() => {
     if (!selectedTrain || !selectedClass) {
       navigate('/');
@@ -55,20 +56,17 @@ export const BookingPage = () => {
     }
   }, [selectedTrain, selectedClass, navigate]);
 
-  // Callback triggered when login inside the modal succeeds
   const handleLoginSuccess = () => {
     setIsAuthModalOpen(false);
   };
 
   if (!selectedTrain || !selectedClass) return null;
 
-  // Extract precise station details from the route array using selectedTrain.source & destination
   const sourceStop = selectedTrain.route?.find(s => s.stationCode === selectedTrain.source);
   const destStop = selectedTrain.route?.find(s => s.stationCode === selectedTrain.destination);
 
-  // Format the journey date cleanly (e.g., Nov 13, 2026)
   const formattedJourneyDate = selectedTrain.journeyDate 
-    ? new Date(selectedTrain.journeyDate).toLocaleDateString('en-US', {
+    ? new Date(selectedTrain.journeyDate).toLocaleDateString('en-IN', {
         weekday: 'short',
         year: 'numeric',
         month: 'short',
@@ -76,26 +74,43 @@ export const BookingPage = () => {
       })
     : 'N/A';
 
-  const handlePayment = () => {
-    // Basic validation
+  const handlePayment = async () => {
+    setBookingError('');
     const isValid = passengers.every(p => p.name.trim() !== '' && p.age !== '');
     if (!isValid) {
-      alert('Please fill out all passenger names and ages.');
+      setBookingError('Please fill out all passenger names and ages.');
       return;
     }
 
-    // Save final passenger list to global memory
-    setGlobalPassengers(passengers);
-    
-    // Calculate total amount using live baseFare
-    const ticketTotal = passengers.length * (selectedClass.baseFare || 0);
-    setTransactionAmount(ticketTotal + (mealTotal || 0) + 35);
-    
-    // Note: selectedTrain._id is your live Journey ID, which you'll use in your booking backend call
-    console.log('Booking Journey ID:', selectedTrain._id);
-    
-    // Navigate to Payment
-    navigate('/payment');
+    setIsSubmitting(true);
+
+    try {
+      const payload = {
+        trainId: selectedTrain.trainId || selectedTrain._id,
+        journeyDate: selectedTrain.journeyDate,
+        sourceStation: selectedTrain.source,
+        destinationStation: selectedTrain.destination,
+        coachClass: selectedClass.classType,
+        passengers: passengers.map(p => ({
+          name: p.name.trim(),
+          age: Number(p.age),
+          gender: p.gender,
+          berthPreference: p.berth
+        }))
+      };
+
+      const result = await bookingService.createBooking(payload);
+
+      setGlobalPassengers(passengers);
+      setTransactionId(result.transactionId);
+      setTransactionAmount(result.totalFare + (mealTotal || 0) + 35);
+
+      navigate('/payment');
+    } catch (err) {
+      setBookingError(err.response?.data?.message || 'Failed to reserve seats. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -104,6 +119,12 @@ export const BookingPage = () => {
       <Container maxWidth="lg" sx={{ py: 4 }}>
         
         <Typography variant="h4" fontWeight="bold" gutterBottom>Review Booking</Typography>
+
+        {bookingError && (
+          <Alert severity="error" sx={{ mb: 3 }} onClose={() => setBookingError('')}>
+            {bookingError}
+          </Alert>
+        )}
 
         {/* Detailed Journey Summary Banner */}
         <Paper elevation={1} sx={{ p: 3, mb: 4, borderRadius: 2, bgcolor: 'background.paper' }}>
@@ -155,10 +176,12 @@ export const BookingPage = () => {
           </Grid>
           
           <Grid item xs={12} md={4}>
+            {/* Pass loading={isSubmitting} down to FareSummaryCard */}
             <FareSummaryCard 
               passengerCount={passengers.length}
               basePrice={selectedClass.baseFare} 
               onProceed={handlePayment}
+              loading={isSubmitting}
             />
           </Grid>
         </Grid>
