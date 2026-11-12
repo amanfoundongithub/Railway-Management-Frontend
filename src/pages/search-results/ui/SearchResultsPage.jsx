@@ -21,21 +21,17 @@ export const SearchResultsPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  // Fetch trains when the component mounts or URL parameters change
   useEffect(() => {
     const fetchTrains = async () => {
-      // Prevent network call if essential query params are missing
       if (!src || !dst || !date) { 
         setError('Missing source, destination, or date. Please try your search again.');
         setLoading(false);
         return;
       }
-
       setLoading(true);
       setError('');
-
       try {
-        const results = await trainService.searchTrains({ src, dst, date, cls, qta });
+        const results = await trainService.searchTrains(src, dst, date);
         setTrains(results);
       } catch (err) {
         setError(parseApiError(err));
@@ -43,21 +39,21 @@ export const SearchResultsPage = () => {
         setLoading(false);
       }
     };
-
     fetchTrains();
   }, [src, dst, date, cls, qta]);
 
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
       <Navbar />
-
-      {/* Sticky Top Header showing the active search query */}
       <Paper 
         square 
         elevation={1} 
         sx={{ bgcolor: 'primary.dark', color: 'white', py: 2, position: 'sticky', top: 64, zIndex: 5 }}
       >
         <Container maxWidth="lg">
+          <Typography variant="h4">
+            Search Results For:
+          </Typography>
           <Typography variant="h6">
             {src} to {dst}
           </Typography>
@@ -66,12 +62,8 @@ export const SearchResultsPage = () => {
           </Typography>
         </Container>
       </Paper>
-
-      {/* Main Content Area */}
       <Container maxWidth="lg" sx={{ py: 4 }}>
         <Box sx={{ display: 'flex', gap: 3 }}>
-          
-          {/* Left Sidebar: Filters */}
           <Box sx={{ display: { xs: 'none', md: 'block' }, width: 280 }}>
             <Paper sx={{ p: 2, height: '100%' }}>
               <Typography variant="h6" gutterBottom>Filters</Typography>
@@ -80,11 +72,7 @@ export const SearchResultsPage = () => {
               </Typography>
             </Paper>
           </Box>
-
-          {/* Right Main Area: Train List */}
           <Box sx={{ flexGrow: 1 }}>
-            
-            {/* 1. Loading State */}
             {loading && (
               <Box display="flex" justifyContent="center" alignItems="center" py={10}>
                 <CircularProgress />
@@ -93,15 +81,11 @@ export const SearchResultsPage = () => {
                 </Typography>
               </Box>
             )}
-
-            {/* 2. Error State (Backend down, Validation fail, etc.) */}
             {!loading && error && (
               <Alert severity="error" sx={{ mb: 3 }}>
                 {error}
               </Alert>
             )}
-
-            {/* 3. Empty State (API returned 200 but array is empty) */}
             {!loading && !error && trains.length === 0 && (
               <Paper sx={{ p: 5, textAlign: 'center', borderRadius: 2 }}>
                 <Typography variant="h6" color="text.secondary">
@@ -112,21 +96,16 @@ export const SearchResultsPage = () => {
                 </Typography>
               </Paper>
             )}
-
-            {/* 4. Success State */}
             {!loading && !error && trains.length > 0 && (
               <>
                 <Typography variant="h6" gutterBottom>
                   {trains.length} Trains Found
                 </Typography>
-                
                 {trains.map((train) => (
-                  // Using MongoDB's _id for the React key
                   <TrainCard key={train._id} train={train} />
                 ))}
               </>
             )}
-
           </Box>
         </Box>
       </Container>
