@@ -21,6 +21,7 @@ import { CancellationPage } from '../../pages/cancellation/ui/CancellationPage';
 import { UserProfilePage } from '../../pages/profile/ui/UserProfilePage';
 import { TrainWizardPage } from '../../pages/admin-train-wizard/ui/TrainWizardPage';
 import { RegisterPage } from '../../pages/auth/ui/RegisterPage';
+import { ECateringPage } from '../../pages/e-catering/ui/ECateringPage';
 
 // Inner component that has access to the router context (useLocation)
 const AnimatedRoutes = () => {
@@ -63,6 +64,8 @@ const AnimatedRoutes = () => {
         <Route path="/profile" element={<PageTransition><UserProfilePage /></PageTransition>} />
 
         <Route path="/admin/add-train" element={<PageTransition><TrainWizardPage /></PageTransition>} />
+
+        <Route path="/e-catering" element={<PageTransition><ECateringPage /></PageTransition>} />
         
         {/* Fallback route for 404s */}
         <Route path="*" element={
