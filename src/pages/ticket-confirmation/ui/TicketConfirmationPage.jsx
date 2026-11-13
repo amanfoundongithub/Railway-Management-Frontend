@@ -2,10 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Box, Container, Typography, CircularProgress, Alert } from '@mui/material';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
 import { useSearchParams, useNavigate } from 'react-router-dom';
+import { usePDF } from 'react-to-pdf'; // 1. Import the hook
+
 import { Navbar } from '../../../widgets/header/ui/Navbar';
 import { DigitalTicketCard } from '../../../features/digital-ticket/ui/DigitalTicketCard';
 import { TicketActions } from '../../../features/digital-ticket/ui/TicketActions';
 import { bookingService } from '../../booking/api/bookingService';
+
+
 export const TicketConfirmationPage = () => {
   const [searchParams] = useSearchParams();
   const pnr = searchParams.get('pnr');
@@ -14,6 +18,9 @@ export const TicketConfirmationPage = () => {
   const [booking, setBooking] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+
+  // 2. Initialize the PDF hook with a dynamic filename
+  const { toPDF, targetRef } = usePDF({ filename: `NXT_RAIL_Ticket_${pnr}.pdf` });
 
   useEffect(() => {
     if (!pnr) {
@@ -26,7 +33,7 @@ export const TicketConfirmationPage = () => {
         const data = await bookingService.getBookingByPNR(pnr);
         setBooking(data);
       } catch (err) {
-        setError(err.response?.data?.message || 'Unable to load ticket details. Invalid PNR.');
+        setError(err.response?.data?.message || 'Unable to load ticket details.');
       } finally {
         setLoading(false);
       }
@@ -47,15 +54,10 @@ export const TicketConfirmationPage = () => {
           </Box>
         )}
 
-        {error && (
-          <Alert severity="error" sx={{ mb: 3 }}>
-            {error}
-          </Alert>
-        )}
+        {error && <Alert severity="error" sx={{ mb: 3 }}>{error}</Alert>}
 
         {!loading && booking && (
           <>
-            {/* Success Header */}
             <Box textAlign="center" mb={5}>
               <CheckCircleOutlineIcon color="success" sx={{ fontSize: 64, mb: 1 }} />
               <Typography variant="h4" fontWeight="bold" gutterBottom>
@@ -66,11 +68,13 @@ export const TicketConfirmationPage = () => {
               </Typography>
             </Box>
 
-            {/* The Digital Ticket */}
-            <DigitalTicketCard booking={booking} />
+            {/* 3. Wrap the ticket card with the PDF target ref */}
+            <Box ref={targetRef}>
+              <DigitalTicketCard booking={booking} />
+            </Box>
 
-            {/* Action Buttons */}
-            <TicketActions pnr={booking.pnr} />
+            {/* 4. Pass the toPDF trigger down to the actions */}
+            <TicketActions pnr={booking.pnr} onDownload={toPDF} />
           </>
         )}
       </Container>
