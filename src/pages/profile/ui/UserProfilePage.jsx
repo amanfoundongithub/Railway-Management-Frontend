@@ -1,49 +1,61 @@
-import React from 'react';
-import { Box, Container, Grid, Typography, Paper, List, ListItem, ListItemButton, ListItemText, Divider } from '@mui/material';
+// src/pages/profile/ui/UserProfilePage.jsx
+import React, { useState, useEffect } from 'react';
+import { Box, Container, Typography, CircularProgress, Alert } from '@mui/material';
 import { Navbar } from '../../../widgets/header/ui/Navbar';
-import { MasterListTable } from '../../../features/master-list/ui/MasterListTable';
+import { MasterListWidget } from '../../../widgets/master-list/ui/MasterListWidget';
+import { authService } from '../../../features/authentication/api/authService';
 
 export const UserProfilePage = () => {
+  const [masterList, setMasterList] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  // Fetch the user's master list when they open their profile
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const user = await authService.getMe();
+        setMasterList(user.masterList || []);
+      } catch (err) {
+        setError('Failed to load profile data.');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProfile();
+  }, []);
+
+  // This function is triggered by the MasterListWidget
+  const handleUpdateList = async (action, passenger) => {
+    try {
+      // Calls the API and returns the newly updated array from MongoDB
+      const updatedList = await authService.updateMasterList(action, passenger);
+      setMasterList(updatedList);
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to update master list');
+    }
+  };
+
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50' }}>
       <Navbar />
-
-      <Container maxWidth="lg" sx={{ py: 6 }}>
+      <Container maxWidth="md" sx={{ py: 6 }}>
         <Typography variant="h4" fontWeight="bold" gutterBottom>
-          Account Settings
+          My Profile
         </Typography>
         
-        <Grid container spacing={4} mt={1}>
-          {/* Settings Sidebar */}
-          <Grid item xs={12} md={3}>
-            <Paper elevation={1} sx={{ borderRadius: 2, overflow: 'hidden' }}>
-              <List disablePadding>
-                <ListItem disablePadding>
-                  <ListItemButton selected>
-                    <ListItemText primary="Master List" secondary="Saved Passengers" />
-                  </ListItemButton>
-                </ListItem>
-                <Divider />
-                <ListItem disablePadding>
-                  <ListItemButton>
-                    <ListItemText primary="Preferences" secondary="Food & Berth" />
-                  </ListItemButton>
-                </ListItem>
-                <Divider />
-                <ListItem disablePadding>
-                  <ListItemButton>
-                    <ListItemText primary="Security" secondary="Change Password" />
-                  </ListItemButton>
-                </ListItem>
-              </List>
-            </Paper>
-          </Grid>
-
-          {/* Settings Content Area */}
-          <Grid item xs={12} md={9}>
-            <MasterListTable />
-          </Grid>
-        </Grid>
+        {loading ? (
+          <Box display="flex" justifyContent="center" py={5}>
+            <CircularProgress />
+          </Box>
+        ) : error ? (
+          <Alert severity="error" sx={{ mb: 3 }}>{error}</Alert>
+        ) : (
+          <MasterListWidget 
+            masterList={masterList} 
+            onUpdateList={handleUpdateList} 
+          />
+        )}
       </Container>
     </Box>
   );

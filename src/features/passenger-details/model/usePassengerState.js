@@ -48,11 +48,16 @@ export const usePassengerState = () => {
     ));
   };
 
+  const appendPassengers = (newPassengers) => {
+    setPassengers((prev) => [...prev, ...newPassengers]);
+  };
+
   return { 
     passengers, 
     addPassenger, 
     removePassenger, 
     updatePassenger, 
-    importFromMasterList // Export the new function
+    importFromMasterList, // Export the new function
+    appendPassengers
   };
 };

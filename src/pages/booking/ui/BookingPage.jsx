@@ -35,6 +35,7 @@ export const BookingPage = () => {
     removePassenger, 
     updatePassenger, 
     importFromMasterList,
+    appendPassengers
   } = usePassengerState();
   
   const { 
@@ -183,6 +184,7 @@ export const BookingPage = () => {
               removePassenger={removePassenger} 
               updatePassenger={updatePassenger}
               importFromMasterList={importFromMasterList}
+              appendPassengers={appendPassengers}
             />
             
             <Box sx={{ mt: 3 }}>

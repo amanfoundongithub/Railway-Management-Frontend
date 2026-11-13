@@ -20,5 +20,14 @@ export const authService = {
   getMe: async () => {
     const response = await axiosInstance.get('/auth/me');
     return response.data.data.user;
+  },
+
+  updateMasterList: async (action, passenger) => {
+    // action is either 'add' or 'remove'
+    const response = await axiosInstance.put('/auth/master-list', { 
+      action, 
+      passenger 
+    });
+    return response.data.data.masterList;
   }
 };
