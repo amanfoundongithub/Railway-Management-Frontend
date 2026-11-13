@@ -1,11 +1,40 @@
-import React from 'react';
-import { Box, Container, Typography, Grid, Paper, Avatar } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Box, Container, Typography, Grid, Paper, Avatar, CircularProgress } from '@mui/material';
 import { Navbar } from '../../../widgets/header/ui/Navbar';
 import { TicketListWidget } from '../../../widgets/ticket-history/ui/TicketListWidget';
+import { authService } from '../../../features/authentication/api/authService';
 
 export const MyTicketsPage = () => {
-  // Mock User Data
-  const user = { name: 'Aman Raj', email: 'aman@example.com', joinDate: 'Jan 2026' };
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const userData = await authService.getMe();
+        setUser(userData);
+      } catch (error) {
+        console.error("Failed to load user profile", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProfile();
+  }, []);
+
+  if (loading) {
+    return (
+      <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50' }}>
+        <Navbar />
+        <Box display="flex" justifyContent="center" py={10}><CircularProgress /></Box>
+      </Box>
+    );
+  }
+
+  // Format the MongoDB createdAt timestamp to 'Jan 2026' format
+  const joinDate = user?.createdAt 
+    ? new Date(user.createdAt).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) 
+    : 'Recently';
 
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50' }}>
@@ -20,12 +49,17 @@ export const MyTicketsPage = () => {
               <Avatar 
                 sx={{ width: 80, height: 80, mx: 'auto', mb: 2, bgcolor: 'secondary.main', fontSize: '2rem' }}
               >
-                {user.name.charAt(0)}
+                {user?.fullName?.charAt(0) || 'U'}
               </Avatar>
-              <Typography variant="h6" fontWeight="bold">{user.name}</Typography>
-              <Typography variant="body2" color="text.secondary" gutterBottom>{user.email}</Typography>
-              <Typography variant="caption" display="block" mt={2}>
-                Member since {user.joinDate}
+              <Typography variant="h6" fontWeight="bold">{user?.fullName}</Typography>
+              <Typography variant="body2" color="text.secondary" gutterBottom>
+                {user?.email}
+              </Typography>
+              <Typography variant="body2" color="text.secondary" gutterBottom>
+                {user?.phoneNumber}
+              </Typography>
+              <Typography variant="caption" display="block" mt={2} color="primary">
+                Member since {joinDate}
               </Typography>
             </Paper>
           </Grid>

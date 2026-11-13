@@ -15,5 +15,10 @@ export const authService = {
   logout: () => {
     cookieService.removeToken();
     localStorage.removeItem('user');
+  },
+
+  getMe: async () => {
+    const response = await axiosInstance.get('/auth/me');
+    return response.data.data.user;
   }
 };

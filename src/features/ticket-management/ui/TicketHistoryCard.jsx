@@ -6,10 +6,20 @@ import { useNavigate } from 'react-router-dom';
 
 export const TicketHistoryCard = ({ ticket }) => {
   const navigate = useNavigate();
-  const isUpcoming = ticket.status === 'UPCOMING';
-  const isCancelled = ticket.status === 'CANCELLED';
+  
+  // Aligning with your live backend schema ('SUCCESS', 'PENDING', 'CANCELLED')
+  const isUpcoming = ticket.bookingStatus === 'SUCCESS' && new Date(ticket.journeyDate) >= new Date();
+  const isCancelled = ticket.bookingStatus === 'CANCELLED' || ticket.bookingStatus === 'FAILED';
 
   const statusColor = isUpcoming ? 'success' : isCancelled ? 'error' : 'default';
+  
+  // Format the date for display
+  const formattedDate = new Date(ticket.journeyDate).toLocaleDateString('en-IN', {
+    day: '2-digit', month: 'short', year: 'numeric'
+  });
+
+  // Handle passenger count whether it's an array (live) or number (mock fallback)
+  const passengerCount = Array.isArray(ticket.passengers) ? ticket.passengers.length : ticket.passengers;
 
   return (
     <Card elevation={2} sx={{ mb: 3, borderRadius: 2, borderLeft: '4px solid', borderLeftColor: `${statusColor}.main` }}>
@@ -20,19 +30,24 @@ export const TicketHistoryCard = ({ ticket }) => {
           <Grid item xs={12} md={7}>
             <Box display="flex" alignItems="center" gap={1} mb={1}>
               <Typography variant="h6" fontWeight="bold">
-                {ticket.source}
+                {ticket.sourceStation || ticket.source}
               </Typography>
               <ArrowForwardIcon color="action" fontSize="small" />
               <Typography variant="h6" fontWeight="bold">
-                {ticket.destination}
+                {ticket.destinationStation || ticket.destination}
               </Typography>
-              <Chip label={ticket.status} color={statusColor} size="small" sx={{ ml: 2, fontWeight: 'bold' }} />
+              <Chip 
+                label={ticket.bookingStatus || ticket.status} 
+                color={statusColor} 
+                size="small" 
+                sx={{ ml: 2, fontWeight: 'bold' }} 
+              />
             </Box>
             
             <Box display="flex" alignItems="center" gap={1} color="text.secondary">
               <TrainIcon fontSize="small" />
               <Typography variant="body2">
-                {ticket.trainName} ({ticket.trainNumber}) | {ticket.date}
+                {ticket.train?.trainName || ticket.trainName} ({ticket.train?.trainNumber || ticket.trainNumber}) | {formattedDate}
               </Typography>
             </Box>
           </Grid>
@@ -42,7 +57,7 @@ export const TicketHistoryCard = ({ ticket }) => {
             <Typography variant="body2" color="text.secondary">PNR Number</Typography>
             <Typography variant="subtitle1" fontWeight="bold">{ticket.pnr}</Typography>
             <Typography variant="body2" color="text.secondary">
-              {ticket.passengers} Passenger(s)
+              {passengerCount} Passenger(s)
             </Typography>
           </Grid>
 
@@ -53,22 +68,24 @@ export const TicketHistoryCard = ({ ticket }) => {
               color="primary" 
               size="small" 
               fullWidth
-              onClick={() => navigate('/ticket/confirmation')} // Mock navigating to details
+              // Added PNR to the URL so the Confirmation page knows which ticket to fetch
+              onClick={() => navigate(`/ticket/confirmation?pnr=${ticket.pnr}`)} 
               sx={{ mb: 1 }}
             >
               View Details
             </Button>
             {isUpcoming && (
-    <Button 
-      variant="text" 
-      color="error" 
-      size="small" 
-      fullWidth
-      onClick={() => navigate('/cancel')} // Route to cancellation flow
-    >
-      Cancel
-    </Button>
-  )}
+              <Button 
+                variant="text" 
+                color="error" 
+                size="small" 
+                fullWidth
+                // Added PNR to the URL so the Cancel page knows which ticket to fetch
+                onClick={() => navigate(`/cancel?pnr=${ticket.pnr}`)}
+              >
+                Cancel
+              </Button>
+            )}
           </Grid>
           
         </Grid>
