@@ -2,9 +2,9 @@ import React from 'react';
 import { Card, CardContent, Typography, Box, Button, Divider } from '@mui/material';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 
-export const RefundSummaryCard = ({ cancelCount, baseFarePerPassenger, onConfirmCancel }) => {
+export const RefundSummaryCard = ({ cancelCount, baseFarePerPassenger, onConfirmCancel, loading }) => {
   const cancellationFeePerPassenger = 120; // Flat enterprise logic fee
-  
+
   const totalBaseFare = cancelCount * baseFarePerPassenger;
   const totalCancellationFee = cancelCount * cancellationFeePerPassenger;
   const totalRefund = totalBaseFare - totalCancellationFee;
@@ -20,7 +20,7 @@ export const RefundSummaryCard = ({ cancelCount, baseFarePerPassenger, onConfirm
           <Typography variant="body2">Ticket Fare ({cancelCount} pax)</Typography>
           <Typography variant="body2">₹ {totalBaseFare}</Typography>
         </Box>
-        
+
         <Box display="flex" justifyContent="space-between" mb={2} color="error.main">
           <Typography variant="body2">Cancellation Fee (-)</Typography>
           <Typography variant="body2">₹ {totalCancellationFee}</Typography>
@@ -42,15 +42,15 @@ export const RefundSummaryCard = ({ cancelCount, baseFarePerPassenger, onConfirm
           </Typography>
         </Box>
 
-        <Button 
-          fullWidth 
-          variant="contained" 
-          color="error" 
+        <Button
+          fullWidth
+          variant="contained"
+          color="error"
           size="large"
-          disabled={cancelCount === 0}
+          disabled={cancelCount === 0 || loading}
           onClick={onConfirmCancel}
         >
-          Confirm Cancellation
+          {loading ? 'Processing...' : 'Confirm Cancellation'}
         </Button>
       </CardContent>
     </Card>

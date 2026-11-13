@@ -17,5 +17,11 @@ export const bookingService = {
   getBookingByPNR: async (pnr) => {
     const response = await axiosInstance.get(`/bookings/pnr/${pnr}`);
     return response.data.data.booking;
+  },
+  cancelBooking: async (bookingId, passengerIds) => {
+    const response = await axiosInstance.patch(`/bookings/cancel/${bookingId}`, {
+      passengerIds
+    });
+    return response.data;
   }
 }

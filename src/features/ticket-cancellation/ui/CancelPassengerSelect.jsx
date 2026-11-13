@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardContent, Typography, Box, Checkbox, FormControlLabel, Divider } from '@mui/material';
+import { Card, CardContent, Typography, Box, Checkbox, FormControlLabel, Divider, Chip } from '@mui/material';
 
 export const CancelPassengerSelect = ({ passengers, selectedForCancel, onTogglePassenger }) => {
   return (
@@ -18,7 +18,7 @@ export const CancelPassengerSelect = ({ passengers, selectedForCancel, onToggleP
 
           return (
             <Box key={p.id}>
-              <Box sx={{ display: 'flex', alignItems: 'center', py: 1.5, opacity: isAlreadyCancelled ? 0.5 : 1 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', py: 2, opacity: isAlreadyCancelled ? 0.6 : 1 }}>
                 <FormControlLabel
                   control={
                     <Checkbox 
@@ -29,12 +29,23 @@ export const CancelPassengerSelect = ({ passengers, selectedForCancel, onToggleP
                     />
                   }
                   label={
-                    <Box>
-                      <Typography variant="body1" fontWeight="bold">
-                        {p.name} ({p.age}, {p.gender.charAt(0)})
-                      </Typography>
+                    <Box display="flex" flexDirection="column" gap={0.5}>
+                      <Box display="flex" alignItems="center" gap={2}>
+                        <Typography variant="body1" fontWeight="bold">
+                          {p.name} ({p.age}, {p.gender.charAt(0)})
+                        </Typography>
+                        <Chip 
+                          label={p.status} 
+                          size="small" 
+                          color={p.status === 'CONFIRMED' ? 'success' : p.status === 'CANCELLED' ? 'error' : 'warning'}
+                          sx={{ height: 20, fontSize: '0.7rem', fontWeight: 'bold' }}
+                        />
+                      </Box>
                       <Typography variant="body2" color="text.secondary">
-                        {isAlreadyCancelled ? 'ALREADY CANCELLED' : `Coach: ${p.coach} | Seat: ${p.seat}`}
+                        {isAlreadyCancelled 
+                          ? 'Ticket Cancelled' 
+                          : `Coach: ${p.coach} | Seat: ${p.seat}`
+                        }
                       </Typography>
                     </Box>
                   }
