@@ -1,5 +1,9 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
+
+// Import the PageTransition wrapper you created
+import { PageTransition } from '../providers/PageTransisitionProvider';
 
 // Import Pages (following Feature-Sliced Design paths)
 import { HomePage } from '../../pages/home/ui/HomePage';
@@ -18,56 +22,69 @@ import { UserProfilePage } from '../../pages/profile/ui/UserProfilePage';
 import { TrainWizardPage } from '../../pages/admin-train-wizard/ui/TrainWizardPage';
 import { RegisterPage } from '../../pages/auth/ui/RegisterPage';
 
-const AppRouter = () => {
+// Inner component that has access to the router context (useLocation)
+const AnimatedRoutes = () => {
+  const location = useLocation();
+
   return (
-    <BrowserRouter>
-      <Routes>
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
         {/* 1. The Landing Page (Search Widget) */}
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<PageTransition><HomePage /></PageTransition>} />
         
         {/* 2. The List of Trains based on search params */}
-        <Route path="/search-results" element={<SearchResultsPage />} />
+        <Route path="/search-results" element={<PageTransition><SearchResultsPage /></PageTransition>} />
         
         {/* 3. The Dynamic Passenger Form, Seat Map, & Fare Summary */}
-        <Route path="/book" element={<BookingPage />} />
+        <Route path="/book" element={<PageTransition><BookingPage /></PageTransition>} />
         
         {/* 4. Digital Ticket & Booking Success Screen */}
-        <Route path="/ticket/confirmation" element={<TicketConfirmationPage />} />
+        <Route path="/ticket/confirmation" element={<PageTransition><TicketConfirmationPage /></PageTransition>} />
 
         {/* 5. Live Train Running Status & Timeline */}
-        <Route path="/live-status" element={<LiveStatusPage />} />
+        <Route path="/live-status" element={<PageTransition><LiveStatusPage /></PageTransition>} />
 
-        <Route path="/admin" element={<AdminDashboardPage />} />
+        <Route path="/admin" element={<PageTransition><AdminDashboardPage /></PageTransition>} />
 
-        <Route path="/pnr" element={<PnrStatusPage />} />
+        <Route path="/pnr" element={<PageTransition><PnrStatusPage /></PageTransition>} />
 
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/login" element={<PageTransition><LoginPage /></PageTransition>} />
 
-        <Route path="/register" element={<RegisterPage />}/>
+        <Route path="/register" element={<PageTransition><RegisterPage /></PageTransition>} />
 
-        <Route path="/my-tickets" element={<MyTicketsPage />} />
+        <Route path="/my-tickets" element={<PageTransition><MyTicketsPage /></PageTransition>} />
 
-        <Route path="/payment" element={<PaymentPage />} />
+        <Route path="/payment" element={<PageTransition><PaymentPage /></PageTransition>} />
 
-        <Route path="/schedule" element={<TrainSchedulePage />} />
+        <Route path="/schedule" element={<PageTransition><TrainSchedulePage /></PageTransition>} />
 
-        <Route path="/cancel" element={<CancellationPage />} />
+        <Route path="/cancel" element={<PageTransition><CancellationPage /></PageTransition>} />
 
-        <Route path="/profile" element={<UserProfilePage />} />
+        <Route path="/profile" element={<PageTransition><UserProfilePage /></PageTransition>} />
 
-        <Route path="/admin/add-train" element={<TrainWizardPage />} />
+        <Route path="/admin/add-train" element={<PageTransition><TrainWizardPage /></PageTransition>} />
         
         {/* Fallback route for 404s */}
         <Route path="*" element={
-          <div style={{ textAlign: 'center', marginTop: '50px', fontFamily: 'sans-serif' }}>
-            <h2>404 - Page Not Found</h2>
-            <p>The page you are looking for does not exist.</p>
-            <a href="/" style={{ color: '#1e3a8a', textDecoration: 'none', fontWeight: 'bold' }}>
-              Return to Home
-            </a>
-          </div>
+          <PageTransition>
+            <div style={{ textAlign: 'center', marginTop: '50px', fontFamily: 'sans-serif' }}>
+              <h2>404 - Page Not Found</h2>
+              <p>The page you are looking for does not exist.</p>
+              <a href="/" style={{ color: '#1e3a8a', textDecoration: 'none', fontWeight: 'bold' }}>
+                Return to Home
+              </a>
+            </div>
+          </PageTransition>
         } />
       </Routes>
+    </AnimatePresence>
+  );
+};
+
+const AppRouter = () => {
+  return (
+    <BrowserRouter>
+      <AnimatedRoutes />
     </BrowserRouter>
   );
 };
