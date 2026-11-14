@@ -1,24 +1,31 @@
-import React from 'react';
-import { Card, CardContent, Typography, Box } from '@mui/material';
-import { SearchFormProvider, useSearchForm } from '../model/SearchFormContext';
+import {
+  Card,
+  CardContent,
+  Typography,
+  Box
+} from '@mui/material';
+import {
+  SearchFormProvider,
+  useSearchForm
+} from '../context/SearchFormContext';
 
-import StationSelector from './components/StationSelector';
-import DateClassFilters from './components/DateClassFilters';
-import SearchOptions from './components/SearchOptions';
+import StationSelector  from "./widgets/StationSelector";
+import DateClassFilters from "./widgets/DateClassFilters";
+import SearchOptions    from "./widgets/SearchOptions";
 
 const FormWrapper = () => {
-  const { 
-    formData, 
-    handleChange, 
-    handleSubmit, 
-    errors, 
-    setFromStation, 
+  const {
+    formData,
+    handleChange,
+    handleSubmit,
+    errors,
+    setFromStation,
     setToStation
   } = useSearchForm();
 
   return (
     <form onSubmit={handleSubmit} >
-      <StationSelector 
+      <StationSelector
         onFromStationChange={(station) => {
           setFromStation(station)
         }}
@@ -31,9 +38,9 @@ const FormWrapper = () => {
           {errors.general}
         </Typography>
       )}
-      <DateClassFilters 
-        searchData={formData} 
-        onChange={handleChange} 
+      <DateClassFilters
+        searchData={formData}
+        onChange={handleChange}
       />
       <SearchOptions />
     </form>
@@ -42,11 +49,11 @@ const FormWrapper = () => {
 
 export const TrainSearchForm = () => {
   return (
-    <Card 
-      elevation={10} 
-      sx={{ 
-        maxWidth: 1000, 
-        mx: 'auto', 
+    <Card
+      elevation={10}
+      sx={{
+        maxWidth: 1000,
+        mx: 'auto',
         borderRadius: 4,
         overflow: 'visible',
         mt: -9,

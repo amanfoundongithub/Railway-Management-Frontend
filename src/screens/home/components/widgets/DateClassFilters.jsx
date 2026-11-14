@@ -1,5 +1,8 @@
-import React from 'react';
-import { TextField, MenuItem, Grid } from '@mui/material';
+import { 
+  TextField, 
+  MenuItem, 
+  Grid 
+} from '@mui/material';
 
 const classes = ['All Classes', '1A', '2A', '3A', 'SL', 'CC', '2S', 'UR'];
 const quotas = ['General', 'Tatkal', 'Premium Tatkal', 'Ladies', 'Senior Citizen'];

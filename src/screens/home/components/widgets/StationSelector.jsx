@@ -1,10 +1,18 @@
 import React, { useMemo, useState } from 'react';
-import { Box, TextField, IconButton, Autocomplete, CircularProgress } from '@mui/material';
+import { 
+  Box, 
+  TextField,
+  IconButton, 
+  Autocomplete, 
+  CircularProgress 
+} from '@mui/material';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import SearchIcon from '@mui/icons-material/Search';
 import debounce from 'lodash/debounce';
-import { stationService } from '../../api/stationService';
+import { 
+  stationService 
+} from '../../api/stationService';
 
 const StationSelector = ({ 
   onFromStationChange, 

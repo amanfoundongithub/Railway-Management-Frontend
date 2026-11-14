@@ -8,7 +8,7 @@ const railwayTheme = createTheme({
   palette: {
     mode: 'light',
     primary: {
-      main: '#1e3a8a', 
+      main: '#ff6200', 
       light: '#3b5bdb',
       dark: '#172554',
       contrastText: '#ffffff',
@@ -20,7 +20,7 @@ const railwayTheme = createTheme({
       contrastText: '#ffffff',
     },
     background: {
-      default: '#f8fafc', 
+      default: '#f8b704dc', 
       paper: '#ffffff', 
     },
   },

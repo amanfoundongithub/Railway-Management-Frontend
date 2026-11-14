@@ -6,7 +6,7 @@ import { AnimatePresence } from 'framer-motion';
 import { PageTransition } from '../providers/PageTransisitionProvider';
 
 // Import Pages (following Feature-Sliced Design paths)
-import { HomePage } from '../../pages/home/ui/HomePage';
+import { HomePage } from '../../screens/home/ui/HomePage';
 import { SearchResultsPage } from '../../pages/search-results/ui/SearchResultsPage';
 import { BookingPage } from '../../pages/booking/ui/BookingPage';
 import { TicketConfirmationPage } from '../../pages/ticket-confirmation/ui/TicketConfirmationPage';
@@ -23,7 +23,6 @@ import { TrainWizardPage } from '../../pages/admin-train-wizard/ui/TrainWizardPa
 import { RegisterPage } from '../../pages/auth/ui/RegisterPage';
 import { ECateringPage } from '../../pages/e-catering/ui/ECateringPage';
 
-// Inner component that has access to the router context (useLocation)
 const AnimatedRoutes = () => {
   const location = useLocation();
 

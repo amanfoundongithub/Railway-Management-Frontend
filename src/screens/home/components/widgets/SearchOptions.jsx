@@ -1,7 +1,11 @@
-import React from 'react';
-import { Box, Button, FormControlLabel, Switch } from '@mui/material';
+import { 
+  Box, 
+  Button, 
+  FormControlLabel, 
+  Switch 
+} from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { useSearchForm } from '../../model/SearchFormContext';
+import { useSearchForm } from "../../context/SearchFormContext";
 
 const SearchOptions = () => {
   const { formData, handleChange } = useSearchForm();

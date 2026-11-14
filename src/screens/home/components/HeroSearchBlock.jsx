@@ -1,7 +1,5 @@
-import React from 'react';
 import { Box, Typography, Container } from '@mui/material';
-import { TrainSearchForm } from '../../../features/train-search/ui/TrainSearchForm';
-
+import { TrainSearchForm } from './TrainSearchForm';
 
 export const HeroSearchBlock = () => {
   return (
