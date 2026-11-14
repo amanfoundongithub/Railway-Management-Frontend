@@ -1,20 +1,44 @@
-import React from 'react';
-import { Card, CardContent, Typography, Box, Grid, Divider, Chip } from '@mui/material';
+import { 
+  Card, 
+  CardContent, 
+  Typography, 
+  Box, 
+  Grid, 
+  Divider, 
+  Chip,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper
+} from '@mui/material';
 
-export const PnrDetailsCard = ({ pnrData }) => {
+export const PnrDetailsCard = ({ 
+  pnrData 
+}) => {
+
   if (!pnrData) return null;
 
-  const { pnr, train, sourceStation, destinationStation, journeyDate, coachClass, passengers, bookingStatus } = pnrData;
+  const { 
+    pnr, 
+    train, 
+    sourceStation, 
+    destinationStation, 
+    journeyDate, 
+    coachClass, 
+    passengers, 
+    bookingStatus 
+  } = pnrData;
 
   const formattedDate = new Date(journeyDate).toLocaleDateString('en-IN', {
     weekday: 'short', year: 'numeric', month: 'short', day: 'numeric'
   });
 
-  // Extract station names from populated route
   const sourceName = train.route?.find(r => r.stationCode === sourceStation)?.stationName || sourceStation;
   const destName = train.route?.find(r => r.stationCode === destinationStation)?.stationName || destinationStation;
 
-  // Derive top badge state
   const isCancelled = bookingStatus === 'CANCELLED';
   const hasConfirmed = passengers.some(p => p.status === 'CONFIRMED');
 
@@ -30,13 +54,19 @@ export const PnrDetailsCard = ({ pnrData }) => {
 
   return (
     <Card elevation={2} sx={{ borderRadius: 2, maxWidth: 800, mx: 'auto' }}>
-      {/* Header Banner */}
       <Box sx={{ bgcolor: 'primary.main', color: 'white', p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Typography variant="h6">PNR: {pnr}</Typography>
+        <Typography variant="h6" sx={{ fontWeight: 700 }}>PNR: {pnr}</Typography>
         <Chip 
           label={badgeText} 
           size="small" 
-          sx={{ bgcolor: badgeColor, color: 'white', fontWeight: 'bold' }} 
+          sx={{ 
+            bgcolor: badgeColor, 
+            color: 'white', 
+            fontWeight: 'bold', 
+            fontFamily: "monospace",
+            height: 40,
+            minWidth: 100,
+          }} 
         />
       </Box>
 
@@ -72,31 +102,46 @@ export const PnrDetailsCard = ({ pnrData }) => {
         {/* Passenger Status Table */}
         <Typography variant="h6" fontWeight="bold" mb={2}>Passenger Status</Typography>
         
-        <Box sx={{ bgcolor: 'grey.100', p: 2, borderRadius: 1, display: 'flex', fontWeight: 'bold', mb: 1 }}>
-          <Box flex={2}>Passenger</Box>
-          <Box flex={1}>Current Status</Box>
-        </Box>
-
-        {passengers.map((p, idx) => (
-          <Box key={idx} sx={{ p: 2, display: 'flex', borderBottom: '1px solid', borderColor: 'divider', alignItems: 'center' }}>
-            <Box flex={2}>
-              <Typography variant="body2" fontWeight="medium">{p.name}</Typography>
-              <Typography variant="caption" color="text.secondary">{p.age} Yrs | {p.gender}</Typography>
-            </Box>
-            <Box flex={1}>
-              <Typography 
-                variant="body2" 
-                fontWeight="bold" 
-                color={
-                  p.status === 'CONFIRMED' ? 'success.main' : 
-                  p.status === 'CANCELLED' ? 'error.main' : 'warning.main'
-                }
-              >
-                {p.status === 'CONFIRMED' ? `CNF / ${p.seatNumber}` : `${p.status} / ${p.seatNumber}`}
-              </Typography>
-            </Box>
-          </Box>
-        ))}
+        <TableContainer component={Paper} variant="outlined" sx={{ borderRadius: 1 }}>
+          <Table size="small">
+            <TableHead sx={{ bgcolor: 'grey.100' }}>
+              <TableRow>
+                <TableCell sx={{ fontWeight: 'bold' }}>Name</TableCell>
+                <TableCell sx={{ fontWeight: 'bold' }}>Age</TableCell>
+                <TableCell sx={{ fontWeight: 'bold' }}>Gender</TableCell>
+                <TableCell sx={{ fontWeight: 'bold' }}>Current Status</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {passengers.map((p, idx) => (
+                <TableRow key={idx} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                  <TableCell>
+                    <Typography variant="body2" fontWeight="medium">{p.name}</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="body2" color="text.secondary">{p.age}</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="body2" color="text.secondary">{p.gender}</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography 
+                      variant="body2" 
+                      fontWeight="bold" 
+                      color={
+                        p.status === 'CONFIRMED' ? 'success.main' : 
+                        p.status === 'CANCELLED' ? 'error.main' : 'warning.main'
+                      }
+                    >
+                      {p.status === 'CONFIRMED' ? `CNF / ${p.seatNumber}` : `${p.status} / ${p.seatNumber}`}
+                    </Typography>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        
       </CardContent>
     </Card>
   );
