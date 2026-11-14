@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Container, Typography, Grid, Paper, Avatar, CircularProgress } from '@mui/material';
 import { Navbar } from '../../../widgets/header/ui/Navbar';
-import { TicketListWidget } from '../../../widgets/ticket-history/ui/TicketListWidget';
+import { TicketListWidget } from './components/TicketListWidget';
 import { authService } from "../../../screens/auth/api/authService";
 
 export const MyTicketsPage = () => {

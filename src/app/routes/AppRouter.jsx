@@ -25,13 +25,15 @@ import { RegisterPage } from '../../screens/auth/ui/RegisterPage';
 
 // User profile screen
 import { UserProfilePage } from '../../screens/my-profile/ui/UserProfilePage';
+import { MyTicketsPage } from '../../screens/my-tickets/ui/MyTicketsPage';
+
+
 
 
 
 
 
 import { AdminDashboardPage } from '../../pages/admin-dashboard/ui/AdminDashboardPage';
-import { MyTicketsPage } from '../../pages/my-tickets/ui/MyTicketsPage';
 import { TrainSchedulePage } from '../../pages/train-schedule/ui/TrainSchedulePage';
 import { CancellationPage } from '../../pages/cancellation/ui/CancellationPage';
 import { TrainWizardPage } from '../../pages/admin-train-wizard/ui/TrainWizardPage';

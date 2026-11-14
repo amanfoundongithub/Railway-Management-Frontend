@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Tabs, Tab, Typography, CircularProgress, Alert } from '@mui/material';
-import { TicketHistoryCard } from '../../../features/ticket-management/ui/TicketHistoryCard';
-import { bookingService } from '../../../pages/booking/api/bookingService';
+import { TicketHistoryCard } from './TicketHistoryCard';
+import { userBookingFetchService } from '../../api/userBookingFetchService';
+
 export const TicketListWidget = () => {
   const [tabIndex, setTabIndex] = useState(0);
   const [tickets, setTickets] = useState([]);
@@ -11,7 +12,7 @@ export const TicketListWidget = () => {
   useEffect(() => {
     const fetchMyTickets = async () => {
       try {
-        const data = await bookingService.getUserBookings();
+        const data = await userBookingFetchService.getUserBookings();
         setTickets(data);
       } catch (err) {
         setError(err.response?.data?.message || 'Failed to load tickets.');
