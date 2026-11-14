@@ -5,8 +5,9 @@ import { useNavigate } from 'react-router-dom';
 
 const navLinks = [
   { title: 'Search Trains', path: '/' },
-  { title: 'PNR Status', path: '/pnr' },
+  { title: 'PNR Status', path: '/pnr-status' },
   { title: 'Live Map', path: '/live-status' },
+  { title: 'E-Catering', path: '/e-catering' },
 ];
 
 const MobileNavMenu = () => {
