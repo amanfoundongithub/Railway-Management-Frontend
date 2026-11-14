@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Box, Container, Typography, Alert, CircularProgress } from '@mui/material';
 import { Navbar } from '../../../widgets/header/ui/Navbar';
-import { TrackerSearchWidget } from '../../../widgets/live-status-tracker/ui/TrackerSearchWidget';
-import { TrainTimelineWidget } from '../../../widgets/live-status-tracker/ui/TrainTimelineWidget';
-import { trainService } from '../../search-results/api/trainService';
+import { TrackerSearchWidget } from './components/TrackerSearchWidget';
+import { TrainTimelineWidget } from './components/TrainTimelineWidget';
+import { liveMapService } from '../api/liveMapService';
 
 export const LiveStatusPage = () => {
   const [trackingData, setTrackingData] = useState(null);
@@ -16,8 +16,7 @@ export const LiveStatusPage = () => {
     setTrackingData(null);
 
     try {
-      // Pass the train number and relative date to your backend
-      const data = await trainService.getLiveStatus(trainNo, date);
+      const data = await liveMapService.getLiveStatus(trainNo, date);
       setTrackingData(data);
     } catch (err) {
       setError(err.response?.data?.message || 'Unable to fetch live status. Please check the train number.');

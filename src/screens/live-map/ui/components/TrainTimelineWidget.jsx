@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, CardContent, Typography, Box } from '@mui/material';
-import { TimelineNode } from '../../../features/live-tracking/ui/TimelineNode';
+import { TimelineNode } from './TimelineNode';
 
 export const TrainTimelineWidget = ({ trainData }) => {
   if (!trainData) return null;

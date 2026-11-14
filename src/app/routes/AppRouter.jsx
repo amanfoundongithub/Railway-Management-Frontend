@@ -16,9 +16,12 @@ import { PaymentPage } from '../../screens/booking/payment/ui/PaymentPage';
 // PNR Status screen
 import { PnrStatusPage } from '../../screens/pnr-status/ui/PnrStatusPage';
 
+// Train Live status screen
+import { LiveStatusPage } from '../../screens/live-map/ui/LiveStatusPage';
+
+
 
 import { TicketConfirmationPage } from '../../pages/ticket-confirmation/ui/TicketConfirmationPage';
-import { LiveStatusPage } from '../../pages/live-status/ui/LiveStatusPage';
 import { AdminDashboardPage } from '../../pages/admin-dashboard/ui/AdminDashboardPage';
 import { LoginPage } from '../../pages/auth/ui/LoginPage';
 import { MyTicketsPage } from '../../pages/my-tickets/ui/MyTicketsPage';
