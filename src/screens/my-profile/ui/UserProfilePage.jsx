@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Container, Typography, CircularProgress, Alert } from '@mui/material';
 import { Navbar } from '../../../widgets/header/ui/Navbar';
-import { MasterListWidget } from '../../../widgets/master-list/ui/MasterListWidget';
+import { MasterListWidget } from './components/MasterListWidget';
 import { authService } from "../../../screens/auth/api/authService";
 
 export const UserProfilePage = () => {

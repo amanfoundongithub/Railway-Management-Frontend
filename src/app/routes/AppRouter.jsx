@@ -23,6 +23,8 @@ import { LiveStatusPage } from '../../screens/live-map/ui/LiveStatusPage';
 import { LoginPage }    from '../../screens/auth/ui/LoginPage';
 import { RegisterPage } from '../../screens/auth/ui/RegisterPage';
 
+// User profile screen
+import { UserProfilePage } from '../../screens/my-profile/ui/UserProfilePage';
 
 
 
@@ -32,7 +34,6 @@ import { AdminDashboardPage } from '../../pages/admin-dashboard/ui/AdminDashboar
 import { MyTicketsPage } from '../../pages/my-tickets/ui/MyTicketsPage';
 import { TrainSchedulePage } from '../../pages/train-schedule/ui/TrainSchedulePage';
 import { CancellationPage } from '../../pages/cancellation/ui/CancellationPage';
-import { UserProfilePage } from '../../pages/profile/ui/UserProfilePage';
 import { TrainWizardPage } from '../../pages/admin-train-wizard/ui/TrainWizardPage';
 import { ECateringPage } from '../../pages/e-catering/ui/ECateringPage';
 
