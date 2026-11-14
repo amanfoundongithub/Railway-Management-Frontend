@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import { Navbar } from '../../../widgets/header/ui/Navbar';
-import { HeroSearchBlock } from '../components/HeroSearchBlock';
+import { HeroSearchBlock } from './components/HeroSearchBlock';
 
 export const HomePage = () => {
   return (

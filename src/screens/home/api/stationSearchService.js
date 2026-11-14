@@ -1,6 +1,6 @@
 import axiosInstance from "../../../api/axiosInstance";
 
-export const stationService = {
+export const stationSearchService = {
     searchStations : async (query) => {
         if(!query) {
             return [];

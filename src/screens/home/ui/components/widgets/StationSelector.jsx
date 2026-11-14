@@ -10,9 +10,7 @@ import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import SearchIcon from '@mui/icons-material/Search';
 import debounce from 'lodash/debounce';
-import { 
-  stationService 
-} from '../../api/stationService';
+import { stationSearchService } from "../../../api/stationSearchService";
 
 const StationSelector = ({ 
   onFromStationChange, 
@@ -29,7 +27,7 @@ const StationSelector = ({
     () =>
       debounce(async (request, callback) => {
         try {
-          const results = await stationService.searchStations(request.input);
+          const results = await stationSearchService.searchStations(request.input);
           callback(results);
         } catch (error) {
           console.error('Failed to fetch stations', error);

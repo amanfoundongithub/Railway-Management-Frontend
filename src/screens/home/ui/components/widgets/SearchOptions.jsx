@@ -5,7 +5,7 @@ import {
   Switch 
 } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { useSearchForm } from "../../context/SearchFormContext";
+import { useSearchForm } from "../../../context/SearchFormContext";
 
 const SearchOptions = () => {
   const { formData, handleChange } = useSearchForm();
