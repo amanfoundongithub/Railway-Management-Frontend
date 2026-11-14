@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 
 const navLinks = [
   { title: 'Search Trains', path: '/' },
-  { title: 'PNR Status', path: '/pnr-status' },
+  { title : 'Get Train Schedule', path : '/schedule'},
+  { title: 'Get PNR Status', path: '/pnr-status' },
   { title: 'Live Map', path: '/live-status' },
   { title: 'E-Catering', path: '/e-catering' },
 ];
