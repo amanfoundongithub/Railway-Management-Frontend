@@ -19,7 +19,7 @@ export const RouteTableWidget = ({ scheduleData }) => {
           </Typography>
         </Box>
         <Typography variant="body2" sx={{ opacity: 0.9 }}>
-          Runs on: {scheduleData.runsOn.join(', ')} | Pantry Car: {scheduleData.hasPantry ? 'Yes' : 'No'}
+          Runs on: {scheduleData.runsOn.join(', ')}
         </Typography>
       </Box>
 
@@ -42,8 +42,14 @@ export const RouteTableWidget = ({ scheduleData }) => {
               {scheduleData.route.map((stop, index) => (
                 <TableRow key={stop.stationCode} hover>
                   <TableCell>{index + 1}</TableCell>
-                  <TableCell fontWeight="bold">
-                    {stop.stationName} <Typography variant="caption" color="text.secondary">({stop.stationCode})</Typography>
+                  <TableCell>
+                    <Typography component="span" variant="body2" fontWeight="bold">
+                      {stop.stationName}
+                    </Typography>
+                    {' '}
+                    <Typography component="span" variant="caption" color="text.secondary">
+                      ({stop.stationCode})
+                    </Typography>
                   </TableCell>
                   <TableCell>{stop.arrivalTime}</TableCell>
                   <TableCell>{stop.departureTime}</TableCell>
@@ -51,7 +57,7 @@ export const RouteTableWidget = ({ scheduleData }) => {
                     {stop.haltTime === 'Source' || stop.haltTime === 'Destination' ? (
                       <Chip label={stop.haltTime} size="small" color="secondary" />
                     ) : (
-                      `${stop.haltTime} min`
+                      <Typography variant="body2">{stop.haltTime}</Typography>
                     )}
                   </TableCell>
                   <TableCell>{stop.distance} km</TableCell>

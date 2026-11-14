@@ -30,13 +30,14 @@ import { MyTicketsPage } from '../../screens/my-tickets/ui/MyTicketsPage';
 // E Catering screen
 import { ECateringPage } from '../../screens/e-catering/ui/ECateringPage';
 
+// Train Schedule screen
+import { TrainSchedulePage } from '../../screens/get-train-schedule/ui/TrainSchedulePage';
 
 
 
 
 
 import { AdminDashboardPage } from '../../pages/admin-dashboard/ui/AdminDashboardPage';
-import { TrainSchedulePage } from '../../pages/train-schedule/ui/TrainSchedulePage';
 import { CancellationPage } from '../../pages/cancellation/ui/CancellationPage';
 import { TrainWizardPage } from '../../pages/admin-train-wizard/ui/TrainWizardPage';
 
