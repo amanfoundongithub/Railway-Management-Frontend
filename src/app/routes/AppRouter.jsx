@@ -8,7 +8,7 @@ import { PageTransition } from '../providers/PageTransisitionProvider';
 // Import Pages (following Feature-Sliced Design paths)
 import { HomePage } from '../../screens/home/ui/HomePage';
 import { SearchResultsPage } from '../../screens/train-booking/train-search-results/ui/SearchResultsPage';
-import { BookingPage } from '../../pages/booking/ui/BookingPage';
+import { BookingPage } from '../../screens/train-booking/booking/ui/BookingPage';
 import { TicketConfirmationPage } from '../../pages/ticket-confirmation/ui/TicketConfirmationPage';
 import { LiveStatusPage } from '../../pages/live-status/ui/LiveStatusPage';
 import { AdminDashboardPage } from '../../pages/admin-dashboard/ui/AdminDashboardPage';

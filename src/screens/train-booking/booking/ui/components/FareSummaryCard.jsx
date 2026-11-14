@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, CardContent, Typography, Box, Button, Divider, CircularProgress } from '@mui/material';
-import { useBooking } from '../../../app/providers/BookingProvider';
+import { useBooking } from '../../../common/BookingProvider';
 
 export const FareSummaryCard = ({ passengerCount, basePrice = 0, onProceed, loading = false }) => {
   const { mealTotal = 0 } = useBooking();

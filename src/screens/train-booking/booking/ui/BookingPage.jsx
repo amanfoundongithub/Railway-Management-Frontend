@@ -5,17 +5,16 @@ import DirectionsRailwayIcon from '@mui/icons-material/DirectionsRailway';
 import EventSeatIcon from '@mui/icons-material/EventSeat';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { useNavigate } from 'react-router-dom';
-import { Navbar } from '../../../widgets/header/ui/Navbar';
-import { PassengerFormWidget } from '../../../features/passenger-details/ui/PassengerFormWidget';
-import { FareSummaryCard } from '../../../features/fare-summary/ui/FareSummaryCard';
-import { usePassengerState } from '../../../features/passenger-details/model/usePassengerState';
-import { useBooking } from '../../../app/providers/BookingProvider';
-import { MealSelectionWidget } from '../../../features/e-catering/ui/MealSelectionWidget';
-import { LoginForm } from '../../../features/authentication/ui/LoginForm'; 
-import { cookieService } from '../../../utils/cookieService';
-import { bookingService } from '../api/bookingService';
+import { Navbar } from '../../../../widgets/header/ui/Navbar';
+import { PassengerFormComponent } from './components/PassengerFormComponent';
+import { FareSummaryCard } from './components/FareSummaryCard';
+import { usePassengerState } from '../context/usePassengerState';
+import { useBooking } from '../../common/BookingProvider';
+import { MealSelectionComponent } from './components/MealSelectionComponent';
+import { LoginForm } from '../../../../features/authentication/ui/LoginForm'; 
+import { cookieService } from '../../../../utils/cookieService';
+import { bookingCreateService } from "../api/bookingCreateService";
 
-// 1. Add this mapping object outside the component
 const genderMap = {
   Male: 'M',
   Female: 'F',
@@ -91,26 +90,25 @@ export const BookingPage = () => {
     setIsSubmitting(true);
 
     try {
-      // 2. Strip out the timestamp to get purely YYYY-MM-DD
       const formattedDateForApi = selectedTrain.journeyDate.includes('T')
         ? selectedTrain.journeyDate.split('T')[0]
         : selectedTrain.journeyDate;
 
       const payload = {
         trainId: selectedTrain.trainId || selectedTrain._id,
-        journeyDate: formattedDateForApi, // Use the formatted date
+        journeyDate: formattedDateForApi,
         sourceStation: selectedTrain.source,
         destinationStation: selectedTrain.destination,
         coachClass: selectedClass.classType,
         passengers: passengers.map(p => ({
           name: p.name.trim(),
           age: Number(p.age),
-          gender: genderMap[p.gender] || p.gender, // 3. Use the map to send "M", "F", or "T"
+          gender: genderMap[p.gender] || p.gender,
           berthPreference: p.berth
         }))
       };
 
-      const result = await bookingService.createBooking(payload);
+      const result = await bookingCreateService.createBooking(payload);
 
       setGlobalPassengers(passengers);
       setTransactionId(result.transactionId);
@@ -118,7 +116,6 @@ export const BookingPage = () => {
 
       navigate('/payment');
     } catch (err) {
-      // Improved error handling to show array of validation messages if present
       const apiErrors = err.response?.data?.errors;
       if (Array.isArray(apiErrors) && apiErrors.length > 0) {
         setBookingError(apiErrors.map(e => `${e.field}: ${e.message}`).join(' | '));
@@ -178,7 +175,7 @@ export const BookingPage = () => {
 
         <Grid container spacing={4}>
           <Grid item xs={12} md={8}>
-            <PassengerFormWidget 
+            <PassengerFormComponent 
               passengers={passengers} 
               addPassenger={addPassenger} 
               removePassenger={removePassenger} 
@@ -188,7 +185,7 @@ export const BookingPage = () => {
             />
             
             <Box sx={{ mt: 3 }}>
-              <MealSelectionWidget />
+              <MealSelectionComponent />
             </Box>
           </Grid>
           

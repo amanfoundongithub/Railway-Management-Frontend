@@ -2,7 +2,7 @@ import { Card, CardContent, Typography, Box, Button, Divider, Grid } from '@mui/
 import DirectionsRailwayIcon from '@mui/icons-material/DirectionsRailway';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { useNavigate } from 'react-router-dom';
-import { useBooking } from '../../../../../app/providers/BookingProvider'; 
+import { useBooking } from '../../../common/BookingProvider'; 
 
 const mapRunningDays = (daysArray = []) => {
   const dayMap = { 0: 'S', 1: 'M', 2: 'T', 3: 'W', 4: 'T', 5: 'F', 6: 'S' };

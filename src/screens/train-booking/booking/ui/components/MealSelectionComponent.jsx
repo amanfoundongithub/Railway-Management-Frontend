@@ -7,7 +7,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-import { useBooking } from '../../../app/providers/BookingProvider';
+import { useBooking } from '../../../common/BookingProvider';
 
 const menuItems = [
   { id: 'm1', name: 'Standard Veg Thali', price: 150, type: 'Veg' },
@@ -15,7 +15,7 @@ const menuItems = [
   { id: 'm3', name: 'Paneer Butter Masala Combo', price: 200, type: 'Veg' },
 ];
 
-export const MealSelectionWidget = () => {
+export const MealSelectionComponent = () => {
   const { setMealTotal } = useBooking();
   const [cart, setCart] = useState({});
 

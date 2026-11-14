@@ -20,7 +20,7 @@ export const MasterListSelectorModal = ({ open, onClose, masterList, onConfirmSe
 
   const handleConfirm = () => {
     onConfirmSelection(selected);
-    setSelected([]); // Reset for next time
+    setSelected([]);
     onClose();
   };
 

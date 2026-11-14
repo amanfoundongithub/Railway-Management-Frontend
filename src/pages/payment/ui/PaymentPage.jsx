@@ -4,7 +4,7 @@ import LockIcon from '@mui/icons-material/Lock';
 import TrainIcon from '@mui/icons-material/Train';
 import { useNavigate } from 'react-router-dom';
 import { PaymentMethodsWidget } from '../../../widgets/checkout/ui/PaymentMethodsWidget';
-import { useBooking } from '../../../app/providers/BookingProvider';
+import { useBooking } from '../../../screens/train-booking/common/BookingProvider';
 import { bookingService } from "../../booking/api/bookingService";
 import { parseApiError } from '../../../utils/errorHelper';
 

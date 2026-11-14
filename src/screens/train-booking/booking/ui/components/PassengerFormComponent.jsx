@@ -4,10 +4,10 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import AddIcon from '@mui/icons-material/Add';
 
-import { MasterListSelectorModal } from '../../train-booking/ui/MasterListSelectorModal';
-import { authService } from '../../authentication/api/authService';
+import { MasterListSelectorModal } from './widgets/MasterListSelectorModal';
+import { authService } from '../../../../../features/authentication/api/authService';
 
-export const PassengerFormWidget = ({ 
+export const PassengerFormComponent = ({ 
   passengers, 
   addPassenger, 
   removePassenger, 
@@ -17,7 +17,6 @@ export const PassengerFormWidget = ({
   const [masterList, setMasterList] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Fetch the logged-in user's Master List on mount
   useEffect(() => {
     const fetchMasterList = async () => {
       try {
@@ -32,14 +31,12 @@ export const PassengerFormWidget = ({
     fetchMasterList();
   }, []);
 
-  // Receive selected passengers from the modal
   const handleAddFromMasterList = (selectedPassengers) => {
-    // Map backend gender codes to frontend Select labels
     const newPassengers = selectedPassengers.map(p => ({
       name: p.name,
       age: p.age,
       gender: p.gender === 'M' ? 'Male' : p.gender === 'F' ? 'Female' : 'Transgender',
-      berth: 'No Preference' // Ensure this matches your default state keys
+      berth: 'No Preference' 
     }));
     
     appendPassengers(newPassengers);
@@ -105,7 +102,6 @@ export const PassengerFormWidget = ({
         Add Passenger Manually
       </Button>
 
-      {/* Mount the Modal */}
       <MasterListSelectorModal 
         open={isModalOpen} 
         onClose={() => setIsModalOpen(false)}
