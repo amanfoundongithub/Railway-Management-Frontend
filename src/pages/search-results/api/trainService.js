@@ -1,12 +1,6 @@
 import axiosInstance from '../../../api/axiosInstance';
 
 export const trainService = {
-  searchTrains: async (source, destination, date) => {
-    const response = await axiosInstance.get('/trains/search', {
-      params: { source, destination, date }
-    });
-    return response.data.data.trains; 
-  },
   checkAvailability: async (trainId, date) => {
     const response = await axiosInstance.get('/journeys/availability', {
       params: { trainId, date }
