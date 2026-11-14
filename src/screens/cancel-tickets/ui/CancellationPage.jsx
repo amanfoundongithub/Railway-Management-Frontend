@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Box, Container, Grid, Typography, CircularProgress, Alert } from '@mui/material';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Navbar } from '../../../widgets/header/ui/Navbar';
-import { CancelPassengerSelect } from '../../../features/ticket-cancellation/ui/CancelPassengerSelect';
-import { RefundSummaryCard } from '../../../features/ticket-cancellation/ui/RefundSummaryCard';
-import { bookingService } from '../../booking/api/bookingService';
+import { CancelPassengerSelect } from './components/CancelPassengerSelect';
+import { RefundSummaryCard } from './components/RefundSummaryCard';
+import { pnrStatusService } from '../../pnr-status/api/pnrStatusService';
+import { ticketCancellationService } from '../api/ticketCancellationService';
 
 export const CancellationPage = () => {
   const navigate = useNavigate();
@@ -26,7 +27,8 @@ export const CancellationPage = () => {
 
     const fetchBooking = async () => {
       try {
-        const data = await bookingService.getBookingByPNR(pnr);
+        const data = await pnrStatusService.getBookingByPNR(pnr);
+        console.log(data);
         setBooking(data);
       } catch (err) {
         setError(err.response?.data?.message || 'Failed to fetch booking details.');
@@ -51,10 +53,7 @@ export const CancellationPage = () => {
     setError('');
     
     try {
-      // Pass the booking DB ID and the array of selected passenger DB IDs
-      await bookingService.cancelBooking(booking._id, selectedForCancel);
-      
-      // Navigate to digital ticket or dashboard on success
+      await ticketCancellationService.cancelBooking(booking._id, selectedForCancel);
       navigate(`/ticket/confirmation?pnr=${pnr}`, { state: { message: 'Cancellation Successful' } });
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to process cancellation.');
@@ -62,6 +61,7 @@ export const CancellationPage = () => {
     }
   };
 
+  // 1. Handle the loading state FIRST
   if (loading) {
     return (
       <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50' }}>
@@ -73,11 +73,24 @@ export const CancellationPage = () => {
     );
   }
 
-  if (!booking) return null;
+  // 2. Handle the error state if the API fails and booking is null
+  if (!booking) {
+    return (
+      <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50' }}>
+        <Navbar />
+        <Container maxWidth="lg" sx={{ py: 6 }}>
+          <Alert severity="error">{error || 'Booking not found.'}</Alert>
+        </Container>
+      </Box>
+    );
+  }
 
-  // Calculate base fare per passenger for the refund UI
-  const totalPassengers = booking.passengers.length;
-  const baseFarePerPassenger = totalPassengers > 0 ? booking.totalFare / totalPassengers : 0;
+  // 3. NOW it is safe to calculate these values because booking is guaranteed to exist
+  const passengers = Array.isArray(booking.passengers) ? booking.passengers : [];
+  const totalPassengers = passengers.length;
+  const totalFare = Number(booking.totalFare) || 0;
+  const baseFarePerPassenger = totalPassengers > 0 ? totalFare / totalPassengers : 0;
+
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50' }}>
       <Navbar />
@@ -86,8 +99,10 @@ export const CancellationPage = () => {
         <Typography variant="h4" fontWeight="bold" gutterBottom>
           Cancel Ticket
         </Typography>
-        <Typography variant="subtitle1" color="text.secondary" mb={4} sx = {{ fontWeight : "bold"}}>
-          PNR: {booking.pnr} | {booking.train.trainName} ({booking.train.trainNumber})
+        
+        {/* Added safe checks for nested properties just in case */}
+        <Typography variant="subtitle1" color="text.secondary" mb={4} sx={{ fontWeight: "bold" }}>
+          PNR: {booking.pnr} | {booking.train?.trainName} ({booking.train?.trainNumber})
         </Typography>
 
         {error && (
@@ -99,7 +114,7 @@ export const CancellationPage = () => {
         <Grid container spacing={4}>
           <Grid item xs={12} md={8}>
             <CancelPassengerSelect 
-              passengers={booking.passengers.map( (p, index)=> ({
+              passengers={passengers.map((p, index) => ({
                 id: p._id || `pax-${index}`, 
                 name: p.name,
                 age: p.age,

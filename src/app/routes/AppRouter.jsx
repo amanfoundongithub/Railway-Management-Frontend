@@ -33,12 +33,14 @@ import { ECateringPage } from '../../screens/e-catering/ui/ECateringPage';
 // Train Schedule screen
 import { TrainSchedulePage } from '../../screens/get-train-schedule/ui/TrainSchedulePage';
 
+// Cancellation screen
+import { CancellationPage } from '../../screens/cancel-tickets/ui/CancellationPage';
+
 
 
 
 
 import { AdminDashboardPage } from '../../pages/admin-dashboard/ui/AdminDashboardPage';
-import { CancellationPage } from '../../pages/cancellation/ui/CancellationPage';
 import { TrainWizardPage } from '../../pages/admin-train-wizard/ui/TrainWizardPage';
 
 const AnimatedRoutes = () => {
