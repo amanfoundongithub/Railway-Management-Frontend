@@ -18,7 +18,7 @@ export const ScheduleSearchForm = ({ onSearch, loading = false }) => {
         <Typography variant="h6" fontWeight="bold" gutterBottom>
           Train Timetable & Route
         </Typography>
-        <Typography variant="body2" color="text.secondary" mb={3}>
+        <Typography variant="body2" color="text.secondary" mb={4}>
           Enter a 5-digit train number to view its complete schedule, halts, and route timeline.
         </Typography>
         
@@ -32,6 +32,10 @@ export const ScheduleSearchForm = ({ onSearch, loading = false }) => {
               onChange={(e) => setTrainQuery(e.target.value)}
               disabled={loading}
               required
+              sx = {{
+                mt : 2,
+                mb : 2
+              }}
             />
             <Button
               type="submit"
