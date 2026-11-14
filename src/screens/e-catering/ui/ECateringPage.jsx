@@ -111,7 +111,7 @@ export const ECateringPage = () => {
               placeholder="Enter 10-digit PNR Number"
               value={pnr}
               onChange={(e) => setPnr(e.target.value.replace(/\D/g, '').slice(0, 10))}
-              sx={{ bgcolor: 'white', borderRadius: 1 }}
+              sx={{ bgcolor: 'white', borderRadius: 1, mb : 2 }}
             />
             <Button 
               variant="contained" 
