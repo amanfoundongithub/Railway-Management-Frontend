@@ -28,8 +28,7 @@ export const TrainInventoryTable = () => {
   }, []);
 
   const handleAddTrain = () => {
-    // Navigates to the Train Provisioning Wizard
-    navigate('/admin/wizard'); 
+    navigate('/admin/add-train'); 
   };
 
   const getStatusChip = (train) => {

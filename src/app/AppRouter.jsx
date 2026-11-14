@@ -42,7 +42,7 @@ import { AdminDashboardPage } from '../screens/admin/ui/AdminDashboardPage';
 
 
 
-import { TrainWizardPage } from '../pages/admin-train-wizard/ui/TrainWizardPage';
+import { TrainWizardPage } from '../screens/admin/ui/TrainWizardPage';
 
 const AnimatedRoutes = () => {
   const location = useLocation();
