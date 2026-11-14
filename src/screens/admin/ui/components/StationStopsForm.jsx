@@ -1,11 +1,10 @@
 import React, { useMemo, useState } from 'react';
 import { 
-  Typography, TextField, Button, Box, IconButton, Divider, 
+  Typography, TextField, Button, Box, IconButton, 
   Autocomplete, CircularProgress 
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
-import SwapVertIcon from '@mui/icons-material/SwapVert';
 import debounce from 'lodash/debounce';
 
 import { stationSearchService } from '../../../home/api/stationSearchService'; 
@@ -34,7 +33,6 @@ const isArrivalAfterDeparture = (previousStop, nextStop) => {
   return toMinutes(nextStop.arrivalTime) > toMinutes(previousStop.departureTime);
 };
 
-// Sub-component for individual station autocompletes
 const StationAutocomplete = ({ stop, index, handleStationChange, usedStationCodes, label }) => {
   const [options, setOptions] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -198,9 +196,14 @@ export const StationStopsForm = ({ trainData, updateTrainData }) => {
         flexDirection={{ xs: 'column', sm: 'row' }}
         gap={2}
         mb={3}
+        sx = {{
+          mb : 2
+        }}
       >
-        <Typography variant="h6" fontWeight="bold" color="primary.main">
-          Route & Timetable
+        <Typography variant="h6" fontWeight="bold" color="primary.main" sx = {{
+          mb : 1
+        }}>
+          Configure Train's Route & Halts
         </Typography>
         <Button 
           variant="outlined" 
@@ -226,7 +229,7 @@ export const StationStopsForm = ({ trainData, updateTrainData }) => {
         return (
           <Box key={index} sx={{ mb: 3, p: { xs: 1.5, sm: 2 }, bgcolor: 'background.paper', border: '1px solid', borderColor: 'divider', borderRadius: 2 }}>
             <Box display="flex" justifyContent="space-between" mb={2} alignItems="center">
-              <Typography variant="subtitle2" sx={{ fontWeight: 'bold', color: isOrigin || isDestination ? 'primary.main' : 'text.primary' }}>
+              <Typography variant="subtitle2" sx={{ fontWeight: 'bold', color: isOrigin || isDestination ? 'primary.main' : 'text.primary', mb : 2 }}>
                 {isOrigin ? 'Start (Origin)' : isDestination ? 'End (Destination)' : `Halt ${index}`}
               </Typography>
               {!isOrigin && !isDestination && (
@@ -307,14 +310,6 @@ export const StationStopsForm = ({ trainData, updateTrainData }) => {
                 />
               </Box>
             </Box>
-
-            {!isDestination && (
-              <Box display="flex" justifyContent="center" mt={3} mb={1}>
-                <Divider sx={{ width: '100%', maxWidth: 200 }}>
-                  <SwapVertIcon color="disabled" fontSize="small" />
-                </Divider>
-              </Box>
-            )}
           </Box>
         );
       })}

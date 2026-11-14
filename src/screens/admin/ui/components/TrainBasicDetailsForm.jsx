@@ -23,8 +23,9 @@ export const TrainBasicDetailsForm = ({ trainData, updateTrainData }) => {
 
   return (
     <Box>
-      <Typography variant="h6" fontWeight="bold" color="primary.main" mb={3}>
-        Basic Identity
+
+      <Typography variant="h6" fontWeight="bold" color="primary.main" sx = {{ mb : 2 }}>
+        Basic Information
       </Typography>
       
       <Grid container spacing={4}>
@@ -51,10 +52,10 @@ export const TrainBasicDetailsForm = ({ trainData, updateTrainData }) => {
         </Grid>
         
         <Grid item xs={12}>
-          <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+          <Typography variant="h5" color="text.secondary" gutterBottom>
             Operational Days (Select days the train departs from origin)
           </Typography>
-          <Box display="flex" flexWrap="wrap" gap={1.5} mt={1}>
+          <Box display="flex" flexWrap="wrap" mt={1}>
             {days.map(day => {
               const isSelected = trainData.runningDays.includes(day.value);
               return (
@@ -64,7 +65,7 @@ export const TrainBasicDetailsForm = ({ trainData, updateTrainData }) => {
                   onClick={() => handleDayToggle(day.value)}
                   color={isSelected ? "primary" : "default"}
                   variant={isSelected ? "filled" : "outlined"}
-                  sx={{ width: 60, fontWeight: isSelected ? 'bold' : 'normal', cursor: 'pointer' }}
+                  sx={{ width: 60, fontWeight: isSelected ? 'bold' : 'normal', cursor: 'pointer', mr : 1 }}
                 />
               );
             })}

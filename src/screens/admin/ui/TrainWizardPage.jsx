@@ -14,7 +14,6 @@ export const TrainWizardPage = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Master State for the entire train provision
   const [trainData, setTrainData] = useState({
     trainNumber: '',
     trainName: '',
@@ -85,7 +84,7 @@ export const TrainWizardPage = () => {
             Provision New Train
           </Typography>
           <Typography variant="body1" color="text.secondary">
-            Configure identity, routing, and inventory for a new rolling stock asset.
+            Configure a new train for a route. Add details about the train & its route, halts and class structure.
           </Typography>
         </Box>
 
@@ -110,9 +109,14 @@ export const TrainWizardPage = () => {
             )}
           </Box>
 
-          <Box display="flex" justifyContent="space-between" mt={4} pt={3} borderTop="1px solid #eee">
+          <Box mt={4} pt={3} borderTop="1px solid #eee" sx = {{
+            display : 'flex',
+            flexDirection : 'row',
+            mt : 2
+          }}>
             <Button
               color="inherit"
+              variant="outlined"
               disabled={activeStep === 0}
               onClick={handleBack}
               sx={{ mr: 1 }}

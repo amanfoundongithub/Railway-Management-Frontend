@@ -35,7 +35,7 @@ export const CoachConfigurationForm = ({ trainData, updateTrainData }) => {
 
   return (
     <Box>
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
+      <Box display="flex" justifyContent="space-between" alignItems="center" sx = {{mb : 3}}>
         <Box>
           <Typography variant="h6" fontWeight="bold" color="primary.main">
             Coach Configuration & Pricing

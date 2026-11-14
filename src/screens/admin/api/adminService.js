@@ -25,5 +25,9 @@ export const adminService = {
     toggleTrainStatus: async (trainId, isActive) => {
         const response = await axiosInstance.patch(`/admin/trains/status/${trainId}`, { isActive });
         return response.data.data;
-    }
+    },
+    bulkToggleTrainStatus: async (trainIds) => {
+    const response = await axiosInstance.patch(`/admin/trains/bulk-status`, { trainIds });
+    return response.data;
+  },
 };
