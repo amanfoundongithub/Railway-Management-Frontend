@@ -4,8 +4,9 @@ import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { Navbar } from '../../../widgets/header/ui/Navbar';
-import { bookingService } from '../../booking/api/bookingService';
-// Mock restaurant and menu data
+import { pnrStatusService } from '../../pnr-status/api/pnrStatusService';
+import { bookMealService } from '../api/bookMealService';
+
 const RESTAURANT = {
   name: "Haldiram's Express",
   deliveryStation: "Nagpur Junction",
@@ -35,7 +36,7 @@ export const ECateringPage = () => {
     setError('');
     setOrderSuccess(false);
     try {
-      const data = await bookingService.getBookingByPNR(pnr);
+      const data = await pnrStatusService.getBookingByPNR(pnr);
       if (data.bookingStatus === 'CANCELLED') {
         setError("Food cannot be ordered for a cancelled ticket.");
       } else {
@@ -76,7 +77,7 @@ export const ECateringPage = () => {
         totalAmount: cartTotal
       };
       
-      await bookingService.addMealToBooking(pnr, mealData);
+      await bookMealService.addMealToBooking(pnr, mealData);
       setOrderSuccess(true);
       setCart({});
       setBooking(null);

@@ -8,9 +8,5 @@ export const bookingService = {
       passengerIds
     });
     return response.data;
-  },
-  addMealToBooking: async (pnr, mealData) => {
-    const response = await axiosInstance.post(`/bookings/${pnr}/meals`, mealData);
-    return response.data;
-  },
+  }
 }

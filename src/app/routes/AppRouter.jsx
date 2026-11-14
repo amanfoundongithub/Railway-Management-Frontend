@@ -27,6 +27,8 @@ import { RegisterPage } from '../../screens/auth/ui/RegisterPage';
 import { UserProfilePage } from '../../screens/my-profile/ui/UserProfilePage';
 import { MyTicketsPage } from '../../screens/my-tickets/ui/MyTicketsPage';
 
+// E Catering screen
+import { ECateringPage } from '../../screens/e-catering/ui/ECateringPage';
 
 
 
@@ -37,7 +39,6 @@ import { AdminDashboardPage } from '../../pages/admin-dashboard/ui/AdminDashboar
 import { TrainSchedulePage } from '../../pages/train-schedule/ui/TrainSchedulePage';
 import { CancellationPage } from '../../pages/cancellation/ui/CancellationPage';
 import { TrainWizardPage } from '../../pages/admin-train-wizard/ui/TrainWizardPage';
-import { ECateringPage } from '../../pages/e-catering/ui/ECateringPage';
 
 const AnimatedRoutes = () => {
   const location = useLocation();
