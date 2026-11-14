@@ -2,46 +2,46 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 
-import { PageTransition } from '../providers/PageTransisitionProvider';
+import { PageTransition } from './PageTransisitionProvider';
 
 // Home screen
-import { HomePage } from '../../screens/home/ui/HomePage';
+import { HomePage } from '../screens/home/ui/HomePage';
 
 // Booking screens
-import { SearchResultsPage }      from '../../screens/booking/train-search-results/ui/SearchResultsPage';
-import { BookingPage }            from '../../screens/booking/passenger-booking/ui/BookingPage';
-import { PaymentPage }            from '../../screens/booking/payment/ui/PaymentPage';
-import { TicketConfirmationPage } from '../../screens/booking/ticket-confirmation/ui/TicketConfirmationPage';
+import { SearchResultsPage }      from '../screens/booking/train-search-results/ui/SearchResultsPage';
+import { BookingPage }            from '../screens/booking/passenger-booking/ui/BookingPage';
+import { PaymentPage }            from '../screens/booking/payment/ui/PaymentPage';
+import { TicketConfirmationPage } from '../screens/booking/ticket-confirmation/ui/TicketConfirmationPage';
 
 // PNR Status screen
-import { PnrStatusPage } from '../../screens/pnr-status/ui/PnrStatusPage';
+import { PnrStatusPage } from '../screens/pnr-status/ui/PnrStatusPage';
 
 // Train Live status screen
-import { LiveStatusPage } from '../../screens/live-map/ui/LiveStatusPage';
+import { LiveStatusPage } from '../screens/live-map/ui/LiveStatusPage';
 
 // Authentication screen
-import { LoginPage }    from '../../screens/auth/ui/LoginPage';
-import { RegisterPage } from '../../screens/auth/ui/RegisterPage';
+import { LoginPage }    from '../screens/auth/ui/LoginPage';
+import { RegisterPage } from '../screens/auth/ui/RegisterPage';
 
 // User profile screen
-import { UserProfilePage } from '../../screens/my-profile/ui/UserProfilePage';
-import { MyTicketsPage } from '../../screens/my-tickets/ui/MyTicketsPage';
+import { UserProfilePage } from '../screens/my-profile/ui/UserProfilePage';
+import { MyTicketsPage } from '../screens/my-tickets/ui/MyTicketsPage';
 
 // E Catering screen
-import { ECateringPage } from '../../screens/e-catering/ui/ECateringPage';
+import { ECateringPage } from '../screens/e-catering/ui/ECateringPage';
 
 // Train Schedule screen
-import { TrainSchedulePage } from '../../screens/get-train-schedule/ui/TrainSchedulePage';
+import { TrainSchedulePage } from '../screens/get-train-schedule/ui/TrainSchedulePage';
 
 // Cancellation screen
-import { CancellationPage } from '../../screens/cancel-tickets/ui/CancellationPage';
+import { CancellationPage } from '../screens/cancel-tickets/ui/CancellationPage';
 
 
 
 
 
-import { AdminDashboardPage } from '../../pages/admin-dashboard/ui/AdminDashboardPage';
-import { TrainWizardPage } from '../../pages/admin-train-wizard/ui/TrainWizardPage';
+import { AdminDashboardPage } from '../pages/admin-dashboard/ui/AdminDashboardPage';
+import { TrainWizardPage } from '../pages/admin-train-wizard/ui/TrainWizardPage';
 
 const AnimatedRoutes = () => {
   const location = useLocation();
