@@ -78,7 +78,7 @@ const AuthActions = () => {
             </MenuItem>
             
             {user.role === 'ADMIN' && (
-              <MenuItem onClick={() => { handleCloseUserMenu(); navigate('/admin-dashboard'); }}>
+              <MenuItem onClick={() => { handleCloseUserMenu(); navigate('/admin'); }}>
                 <Typography textAlign="center">Admin Dashboard</Typography>
               </MenuItem>
             )}
