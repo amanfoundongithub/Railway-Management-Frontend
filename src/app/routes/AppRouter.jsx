@@ -7,15 +7,18 @@ import { PageTransition } from '../providers/PageTransisitionProvider';
 
 // Import Pages (following Feature-Sliced Design paths)
 import { HomePage } from '../../screens/home/ui/HomePage';
-import { SearchResultsPage } from '../../screens/train-booking/train-search-results/ui/SearchResultsPage';
-import { BookingPage } from '../../screens/train-booking/booking/ui/BookingPage';
+
+// Booking screens
+import { SearchResultsPage } from '../../screens/booking/train-search-results/ui/SearchResultsPage';
+import { BookingPage } from '../../screens/booking/passenger-booking/ui/BookingPage';
+import { PaymentPage } from '../../screens/booking/payment/ui/PaymentPage';
+
 import { TicketConfirmationPage } from '../../pages/ticket-confirmation/ui/TicketConfirmationPage';
 import { LiveStatusPage } from '../../pages/live-status/ui/LiveStatusPage';
 import { AdminDashboardPage } from '../../pages/admin-dashboard/ui/AdminDashboardPage';
 import { PnrStatusPage } from '../../pages/pnr-status/ui/PnrStatusPage';
 import { LoginPage } from '../../pages/auth/ui/LoginPage';
 import { MyTicketsPage } from '../../pages/my-tickets/ui/MyTicketsPage';
-import { PaymentPage } from '../../pages/payment/ui/PaymentPage';
 import { TrainSchedulePage } from '../../pages/train-schedule/ui/TrainSchedulePage';
 import { CancellationPage } from '../../pages/cancellation/ui/CancellationPage';
 import { UserProfilePage } from '../../pages/profile/ui/UserProfilePage';

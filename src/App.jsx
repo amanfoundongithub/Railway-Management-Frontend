@@ -1,5 +1,5 @@
 import AppThemeProvider from './app/providers/AppThemeProvider';
-import { BookingProvider } from "./screens/train-booking/common/BookingProvider";
+import { BookingProvider } from "./screens/booking/common/BookingProvider";
 import AppRouter from './app/routes/AppRouter';
 
 const App = () => {

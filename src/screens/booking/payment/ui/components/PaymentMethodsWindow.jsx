@@ -4,10 +4,10 @@ import CreditCardIcon from '@mui/icons-material/CreditCard';
 import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 
-import { CreditCardForm } from '../../../features/payment-processing/ui/CreditCardForm';
-import { UpiPaymentForm } from '../../../features/payment-processing/ui/UpiPaymentForm';
+import { CreditCardForm } from './methods/CreditCardForm';
+import { UpiPaymentForm } from './methods/UpiPaymentForm';
 
-export const PaymentMethodsWidget = ({ amount = 0, onPay, loading = false }) => {
+export const PaymentMethodsWindow = ({ amount = 0, onPay, loading = false }) => {
   const [tabIndex, setTabIndex] = useState(0);
 
   return (
@@ -54,7 +54,6 @@ export const PaymentMethodsWidget = ({ amount = 0, onPay, loading = false }) => 
             )}
           </Button>
         </Box>
-
       </CardContent>
     </Card>
   );
