@@ -1,4 +1,4 @@
-import AppThemeProvider from './app/providers/AppThemeProvider';
+import AppThemeProvider from './app/AppThemeProvider';
 import { BookingProvider } from "./screens/booking/common/BookingProvider";
 import AppRouter from './app/routes/AppRouter';
 
