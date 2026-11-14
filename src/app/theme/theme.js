@@ -14,9 +14,9 @@ const railwayTheme = createTheme({
       contrastText: '#ffffff',
     },
     secondary: {
-      main: '#f97316',
+      main: '#0fcf2fa3',
       light: '#fb923c',
-      dark: '#c2410c',
+      dark: '#b42408',
       contrastText: '#ffffff',
     },
     background: {
