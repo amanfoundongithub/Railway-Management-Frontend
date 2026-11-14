@@ -1,6 +1,6 @@
 import React from 'react';
-import { AuthSplitLayout } from '../../../widgets/auth-layout/ui/AuthSplitLayout';
-import { RegistrationForm } from '../../../features/authentication/ui/RegistrationForm';
+import { AuthSplitLayout } from './layout/AuthSplitLayout';
+import { RegistrationForm } from './components/RegistrationForm';
 
 export const RegisterPage = () => {
   return (

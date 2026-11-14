@@ -10,9 +10,9 @@ import {
   CircularProgress 
 } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
-import { authService } from '../api/authService';
-import { cookieService } from '../../../utils/cookieService';
-import { parseApiError } from '../../../utils/errorHelper';
+import { authService } from "../../api/authService";
+import { cookieService } from "../../../../utils/cookieService";
+import { parseApiError } from '../../../../utils/errorHelper';
 
 // Accept an optional onSuccess prop (defaults to a no-op function)
 export const LoginForm = ({ onSuccess = () => {} }) => {

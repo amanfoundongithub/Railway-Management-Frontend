@@ -5,7 +5,7 @@ import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import AddIcon from '@mui/icons-material/Add';
 
 import { MasterListSelectorModal } from './widgets/MasterListSelectorModal';
-import { authService } from '../../../../../features/authentication/api/authService';
+import { authService } from "../../../../auth/api/authService";
 
 export const PassengerFormComponent = ({ 
   passengers, 

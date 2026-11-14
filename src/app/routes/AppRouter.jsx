@@ -2,10 +2,9 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 
-// Import the PageTransition wrapper you created
 import { PageTransition } from '../providers/PageTransisitionProvider';
 
-// Import Pages (following Feature-Sliced Design paths)
+// Home screen
 import { HomePage } from '../../screens/home/ui/HomePage';
 
 // Booking screens
@@ -19,17 +18,22 @@ import { PnrStatusPage } from '../../screens/pnr-status/ui/PnrStatusPage';
 // Train Live status screen
 import { LiveStatusPage } from '../../screens/live-map/ui/LiveStatusPage';
 
+// Authentication screen
+import { LoginPage } from '../../screens/auth/ui/LoginPage';
+import { RegisterPage } from '../../screens/auth/ui/RegisterPage';
+
+
+
+
 
 
 import { TicketConfirmationPage } from '../../pages/ticket-confirmation/ui/TicketConfirmationPage';
 import { AdminDashboardPage } from '../../pages/admin-dashboard/ui/AdminDashboardPage';
-import { LoginPage } from '../../pages/auth/ui/LoginPage';
 import { MyTicketsPage } from '../../pages/my-tickets/ui/MyTicketsPage';
 import { TrainSchedulePage } from '../../pages/train-schedule/ui/TrainSchedulePage';
 import { CancellationPage } from '../../pages/cancellation/ui/CancellationPage';
 import { UserProfilePage } from '../../pages/profile/ui/UserProfilePage';
 import { TrainWizardPage } from '../../pages/admin-train-wizard/ui/TrainWizardPage';
-import { RegisterPage } from '../../pages/auth/ui/RegisterPage';
 import { ECateringPage } from '../../pages/e-catering/ui/ECateringPage';
 
 const AnimatedRoutes = () => {

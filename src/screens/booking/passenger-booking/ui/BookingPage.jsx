@@ -11,7 +11,7 @@ import { FareSummaryCard } from './components/FareSummaryCard';
 import { usePassengerState } from '../context/usePassengerState';
 import { useBooking } from '../../common/BookingProvider';
 import { MealSelectionComponent } from './components/MealSelectionComponent';
-import { LoginForm } from '../../../../features/authentication/ui/LoginForm'; 
+import { LoginForm } from "../../../auth/ui/components/LoginForm"; 
 import { cookieService } from '../../../../utils/cookieService';
 import { bookingCreateService } from "../api/bookingCreateService";
 

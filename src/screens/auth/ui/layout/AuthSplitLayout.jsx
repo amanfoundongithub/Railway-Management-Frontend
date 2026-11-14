@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Grid, Typography, Paper } from '@mui/material';
 import TrainIcon from '@mui/icons-material/Train';
-import { APPLICATION_DESC, APPLICATION_NAME } from '../../../app/constants';
+import { APPLICATION_DESC, APPLICATION_NAME } from "../../../../app/constants";
 
 export const AuthSplitLayout = ({ children, title, subtitle }) => {
   return (

@@ -23,7 +23,6 @@ export const authService = {
   },
 
   updateMasterList: async (action, passenger) => {
-    // action is either 'add' or 'remove'
     const response = await axiosInstance.put('/auth/master-list', { 
       action, 
       passenger 

@@ -1,6 +1,6 @@
 import React from 'react';
-import { AuthSplitLayout } from '../../../widgets/auth-layout/ui/AuthSplitLayout';
-import { LoginForm } from '../../../features/authentication/ui/LoginForm';
+import { AuthSplitLayout } from './layout/AuthSplitLayout';
+import { LoginForm } from './components/LoginForm';
 
 export const LoginPage = () => {
   return (
