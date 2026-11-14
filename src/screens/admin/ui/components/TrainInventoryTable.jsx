@@ -8,6 +8,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import BlockIcon from '@mui/icons-material/Block';
 import RestoreIcon from '@mui/icons-material/Restore';
 import SearchIcon from '@mui/icons-material/Search';
+import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from 'react-router-dom';
 import { adminService } from '../../api/adminService';
 
@@ -18,27 +19,23 @@ export const TrainInventoryTable = () => {
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(true);
 
-  // Server-side State
-  const [page, setPage] = useState(0); // MUI uses 0-based index
+  const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [searchInput, setSearchInput] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
 
-  // Debounce the search input by 500ms
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearch(searchInput);
-      setPage(0); // Reset to page 0 when search changes
+      setPage(0);
     }, 500);
     return () => clearTimeout(timer);
   }, [searchInput]);
 
-  // Fetch from backend whenever page, rowsPerPage, or debouncedSearch changes
   useEffect(() => {
     const fetchInventory = async () => {
       setLoading(true);
       try {
-        // Backend expects 1-based page index, so we pass page + 1
         const data = await adminService.getTrainInventory(page + 1, rowsPerPage, debouncedSearch);
         setInventory(data.inventory);
         setTotalRows(data.totalCount);
@@ -51,7 +48,7 @@ export const TrainInventoryTable = () => {
     fetchInventory();
   }, [page, rowsPerPage, debouncedSearch]);
 
-  const handleAddTrain = () => navigate('/admin/wizard');
+  const handleAddTrain = () => navigate('/admin/add-train');
 
   const handleToggleStatus = async (trainId, currentStatus) => {
     try {
@@ -73,12 +70,28 @@ export const TrainInventoryTable = () => {
   };
 
   return (
-    <Card elevation={2} sx={{ borderRadius: 3, p: 3, overflow: 'hidden' }}>
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={3} flexWrap="wrap" gap={2}>
-        <Typography variant="h6" fontWeight="bold">
+    <Card elevation={2} sx={{ borderRadius: 3, p: { xs: 2, md: 3 }, overflow: 'hidden' }}>
+      <Box
+        display="flex"
+        flexDirection={{ xs: 'column', md: 'row' }}
+        justifyContent="space-between"
+        alignItems={{ xs: 'stretch', md: 'center' }}
+        mb={3}
+        gap={2}
+        sx = {{
+          mb : 2
+        }}
+      >
+        <Typography variant="h5" fontWeight="bold">
           Train Inventory & Status
         </Typography>
-        <Box display="flex" gap={2} flexWrap="wrap" alignItems="center">
+
+        <Box
+          display="flex"
+          flexDirection={{ xs: 'column', sm: 'row' }}
+          alignItems="center"
+          justifyContent="flex-end"
+        >
           <TextField
             size="small"
             placeholder="Search trains..."
@@ -91,15 +104,27 @@ export const TrainInventoryTable = () => {
                 </InputAdornment>
               ),
             }}
-            sx={{ minWidth: 250 }}
+            // Added explicit margins to guarantee spacing
+            sx={{
+              width: { xs: '100%', sm: 300 },
+              mr: { sm: 2 },
+              mb: { xs: 2, sm: 0 }
+            }}
           />
           <Button
             variant="contained"
             color="primary"
-            sx={{ bgcolor: '#1a365d', '&:hover': { bgcolor: '#112543' }, whiteSpace: 'nowrap' }}
+            startIcon={<AddIcon />}
+            sx={{
+              bgcolor: '#1a365d',
+              '&:hover': { bgcolor: '#112543' },
+              whiteSpace: 'nowrap',
+              width: { xs: '100%', sm: 'auto' },
+              py: 0.75
+            }}
             onClick={handleAddTrain}
           >
-            + Add Train Route
+            Add Train Route
           </Button>
         </Box>
       </Box>

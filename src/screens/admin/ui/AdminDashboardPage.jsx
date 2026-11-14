@@ -80,8 +80,6 @@ export const AdminDashboardPage = () => {
       
       <AppBar position="static" color="primary" elevation={1}>
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          
-          {/* Left Side: Logo & Brand */}
           <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 1.5 }}>
             <TrainIcon sx={{ fontSize: 32 }} />
             <Typography variant="h6" fontWeight="bold" sx={{ letterSpacing: 1, m: 0 }}>
@@ -91,8 +89,6 @@ export const AdminDashboardPage = () => {
               </Typography>
             </Typography>
           </Box>
-          
-          {/* Right Side: Admin Details & Interactive Avatar */}
           <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2 }}>
             <Typography variant="body2" sx={{ fontWeight: 'bold', m: 0, display: { xs: 'none', sm: 'block' } }}>
               {adminName} (SM)
@@ -110,8 +106,6 @@ export const AdminDashboardPage = () => {
                 {adminName.charAt(0).toUpperCase()}
               </Avatar>
             </IconButton>
-            
-            {/* The Dropdown Menu */}
             <Menu
               anchorEl={anchorEl}
               id="account-menu"
@@ -159,26 +153,22 @@ export const AdminDashboardPage = () => {
               </MenuItem>
             </Menu>
           </Box>
-          
         </Toolbar>
       </AppBar>
 
-      {/* Dashboard Content */}
       <Container maxWidth="xl" sx={{ py: 4 }}>
-        
-        <Box mb={4}>
-          <Typography variant="h5" fontWeight="bold" gutterBottom>
+
+        <Box sx = {{ mb : 2 }}>
+          <Typography variant="h4" fontWeight="bold" gutterBottom>
             System Overview
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Manage rolling stock, monitor revenue, and update operational statuses.
+            The system's data at a glance, crunched in definite numbers. 
           </Typography>
         </Box>
 
-        {/* 1. High-Level Metrics */}
         <KpiCardsWidget />
-
-        {/* 2. Deep Dive Data Table */}
+        
         <TrainInventoryTable />
 
       </Container>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Grid, Card, CardContent, Typography, Skeleton, Chip } from '@mui/material';
+import { Box, Grid, Card, CardContent, Typography, Skeleton } from '@mui/material';
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
 import TrainIcon from '@mui/icons-material/Train';
@@ -62,24 +62,30 @@ export const KpiCardsWidget = () => {
   ];
 
   return (
-    <Grid container spacing={3} mb={4}>
+    <Grid container spacing={3} sx={{ mb: 2 }}>
       {kpis.map((kpi, index) => (
         <Grid item xs={12} sm={4} key={index}>
           <Card elevation={1} sx={{ borderRadius: 3, height: '100%' }}>
             <CardContent sx={{ p: 3 }}>
-              <Typography variant="body2" color="text.secondary" fontWeight="medium" gutterBottom>
-                {kpi.title}
-              </Typography>
+              <Box sx = {{
+                display : 'flex',
+                flexDirection : 'row'
+              }}>
+                {
+                  kpi.icon
+                }
+                <Typography variant="body2" color="text.secondary" fontWeight="medium" gutterBottom
+                sx = {{
+                  ml : 1
+                }}>
+                  {kpi.title}
+                </Typography>
+              </Box>
+              
               <Typography variant="h4" fontWeight="bold" mb={2}>
                 {kpi.value}
               </Typography>
-              <Chip 
-                icon={kpi.icon} 
-                label="" 
-                color={kpi.color} 
-                size="small" 
-                sx={{ width: 48, opacity: 0.8 }} 
-              />
+              
             </CardContent>
           </Card>
         </Grid>
