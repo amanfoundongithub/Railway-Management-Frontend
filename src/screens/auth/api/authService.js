@@ -1,4 +1,4 @@
-import axiosInstance from "../../../api/axiosInstance";
+import axiosInstance from "../../../utils/axiosInstance";
 import { cookieService } from "../../../utils/cookieService";
 
 export const authService = {

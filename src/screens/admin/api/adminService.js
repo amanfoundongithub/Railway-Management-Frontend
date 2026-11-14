@@ -1,4 +1,4 @@
-import axiosInstance from '../../../api/axiosInstance';
+import axiosInstance from '../../../utils/axiosInstance';
 
 export const adminService = {
 
