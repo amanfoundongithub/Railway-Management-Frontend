@@ -13,10 +13,13 @@ import { SearchResultsPage } from '../../screens/booking/train-search-results/ui
 import { BookingPage } from '../../screens/booking/passenger-booking/ui/BookingPage';
 import { PaymentPage } from '../../screens/booking/payment/ui/PaymentPage';
 
+// PNR Status screen
+import { PnrStatusPage } from '../../screens/pnr-status/ui/PnrStatusPage';
+
+
 import { TicketConfirmationPage } from '../../pages/ticket-confirmation/ui/TicketConfirmationPage';
 import { LiveStatusPage } from '../../pages/live-status/ui/LiveStatusPage';
 import { AdminDashboardPage } from '../../pages/admin-dashboard/ui/AdminDashboardPage';
-import { PnrStatusPage } from '../../pages/pnr-status/ui/PnrStatusPage';
 import { LoginPage } from '../../pages/auth/ui/LoginPage';
 import { MyTicketsPage } from '../../pages/my-tickets/ui/MyTicketsPage';
 import { TrainSchedulePage } from '../../pages/train-schedule/ui/TrainSchedulePage';

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Box, Container, Alert, CircularProgress, Typography } from '@mui/material';
 import { Navbar } from '../../../widgets/header/ui/Navbar';
-import { PnrSearchForm } from '../../../features/pnr-enquiry/ui/PnrSearchForm';
-import { PnrDetailsCard } from '../../../features/pnr-enquiry/ui/PnrDetailsCard';
-import { bookingService } from '../../booking/api/bookingService';
+import { PnrSearchForm } from './components/PnrSearchForm';
+import { PnrDetailsCard } from './components/PnrDetailsCard';
+import { pnrStatusService } from '../api/pnrStatusService';
 
 export const PnrStatusPage = () => {
   const [pnrData, setPnrData] = useState(null);
@@ -16,7 +16,7 @@ export const PnrStatusPage = () => {
     setPnrData(null);
 
     try {
-      const data = await bookingService.getBookingByPNR(pnr);
+      const data = await pnrStatusService.getBookingByPNR(pnr);
       setPnrData(data);
     } catch (err) {
       setError(err.response?.data?.message || 'Unable to fetch PNR status. Please check the PNR and try again.');
