@@ -14,11 +14,5 @@ export const trainService = {
   createJourney: async (journeyData) => {
     const response = await axiosInstance.post('/journeys', journeyData);
     return response.data.data.journey;
-  },
-  getLiveStatus: async (trainNo, date) => {
-    const response = await axiosInstance.get('/trains/live-status', {
-      params: { trainNo, date }
-    });
-    return response.data.data;
-  },
+  }
 };

@@ -8,9 +8,10 @@ import { PageTransition } from '../providers/PageTransisitionProvider';
 import { HomePage } from '../../screens/home/ui/HomePage';
 
 // Booking screens
-import { SearchResultsPage } from '../../screens/booking/train-search-results/ui/SearchResultsPage';
-import { BookingPage } from '../../screens/booking/passenger-booking/ui/BookingPage';
-import { PaymentPage } from '../../screens/booking/payment/ui/PaymentPage';
+import { SearchResultsPage }      from '../../screens/booking/train-search-results/ui/SearchResultsPage';
+import { BookingPage }            from '../../screens/booking/passenger-booking/ui/BookingPage';
+import { PaymentPage }            from '../../screens/booking/payment/ui/PaymentPage';
+import { TicketConfirmationPage } from '../../screens/booking/ticket-confirmation/ui/TicketConfirmationPage';
 
 // PNR Status screen
 import { PnrStatusPage } from '../../screens/pnr-status/ui/PnrStatusPage';
@@ -19,7 +20,7 @@ import { PnrStatusPage } from '../../screens/pnr-status/ui/PnrStatusPage';
 import { LiveStatusPage } from '../../screens/live-map/ui/LiveStatusPage';
 
 // Authentication screen
-import { LoginPage } from '../../screens/auth/ui/LoginPage';
+import { LoginPage }    from '../../screens/auth/ui/LoginPage';
 import { RegisterPage } from '../../screens/auth/ui/RegisterPage';
 
 
@@ -27,7 +28,6 @@ import { RegisterPage } from '../../screens/auth/ui/RegisterPage';
 
 
 
-import { TicketConfirmationPage } from '../../pages/ticket-confirmation/ui/TicketConfirmationPage';
 import { AdminDashboardPage } from '../../pages/admin-dashboard/ui/AdminDashboardPage';
 import { MyTicketsPage } from '../../pages/my-tickets/ui/MyTicketsPage';
 import { TrainSchedulePage } from '../../pages/train-schedule/ui/TrainSchedulePage';

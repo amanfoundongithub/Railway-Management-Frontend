@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Box, Container, Typography, CircularProgress, Alert } from '@mui/material';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { usePDF } from 'react-to-pdf'; // 1. Import the hook
+import { usePDF } from 'react-to-pdf';
 
-import { Navbar } from '../../../widgets/header/ui/Navbar';
-import { DigitalTicketCard } from '../../../features/digital-ticket/ui/DigitalTicketCard';
-import { TicketActions } from '../../../features/digital-ticket/ui/TicketActions';
-import { bookingService } from '../../booking/api/bookingService';
+import { Navbar } from '../../../../widgets/header/ui/Navbar';
+import { DigitalTicketCard } from './components/DigitalTicketCard';
+import { TicketActions } from './components/TicketActions';
+import { pnrStatusService } from '../../../pnr-status/api/pnrStatusService';
 
 
 export const TicketConfirmationPage = () => {
@@ -19,7 +19,6 @@ export const TicketConfirmationPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  // 2. Initialize the PDF hook with a dynamic filename
   const { toPDF, targetRef } = usePDF({ filename: `NXT_RAIL_Ticket_${pnr}.pdf` });
 
   useEffect(() => {
@@ -30,7 +29,7 @@ export const TicketConfirmationPage = () => {
 
     const fetchTicket = async () => {
       try {
-        const data = await bookingService.getBookingByPNR(pnr);
+        const data = await pnrStatusService.getBookingByPNR(pnr);
         setBooking(data);
       } catch (err) {
         setError(err.response?.data?.message || 'Unable to load ticket details.');
@@ -67,13 +66,9 @@ export const TicketConfirmationPage = () => {
                 Your ticket has been generated successfully.
               </Typography>
             </Box>
-
-            {/* 3. Wrap the ticket card with the PDF target ref */}
             <Box ref={targetRef}>
               <DigitalTicketCard booking={booking} />
             </Box>
-
-            {/* 4. Pass the toPDF trigger down to the actions */}
             <TicketActions pnr={booking.pnr} onDownload={toPDF} />
           </>
         )}
