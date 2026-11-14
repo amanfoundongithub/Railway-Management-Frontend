@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Box, Container, Typography, Alert, CircularProgress } from '@mui/material';
-import { Navbar } from '../../../widgets/header/ui/Navbar';
+import { Navbar } from '../../../header/ui/Navbar';
 import { TrackerSearchWidget } from './components/TrackerSearchWidget';
 import { TrainTimelineWidget } from './components/TrainTimelineWidget';
 import { liveMapService } from '../api/liveMapService';

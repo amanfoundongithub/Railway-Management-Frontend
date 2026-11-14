@@ -4,7 +4,7 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutlineOutlin
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { usePDF } from 'react-to-pdf';
 
-import { Navbar } from '../../../../widgets/header/ui/Navbar';
+import { Navbar } from '../../../../header/ui/Navbar';
 import { DigitalTicketCard } from './components/DigitalTicketCard';
 import { TicketActions } from './components/TicketActions';
 import { pnrStatusService } from '../../../pnr-status/api/pnrStatusService';

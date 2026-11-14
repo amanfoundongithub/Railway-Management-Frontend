@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Container, Grid, Typography, CircularProgress, Alert } from '@mui/material';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Navbar } from '../../../widgets/header/ui/Navbar';
+import { Navbar } from '../../../header/ui/Navbar';
 import { CancelPassengerSelect } from './components/CancelPassengerSelect';
 import { RefundSummaryCard } from './components/RefundSummaryCard';
 import { pnrStatusService } from '../../pnr-status/api/pnrStatusService';

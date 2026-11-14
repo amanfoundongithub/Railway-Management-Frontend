@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Container, Typography, Grid, Paper, Avatar, CircularProgress } from '@mui/material';
-import { Navbar } from '../../../widgets/header/ui/Navbar';
+import { Navbar } from '../../../header/ui/Navbar';
 import { TicketListWidget } from './components/TicketListWidget';
 import { authService } from "../../../screens/auth/api/authService";
 

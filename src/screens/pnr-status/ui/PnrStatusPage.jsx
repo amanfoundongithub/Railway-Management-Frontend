@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Box, Container, Alert, CircularProgress, Typography } from '@mui/material';
-import { Navbar } from '../../../widgets/header/ui/Navbar';
+import { Navbar } from '../../../header/ui/Navbar';
 import { PnrSearchForm } from './components/PnrSearchForm';
 import { PnrDetailsCard } from './components/PnrDetailsCard';
 import { pnrStatusService } from '../api/pnrStatusService';

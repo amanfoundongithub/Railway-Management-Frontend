@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import { Navbar } from '../../../widgets/header/ui/Navbar';
+import { Navbar } from '../../../header/ui/Navbar';
 import { HeroSearchBlock } from './components/HeroSearchBlock';
 
 export const HomePage = () => {

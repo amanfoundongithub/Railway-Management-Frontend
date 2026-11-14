@@ -5,7 +5,7 @@ import DirectionsRailwayIcon from '@mui/icons-material/DirectionsRailway';
 import EventSeatIcon from '@mui/icons-material/EventSeat';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { useNavigate } from 'react-router-dom';
-import { Navbar } from '../../../../widgets/header/ui/Navbar';
+import { Navbar } from '../../../../header/ui/Navbar';
 import { PassengerFormComponent } from './components/PassengerFormComponent';
 import { FareSummaryCard } from './components/FareSummaryCard';
 import { usePassengerState } from '../context/usePassengerState';

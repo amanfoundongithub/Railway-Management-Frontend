@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Box, Container, Typography, Paper, CircularProgress, Alert } from '@mui/material';
 import { useSearchParams } from 'react-router-dom';
-import { Navbar } from '../../../../widgets/header/ui/Navbar';
+import { Navbar } from '../../../../header/ui/Navbar';
 import { TrainCard } from './components/TrainCard';
 import { parseApiError } from '../../../../utils/errorHelper';
 import { SearchFiltersMenu } from './components/SearchFiltersMenu';

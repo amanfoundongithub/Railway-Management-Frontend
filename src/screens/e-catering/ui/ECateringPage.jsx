@@ -3,7 +3,7 @@ import { Box, Container, Typography, TextField, Button, Grid, Card, CardContent,
 import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-import { Navbar } from '../../../widgets/header/ui/Navbar';
+import { Navbar } from '../../../header/ui/Navbar';
 import { pnrStatusService } from '../../pnr-status/api/pnrStatusService';
 import { bookMealService } from '../api/bookMealService';
 

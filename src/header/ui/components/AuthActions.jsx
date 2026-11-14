@@ -3,8 +3,8 @@ import { Box, Button, IconButton, Avatar, Menu, MenuItem, Typography, CircularPr
 import LanguageIcon from '@mui/icons-material/Language';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Link, useNavigate } from 'react-router-dom';
-import { cookieService } from '../../../../utils/cookieService';
-import { authService } from '../../../../screens/auth/api/authService';
+import { cookieService } from '../../../utils/cookieService';
+import { authService } from '../../../screens/auth/api/authService';
 
 const AuthActions = () => {
   const navigate = useNavigate();

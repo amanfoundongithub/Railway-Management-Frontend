@@ -1,7 +1,7 @@
 // src/pages/profile/ui/UserProfilePage.jsx
 import React, { useState, useEffect } from 'react';
 import { Box, Container, Typography, CircularProgress, Alert } from '@mui/material';
-import { Navbar } from '../../../widgets/header/ui/Navbar';
+import { Navbar } from '../../../header/ui/Navbar';
 import { MasterListWidget } from './components/MasterListWidget';
 import { authService } from "../../../screens/auth/api/authService";
 

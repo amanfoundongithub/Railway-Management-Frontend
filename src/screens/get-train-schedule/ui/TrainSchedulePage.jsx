@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Box, Container, Alert } from '@mui/material';
-import { Navbar } from '../../../widgets/header/ui/Navbar';
+import { Navbar } from '../../../header/ui/Navbar';
 import { ScheduleSearchForm } from './components/ScheduleSearchForm';
 import { RouteTableWidget } from './components/RouteTableWidget';
 import { getTrainScheduleService } from '../api/getTrainScheduleService';
