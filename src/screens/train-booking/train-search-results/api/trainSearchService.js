@@ -1,4 +1,4 @@
-import axiosInstance from '../../../api/axiosInstance';
+import axiosInstance from '../../../../api/axiosInstance';
 
 export const trainSearchService = {
   searchTrains: async (source, destination, date) => {

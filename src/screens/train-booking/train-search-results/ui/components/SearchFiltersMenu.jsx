@@ -1,8 +1,6 @@
-// src/widgets/search-filters/ui/SearchFiltersWidget.jsx
-import React from 'react';
 import { Card, CardContent, Typography, FormGroup, FormControlLabel, Checkbox, Divider, Box } from '@mui/material';
 
-export const SearchFiltersWidget = ({ filters, onFilterChange }) => {
+export const SearchFiltersMenu = ({ filters, onFilterChange }) => {
   
   const handleToggle = (category, value) => {
     onFilterChange(category, value);

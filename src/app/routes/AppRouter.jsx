@@ -7,7 +7,7 @@ import { PageTransition } from '../providers/PageTransisitionProvider';
 
 // Import Pages (following Feature-Sliced Design paths)
 import { HomePage } from '../../screens/home/ui/HomePage';
-import { SearchResultsPage } from '../../pages/search-results/ui/SearchResultsPage';
+import { SearchResultsPage } from '../../screens/train-booking/train-search-results/ui/SearchResultsPage';
 import { BookingPage } from '../../pages/booking/ui/BookingPage';
 import { TicketConfirmationPage } from '../../pages/ticket-confirmation/ui/TicketConfirmationPage';
 import { LiveStatusPage } from '../../pages/live-status/ui/LiveStatusPage';
@@ -29,7 +29,8 @@ const AnimatedRoutes = () => {
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
-        {/* 1. The Landing Page (Search Widget) */}
+
+        {/* 1. The Landing Page */}
         <Route path="/" element={<PageTransition><HomePage /></PageTransition>} />
         
         {/* 2. The List of Trains based on search params */}

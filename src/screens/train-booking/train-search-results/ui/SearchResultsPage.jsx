@@ -1,37 +1,34 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Box, Container, Typography, Paper, CircularProgress, Alert } from '@mui/material';
 import { useSearchParams } from 'react-router-dom';
-import { Navbar } from '../../../widgets/header/ui/Navbar';
-import { TrainCard } from '../../../features/train-booking/ui/TrainCard';
-import { trainService } from '../api/trainService';
-import { parseApiError } from '../../../utils/errorHelper';
-import { SearchFiltersWidget } from '../../../widgets/search-filters/ui/SearchFiltersWidget';
+import { Navbar } from '../../../../widgets/header/ui/Navbar';
+import { TrainCard } from './components/TrainCard';
+import { parseApiError } from '../../../../utils/errorHelper';
+import { SearchFiltersMenu } from './components/SearchFiltersMenu';
+import { trainSearchService } from "../api/trainSearchService";
 
 export const SearchResultsPage = () => {
   const [searchParams] = useSearchParams();
-  
-  // Extract params from URL
+
   const src = searchParams.get('src') || '';
   const dst = searchParams.get('dst') || '';
   const date = searchParams.get('date') || '';
   const cls = searchParams.get('cls') || 'All Classes';
   const qta = searchParams.get('qta') || 'General';
 
-  // API states
   const [trains, setTrains] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  // Filter states
   const [filters, setFilters] = useState({
     availableOnly: false,
-    times: [],    
-    classes: [],  
+    times: [],
+    classes: [],
   });
 
   useEffect(() => {
     const fetchTrains = async () => {
-      if (!src || !dst || !date) { 
+      if (!src || !dst || !date) {
         setError('Missing source, destination, or date. Please try your search again.');
         setLoading(false);
         return;
@@ -39,7 +36,7 @@ export const SearchResultsPage = () => {
       setLoading(true);
       setError('');
       try {
-        const results = await trainService.searchTrains(src, dst, date);
+        const results = await trainSearchService.searchTrains(src, dst, date);
         setTrains(results);
       } catch (err) {
         setError(parseApiError(err));
@@ -55,18 +52,18 @@ export const SearchResultsPage = () => {
       if (category === 'availableOnly') {
         return { ...prev, availableOnly: value };
       }
-      
+
       const list = prev[category];
-      const newList = list.includes(value) 
-        ? list.filter(item => item !== value) 
-        : [...list, value];                   
-        
+      const newList = list.includes(value)
+        ? list.filter(item => item !== value)
+        : [...list, value];
+
       return { ...prev, [category]: newList };
     });
   };
 
   const getTimeBucket = (timeString) => {
-    if (!timeString) return 'morning'; // Fallback
+    if (!timeString) return 'morning';
     const hour = parseInt(timeString.split(':')[0], 10);
     if (hour >= 6 && hour < 12) return 'morning';
     if (hour >= 12 && hour < 18) return 'afternoon';
@@ -74,29 +71,21 @@ export const SearchResultsPage = () => {
     return 'night';
   };
 
-  // Derive filtered trains securely without mutating the original API data
   const filteredTrains = useMemo(() => {
     return trains.filter(train => {
-      // 1. Departure Time Filter
       if (filters.times.length > 0) {
         const bucket = getTimeBucket(train.departureTime);
         if (!filters.times.includes(bucket)) return false;
       }
-
-      // 2. Class Filter
       if (filters.classes.length > 0) {
-        // Adapt this mapping if your seatInventory array is nested differently
         const trainClasses = train.seatInventory?.map(inv => inv.classType) || [];
         const hasMatchingClass = filters.classes.some(c => trainClasses.includes(c));
         if (!hasMatchingClass) return false;
       }
-
-      // 3. Availability Filter
       if (filters.availableOnly) {
         const hasAvailable = train.seatInventory?.some(inv => inv.availableSeats > 0);
         if (!hasAvailable) return false;
       }
-
       return true;
     });
   }, [trains, filters]);
@@ -104,9 +93,9 @@ export const SearchResultsPage = () => {
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
       <Navbar />
-      <Paper 
-        square 
-        elevation={1} 
+      <Paper
+        square
+        elevation={1}
         sx={{ bgcolor: 'primary.dark', color: 'white', py: 2, position: 'sticky', top: 64, zIndex: 5 }}
       >
         <Container maxWidth="lg">
@@ -121,18 +110,18 @@ export const SearchResultsPage = () => {
           </Typography>
         </Container>
       </Paper>
-      
+
       <Container maxWidth="lg" sx={{ py: 4 }}>
         <Box sx={{ display: 'flex', gap: 3 }}>
-          
+
           {/* Left Column: Filters Widget */}
           <Box sx={{ display: { xs: 'none', md: 'block' }, width: 280, flexShrink: 0 }}>
-            <SearchFiltersWidget 
-              filters={filters} 
-              onFilterChange={handleFilterChange} 
+            <SearchFiltersMenu
+              filters={filters}
+              onFilterChange={handleFilterChange}
             />
           </Box>
-          
+
           {/* Right Column: Dynamic Results */}
           <Box sx={{ flexGrow: 1 }}>
             {loading && (
@@ -143,18 +132,18 @@ export const SearchResultsPage = () => {
                 </Typography>
               </Box>
             )}
-            
+
             {!loading && error && (
               <Alert severity="error" sx={{ mb: 3 }}>
                 {error}
               </Alert>
             )}
-            
+
             {!loading && !error && filteredTrains.length === 0 && (
               <Paper sx={{ p: 5, textAlign: 'center', borderRadius: 2 }}>
                 <Typography variant="h6" color="text.secondary">
-                  {trains.length > 0 
-                    ? "No trains match your selected filters." 
+                  {trains.length > 0
+                    ? "No trains match your selected filters."
                     : "No trains found running between these stations on this date."}
                 </Typography>
                 <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
@@ -162,7 +151,7 @@ export const SearchResultsPage = () => {
                 </Typography>
               </Paper>
             )}
-            
+
             {!loading && !error && filteredTrains.length > 0 && (
               <>
                 <Typography variant="h6" gutterBottom>
