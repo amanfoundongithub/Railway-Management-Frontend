@@ -36,11 +36,12 @@ import { TrainSchedulePage } from '../screens/get-train-schedule/ui/TrainSchedul
 // Cancellation screen
 import { CancellationPage } from '../screens/cancel-tickets/ui/CancellationPage';
 
+// Admin Dashboard screen
+import { AdminDashboardPage } from '../screens/admin/ui/AdminDashboardPage';
 
 
 
 
-import { AdminDashboardPage } from '../pages/admin-dashboard/ui/AdminDashboardPage';
 import { TrainWizardPage } from '../pages/admin-train-wizard/ui/TrainWizardPage';
 
 const AnimatedRoutes = () => {

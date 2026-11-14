@@ -4,11 +4,11 @@ import TrainIcon from '@mui/icons-material/Train';
 import HomeIcon from '@mui/icons-material/Home';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from 'react-router-dom';
-import { authService } from '../../../screens/auth/api/authService';
+import { authService } from '../../auth/api/authService';
 import { cookieService } from '../../../utils/cookieService';
 
-import { KpiCardsWidget } from '../../../widgets/admin-kpis/ui/KpiCardsWidget';
-import { TrainInventoryTable } from '../../../features/inventory-management/ui/TrainInventoryTable';
+import { KpiCardsWidget } from './components/KpiCardsWidget';
+import { TrainInventoryTable } from './components/TrainInventoryTable';
 
 export const AdminDashboardPage = () => {
   const navigate = useNavigate();
@@ -16,7 +16,6 @@ export const AdminDashboardPage = () => {
   const [adminUser, setAdminUser] = useState(null);
   const [loading, setLoading] = useState(true);
   
-  // Menu State
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -26,7 +25,6 @@ export const AdminDashboardPage = () => {
         navigate('/login');
         return;
       }
-
       try {
         const response = await authService.getMe();
         const userData = response.data?.user || response.user || response;
