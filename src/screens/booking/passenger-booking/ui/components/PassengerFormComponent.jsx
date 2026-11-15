@@ -1,5 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Button, Typography, Grid, TextField, MenuItem, IconButton } from '@mui/material';
+import {
+  Box,
+  Button,
+  IconButton,
+  MenuItem,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TextField,
+  Typography
+} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import AddIcon from '@mui/icons-material/Add';
@@ -44,63 +58,108 @@ export const PassengerFormComponent = ({
 
   return (
     <Box>
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems={{ xs: 'flex-start', sm: 'center' }}
+        flexDirection={{ xs: 'column', sm: 'row' }}
+        gap={2}
+        mb={2}
+      >
         <Typography variant="h6" fontWeight="bold">Passenger Details</Typography>
-        
-        {/* Trigger for the Master List Modal */}
-        <Button 
-          variant="outlined" 
-          startIcon={<GroupAddIcon />} 
-          size="small"
-          onClick={() => setIsModalOpen(true)}
-        >
-          Add from Master List
-        </Button>
+        <Box display="flex" gap={1} flexWrap="wrap">
+          <Button
+            variant="outlined"
+            startIcon={<AddIcon />}
+            size="small"
+            onClick={addPassenger}
+          >
+            Add Passenger
+          </Button>
+          <Button
+            variant="outlined"
+            startIcon={<GroupAddIcon />}
+            size="small"
+            onClick={() => setIsModalOpen(true)}
+          >
+            Add from Master List
+          </Button>
+        </Box>
       </Box>
 
-      {/* Render Current Passengers */}
-      {passengers.map((p, index) => (
-        <Grid container spacing={2} key={index} mb={2} alignItems="center">
-          <Grid item xs={12} md={5}>
-            <TextField 
-              fullWidth label="Full Name" size="small" 
-              value={p.name} 
-              onChange={(e) => updatePassenger(index, 'name', e.target.value)} 
-            />
-          </Grid>
-          <Grid item xs={6} md={3}>
-            <TextField 
-              fullWidth label="Age" type="number" size="small" 
-              value={p.age} 
-              onChange={(e) => updatePassenger(index, 'age', e.target.value)} 
-            />
-          </Grid>
-          <Grid item xs={6} md={3}>
-            <TextField 
-              fullWidth select label="Gender" size="small" 
-              value={p.gender} 
-              onChange={(e) => updatePassenger(index, 'gender', e.target.value)}
-            >
-              <MenuItem value="Male">Male</MenuItem>
-              <MenuItem value="Female">Female</MenuItem>
-              <MenuItem value="Transgender">Transgender</MenuItem>
-            </TextField>
-          </Grid>
-          <Grid item xs={12} md={1} textAlign="center">
-            <IconButton color="error" onClick={() => removePassenger(index)}>
-              <DeleteIcon />
-            </IconButton>
-          </Grid>
-        </Grid>
-      ))}
-
-      <Button 
-        startIcon={<AddIcon />} 
-        onClick={addPassenger} 
-        sx={{ mt: 1 }}
+      <TableContainer
+        component={Paper}
+        variant="outlined"
+        sx={{ borderRadius: 2, overflowX: 'auto' }}
       >
-        Add Passenger Manually
-      </Button>
+        <Table size="small" aria-label="Passenger details" sx={{ minWidth: 620 }}>
+          <TableHead>
+            <TableRow sx={{ bgcolor: 'grey.50' }}>
+              <TableCell sx={{ fontWeight: 600, whiteSpace: 'nowrap' }}>Passenger</TableCell>
+              <TableCell sx={{ fontWeight: 600, minWidth: 220 }}>Full Name</TableCell>
+              <TableCell sx={{ fontWeight: 600, width: 110 }}>Age</TableCell>
+              <TableCell sx={{ fontWeight: 600, width: 170 }}>Gender</TableCell>
+              <TableCell align="center" sx={{ fontWeight: 600, width: 72 }}>Action</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {passengers.map((passenger, index) => (
+              <TableRow key={passenger.id ?? index} hover>
+                <TableCell sx={{ whiteSpace: 'nowrap', color: 'text.secondary' }}>
+                  {index + 1}
+                </TableCell>
+                <TableCell>
+                  <TextField
+                    fullWidth
+                    size="small"
+                    value={passenger.name}
+                    inputProps={{ 'aria-label': `Passenger ${index + 1} full name` }}
+                    onChange={(event) => updatePassenger(index, 'name', event.target.value)}
+                  />
+                </TableCell>
+                <TableCell>
+                  <TextField
+                    fullWidth
+                    type="number"
+                    size="small"
+                    value={passenger.age}
+                    inputProps={{
+                      min: 1,
+                      'aria-label': `Passenger ${index + 1} age`
+                    }}
+                    onChange={(event) => updatePassenger(index, 'age', event.target.value)}
+                  />
+                </TableCell>
+                <TableCell>
+                  <TextField
+                    fullWidth
+                    select
+                    size="small"
+                    value={passenger.gender}
+                    SelectProps={{ displayEmpty: true }}
+                    inputProps={{ 'aria-label': `Passenger ${index + 1} gender` }}
+                    onChange={(event) => updatePassenger(index, 'gender', event.target.value)}
+                  >
+                    <MenuItem value="" disabled>Select gender</MenuItem>
+                    <MenuItem value="Male">Male</MenuItem>
+                    <MenuItem value="Female">Female</MenuItem>
+                    <MenuItem value="Transgender">Transgender</MenuItem>
+                  </TextField>
+                </TableCell>
+                <TableCell align="center">
+                  <IconButton
+                    color="error"
+                    aria-label={`Remove passenger ${index + 1}`}
+                    onClick={() => removePassenger(index)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
 
       <MasterListSelectorModal 
         open={isModalOpen} 

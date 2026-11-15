@@ -43,7 +43,7 @@ export const usePassengerState = () => {
   };
 
   const updatePassenger = (index, field, value) => {
-    setPassengers(passengers.map((passenger, passengerIndex) =>
+    setPassengers((prev) => prev.map((passenger, passengerIndex) =>
       passengerIndex === index ? { ...passenger, [field]: value } : passenger
     ));
   };
