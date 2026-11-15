@@ -37,14 +37,14 @@ export const usePassengerState = () => {
     }
   };
 
-  const removePassenger = (id) => {
+  const removePassenger = (index) => {
     if (passengers.length === 1) return;
-    setPassengers(passengers.filter(p => p.id !== id));
+    setPassengers(passengers.filter((_, passengerIndex) => passengerIndex !== index));
   };
 
-  const updatePassenger = (id, field, value) => {
-    setPassengers(passengers.map(p => 
-      p.id === id ? { ...p, [field]: value } : p
+  const updatePassenger = (index, field, value) => {
+    setPassengers(passengers.map((passenger, passengerIndex) =>
+      passengerIndex === index ? { ...passenger, [field]: value } : passenger
     ));
   };
 
