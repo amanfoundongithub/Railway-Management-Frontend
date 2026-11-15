@@ -47,7 +47,8 @@ export const TrainInventoryTable = () => {
     const fetchInventory = async () => {
       setLoading(true);
       try {
-        const data = await adminService.getTrainInventory(page + 1, rowsPerPage, debouncedFilters);
+        console.log(debouncedFilters)
+        const data = await adminService.getTrainInventory(page + 1, rowsPerPage, debouncedFilters.trainNumber);
         setInventory(data.inventory);
         setTotalRows(data.totalCount);
         setSelectedTrains([]); // clear selection on page/filter change
