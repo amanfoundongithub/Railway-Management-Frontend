@@ -5,11 +5,12 @@ import { useNavigate } from 'react-router-dom';
 
 const navLinks = [
   { title: 'Search Trains', path: '/' },
-  { title : 'Get Train Schedule', path : '/schedule'},
+  { title: 'Get Train Schedule', path: '/schedule' },
   { title: 'Get PNR Status', path: '/pnr-status' },
   { title: 'Live Map', path: '/live-status' },
   { title: 'E-Catering', path: '/e-catering' },
-  { title : ''}
+  { title: 'Cabs', path: '/cabs' },
+  { title: 'Hotels', path: '/hotels' },
 ];
 
 const MobileNavMenu = () => {

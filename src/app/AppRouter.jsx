@@ -39,10 +39,14 @@ import { CancellationPage } from '../screens/cancel-tickets/ui/CancellationPage'
 // Admin Dashboard screen
 import { AdminDashboardPage } from '../screens/admin/ui/AdminDashboardPage';
 
-
-
-
+// Train creation screen
 import { TrainWizardPage } from '../screens/admin/ui/TrainWizardPage';
+
+// Cab booking screen
+import { CabBookingPage } from '../screens/cabs/ui/CabBookingPage';
+
+// Hotel booking screen
+import { HotelBookingPage } from '../screens/hotels/ui/HotelBookingPage';
 
 const AnimatedRoutes = () => {
   const location = useLocation();
@@ -87,6 +91,10 @@ const AnimatedRoutes = () => {
         <Route path="/admin/add-train" element={<PageTransition><TrainWizardPage /></PageTransition>} />
 
         <Route path="/e-catering" element={<PageTransition><ECateringPage /></PageTransition>} />
+
+        <Route path="/cabs" element={<PageTransition><CabBookingPage /></PageTransition>} />
+        
+        <Route path="/hotels" element={<PageTransition><HotelBookingPage /></PageTransition>} />
         
         {/* Fallback route for 404s */}
         <Route path="*" element={
