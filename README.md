@@ -1,70 +1,126 @@
-# Getting Started with Create React App
+# Railway Management
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is the frontend for Railway Management, a full-stack railway booking and operations platform. The backend for this project is available [here](https://github.com/amanfoundongithub/Railway-Management-backend).
 
-## Available Scripts
+## Overview
 
-In the project directory, you can run:
+Railway Management is a modern railway reservation application that helps users search trains, book tickets, manage bookings, and access additional travel services. It supports both passenger-facing workflows and admin operations for railway inventory and service administration.
 
-### `npm start`
+## Key Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- Train search and filtering by source, destination, date, class, and quota
+- Passenger booking flow with seat selection and fare summary
+- Payment and booking confirmation workflow
+- PNR status checking and ticket lookup
+- Ticket history and management for users
+- Ticket cancellation support
+- E-catering ordering for train journeys
+- Cab and hotel booking add-ons
+- Live train status and schedule pages
+- Admin dashboard for system overview and train inventory management
+- Role-based access for customer and admin workflows
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Tech Stack
 
-### `npm test`
+- React 19
+- React Router DOM
+- Material UI (MUI)
+- Framer Motion
+- Axios
+- js-cookie
+- react-to-pdf
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Project Structure
 
-### `npm run build`
+```text
+src/
+  app/                  # routing, theming, transitions
+  header/              # shared navbar and auth actions
+  screens/
+    admin/             # admin dashboard and train setup
+    auth/              # login and registration
+    booking/           # search, booking, payment, confirmation flow
+    cancel-tickets/    # cancellation workflow
+    e-catering/        # catering UI
+    get-train-schedule/# train schedule pages
+    home/              # landing page and search form
+    hotels/            # hotel booking UI
+    live-map/          # live status pages
+    my-profile/        # user profile
+    my-tickets/        # ticket history
+    pnr-status/        # PNR lookup
+    cabs/              # cab booking flow
+  utils/                # shared API and cookie helpers
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Application Routes
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- `/` — home page and search
+- `/search-results` — train results with filters
+- `/book` — booking and passenger form
+- `/payment` — payment flow
+- `/ticket/confirmation` — booking confirmation and ticket PDF
+- `/pnr-status` — PNR status lookup
+- `/live-status` — live train status
+- `/schedule` — train schedule
+- `/cancel` — cancel booking
+- `/my-tickets` — user booking list
+- `/profile` — profile page
+- `/login` — login
+- `/register` — register
+- `/e-catering` — e-catering
+- `/cabs` — cab booking
+- `/hotels` — hotel booking
+- `/admin` — admin dashboard
+- `/admin/add-train` — add train wizard
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Environment Setup
 
-### `npm run eject`
+This app expects a backend API URL in an environment variable:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```bash
+cp .env.example .env
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Then update `.env` if needed:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```env
+REACT_APP_API_URL=http://localhost:5001/api
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+The Axios client uses this value as the base URL and attaches the auth token from cookies when present.
 
-## Learn More
+## Local Development
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Install dependencies:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+npm install
+```
 
-### Code Splitting
+Start the app:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```bash
+npm start
+```
 
-### Analyzing the Bundle Size
+Open:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```text
+http://localhost:3000
+```
 
-### Making a Progressive Web App
+## Scripts
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```bash
+npm start      # run the app in development mode
+npm test       # run tests
+npm run build  # create a production build
+npm run eject  # expose CRA configuration (not usually needed)
+```
 
-### Advanced Configuration
+## Notes
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- This frontend is designed to work with the backend project linked above.
+- Authentication and role checks are handled in the UI for protected admin and user flows.
+- The app uses a booking context to persist selected train and booking state during the reservation journey.
