@@ -6,6 +6,7 @@ import { cabService } from '../api/cabService';
 import { CabBookingDialog } from './components/CabBookingDialog';
 import { CabBookingHero } from './components/CabBookingHero';
 import { JourneyStationsSection } from './components/JourneyStationsSection';
+import { calculateDistanceKm, calculateCabFare } from '../../../utils/geoUtils';
 
 export const CabBookingPage = () => {
   const [pnr, setPnr] = useState('');
@@ -21,6 +22,22 @@ export const CabBookingPage = () => {
   const [selectedCab, setSelectedCab] = useState(null);
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [dropLocation, setDropLocation] = useState('');
+  const [dropCoords, setDropCoords] = useState(null);
+
+  const stationCoords = selectedStation?.coordinates || { lat: 28.6415, lng: 77.2208 };
+
+  // Dynamic distance & fare calculation (falls back to 10 km if user types manually without clicking map)
+  const distanceKm = dropCoords
+    ? calculateDistanceKm(stationCoords.lat, stationCoords.lng, dropCoords.lat, dropCoords.lng)
+    : 0;
+
+  const estimatedFare = selectedVehicle
+    ? calculateCabFare(
+        selectedVehicle.baseFare,
+        selectedVehicle.pricePerKm,
+        distanceKm > 0 ? distanceKm : 10
+      )
+    : 0;
 
   const handleSearchPNR = async () => {
     if (pnr.length !== 10) {
@@ -57,16 +74,20 @@ export const CabBookingPage = () => {
     setSelectedCab(null);
     setSelectedVehicle(null);
     setDropLocation('');
+    setDropCoords(null);
     setOpenCabModal(true);
+  };
+
+  const handleMapSelect = ({ lat, lng, address }) => {
+    setDropCoords({ lat, lng });
+    setDropLocation(address);
   };
 
   const handleBookCab = async () => {
     if (!selectedCab || !selectedVehicle || !dropLocation) {
-      setError('Please select a vendor, choose a vehicle from the table, and enter a drop location.');
+      setError('Please select a vendor, choose a vehicle from the table, and pin/enter a drop location.');
       return;
     }
-
-    const estimatedFare = selectedVehicle.baseFare + (selectedVehicle.pricePerKm * 10);
 
     setLoading(true);
     setError('');
@@ -81,7 +102,10 @@ export const CabBookingPage = () => {
         fare: estimatedFare
       });
       
-      setSuccessMsg(`Cab successfully booked at station ${selectedStation.name} to ${dropLocation}!`);
+      const distText = distanceKm > 0 ? ` (${distanceKm} km)` : '';
+      setSuccessMsg(
+        `Cab (${selectedVehicle.type}) booked at ${selectedStation.name} to ${dropLocation}${distText} — Fare: ₹${estimatedFare}!`
+      );
       setOpenCabModal(false);
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to complete cab booking.');
@@ -118,6 +142,9 @@ export const CabBookingPage = () => {
         selectedCab={selectedCab}
         selectedVehicle={selectedVehicle}
         dropLocation={dropLocation}
+        dropCoords={dropCoords}
+        distanceKm={distanceKm}
+        estimatedFare={estimatedFare}
         loading={loading}
         onClose={() => setOpenCabModal(false)}
         onSelectVehicle={(cab, vehicle) => {
@@ -125,6 +152,7 @@ export const CabBookingPage = () => {
           setSelectedVehicle(vehicle);
         }}
         onDropLocationChange={setDropLocation}
+        onMapSelect={handleMapSelect}
         onBook={handleBookCab}
       />
     </Box>

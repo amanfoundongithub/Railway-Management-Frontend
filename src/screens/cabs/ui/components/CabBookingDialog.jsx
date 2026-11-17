@@ -17,10 +17,14 @@ export const CabBookingDialog = ({
   selectedCab,
   selectedVehicle,
   dropLocation,
+  dropCoords,
+  distanceKm,
+  estimatedFare,
   loading,
   onClose,
   onSelectVehicle,
   onDropLocationChange,
+  onMapSelect,
   onBook,
 }) => (
   <Dialog
@@ -28,7 +32,7 @@ export const CabBookingDialog = ({
     onClose={onClose}
     maxWidth="md"
     fullWidth
-    PaperProps={{ sx: { borderRadius: 4, p: 1.5, maxHeight: '85vh' } }}
+    PaperProps={{ sx: { borderRadius: 4, p: 1.5, maxHeight: '90vh' } }}
   >
     <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', pb: 2 }}>
       <Box>
@@ -36,7 +40,7 @@ export const CabBookingDialog = ({
           Book Cab at {station?.name} ({station?.code})
         </Typography>
         <Typography variant="caption" color="text.secondary">
-          Select your preferred vendor and vehicle from the table below
+          Select your preferred vendor, vehicle, and pin your drop-off location on the map
         </Typography>
       </Box>
       <IconButton onClick={onClose}>
@@ -62,11 +66,16 @@ export const CabBookingDialog = ({
 
           {selectedVehicle && (
             <CabBookingConfirmation
+              station={station}
               selectedCab={selectedCab}
               selectedVehicle={selectedVehicle}
               dropLocation={dropLocation}
+              dropCoords={dropCoords}
+              distanceKm={distanceKm}
+              estimatedFare={estimatedFare}
               loading={loading}
               onDropLocationChange={onDropLocationChange}
+              onMapSelect={onMapSelect}
               onBook={onBook}
             />
           )}
