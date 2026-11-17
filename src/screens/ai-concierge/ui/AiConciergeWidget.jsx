@@ -173,24 +173,6 @@ export const AiConciergeWidget = ({ defaultPnr = '' }) => {
                   maxWidth: '88%',
                 }}
               >
-                {msg.actions?.length > 0 && (
-                  <Box display="flex" gap={0.5} flexWrap="wrap" mb={0.5}>
-                    {msg.actions.map((act, i) => (
-                      <Chip
-                        key={i}
-                        size="small"
-                        label={`⚡ ${act.tool.replace(/_/g, ' ')}`}
-                        sx={{
-                          fontSize: '0.68rem',
-                          height: 20,
-                          bgcolor: '#e6f0ff',
-                          color: '#1a365d',
-                          fontWeight: 700,
-                        }}
-                      />
-                    ))}
-                  </Box>
-                )}
 
                 <Paper
                   elevation={0}
