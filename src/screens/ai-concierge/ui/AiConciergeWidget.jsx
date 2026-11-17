@@ -20,6 +20,7 @@ import { aiConciergeService } from '../api/aiConciergeService';
 
 const QUICK_PROMPTS = [
   'Check my PNR route & stops',
+  'Show E-Catering food menus on my route',
   'Estimate cab fare at my destination',
   'Show retiring rooms at my arrival station',
 ];
@@ -128,8 +129,8 @@ export const AiConciergeWidget = ({ defaultPnr = '' }) => {
                 NXT_RAIL AI Concierge
               </Typography>
               <Typography variant="caption" sx={{ opacity: 0.85 }}>
-                Agentic PNR Assistant · Cabs & Hotels
-              </Typography>
+  Agentic PNR Assistant · Food, Cabs & Hotels
+</Typography>
             </Box>
           </Box>
           <IconButton onClick={() => setOpen(false)} sx={{ color: 'white' }}>
