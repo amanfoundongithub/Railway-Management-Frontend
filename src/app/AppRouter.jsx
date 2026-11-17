@@ -4,6 +4,9 @@ import { AnimatePresence } from 'framer-motion';
 
 import { PageTransition } from './PageTransisitionProvider';
 
+// Import the AI Concierge Widget (Adjust the path if necessary based on your folder structure)
+import { AiConciergeWidget } from '../screens/ai-concierge/ui/AiConciergeWidget';
+
 // Home screen
 import { HomePage } from '../screens/home/ui/HomePage';
 
@@ -54,49 +57,25 @@ const AnimatedRoutes = () => {
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
-
-        {/* 1. The Landing Page */}
         <Route path="/" element={<PageTransition><HomePage /></PageTransition>} />
-        
-        {/* 2. The List of Trains based on search params */}
         <Route path="/search-results" element={<PageTransition><SearchResultsPage /></PageTransition>} />
-        
-        {/* 3. The Dynamic Passenger Form, Seat Map, & Fare Summary */}
         <Route path="/book" element={<PageTransition><BookingPage /></PageTransition>} />
-        
-        {/* 4. Digital Ticket & Booking Success Screen */}
         <Route path="/ticket/confirmation" element={<PageTransition><TicketConfirmationPage /></PageTransition>} />
-
-        {/* 5. Live Train Running Status & Timeline */}
         <Route path="/live-status" element={<PageTransition><LiveStatusPage /></PageTransition>} />
-
         <Route path="/admin" element={<PageTransition><AdminDashboardPage /></PageTransition>} />
-
         <Route path="/pnr-status" element={<PageTransition><PnrStatusPage /></PageTransition>} />
-
         <Route path="/login" element={<PageTransition><LoginPage /></PageTransition>} />
-
         <Route path="/register" element={<PageTransition><RegisterPage /></PageTransition>} />
-
         <Route path="/my-tickets" element={<PageTransition><MyTicketsPage /></PageTransition>} />
-
         <Route path="/payment" element={<PageTransition><PaymentPage /></PageTransition>} />
-
         <Route path="/schedule" element={<PageTransition><TrainSchedulePage /></PageTransition>} />
-
         <Route path="/cancel" element={<PageTransition><CancellationPage /></PageTransition>} />
-
         <Route path="/profile" element={<PageTransition><UserProfilePage /></PageTransition>} />
-
         <Route path="/admin/add-train" element={<PageTransition><TrainWizardPage /></PageTransition>} />
-
         <Route path="/e-catering" element={<PageTransition><ECateringPage /></PageTransition>} />
-
         <Route path="/cabs" element={<PageTransition><CabBookingPage /></PageTransition>} />
-        
         <Route path="/hotels" element={<PageTransition><HotelBookingPage /></PageTransition>} />
         
-        {/* Fallback route for 404s */}
         <Route path="*" element={
           <PageTransition>
             <div style={{ textAlign: 'center', marginTop: '50px', fontFamily: 'sans-serif' }}>
@@ -117,6 +96,7 @@ const AppRouter = () => {
   return (
     <BrowserRouter>
       <AnimatedRoutes />
+      <AiConciergeWidget />
     </BrowserRouter>
   );
 };
