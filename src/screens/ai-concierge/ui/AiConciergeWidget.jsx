@@ -14,6 +14,8 @@ import {
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import CloseIcon from '@mui/icons-material/Close';
 import SendIcon from '@mui/icons-material/Send';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { aiConciergeService } from '../api/aiConciergeService';
 
 const QUICK_PROMPTS = [
@@ -31,7 +33,7 @@ export const AiConciergeWidget = ({ defaultPnr = '' }) => {
     {
       role: 'assistant',
       content:
-        'Hi! I am your NXT_RAIL AI Concierge. Enter your 10-digit PNR above or in chat, and I can check your route, calculate cab fares to any landmark, or book retiring rooms for your journey.',
+        'Hi! I am your **NXT_RAIL AI Concierge**. Enter your 10-digit PNR above or in chat, and I can check your route, calculate cab fares to any landmark, or book retiring rooms for your journey.',
     },
   ]);
 
@@ -150,7 +152,17 @@ export const AiConciergeWidget = ({ defaultPnr = '' }) => {
         </Box>
 
         {/* Chat Messages Area */}
-        <Box sx={{ flexGrow: 1, p: 2, overflowY: 'auto', bgcolor: '#f9fafb', display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <Box
+          sx={{
+            flexGrow: 1,
+            p: 2,
+            overflowY: 'auto',
+            bgcolor: '#f9fafb',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 2,
+          }}
+        >
           {messages.map((msg, idx) => {
             const isUser = msg.role === 'user';
             return (
@@ -158,7 +170,7 @@ export const AiConciergeWidget = ({ defaultPnr = '' }) => {
                 key={idx}
                 sx={{
                   alignSelf: isUser ? 'flex-end' : 'flex-start',
-                  maxWidth: '85%',
+                  maxWidth: '88%',
                 }}
               >
                 {msg.actions?.length > 0 && (
@@ -168,7 +180,13 @@ export const AiConciergeWidget = ({ defaultPnr = '' }) => {
                         key={i}
                         size="small"
                         label={`⚡ ${act.tool.replace(/_/g, ' ')}`}
-                        sx={{ fontSize: '0.68rem', height: 20, bgcolor: '#e6f0ff', color: '#1a365d', fontWeight: 700 }}
+                        sx={{
+                          fontSize: '0.68rem',
+                          height: 20,
+                          bgcolor: '#e6f0ff',
+                          color: '#1a365d',
+                          fontWeight: 700,
+                        }}
                       />
                     ))}
                   </Box>
@@ -182,12 +200,57 @@ export const AiConciergeWidget = ({ defaultPnr = '' }) => {
                     bgcolor: isUser ? '#1a365d' : 'white',
                     color: isUser ? 'white' : 'text.primary',
                     border: isUser ? 'none' : '1px solid #e0e4e8',
-                    whiteSpace: 'pre-wrap',
+                    overflowX: 'auto',
                   }}
                 >
-                  <Typography variant="body2" sx={{ lineHeight: 1.5 }}>
-                    {msg.content}
-                  </Typography>
+                  {isUser ? (
+                    <Typography variant="body2" sx={{ lineHeight: 1.5, whiteSpace: 'pre-wrap' }}>
+                      {msg.content}
+                    </Typography>
+                  ) : (
+                    <Box
+                      sx={{
+                        fontSize: '0.875rem',
+                        lineHeight: 1.55,
+                        '& p': { m: 0, mb: 1, '&:last-child': { mb: 0 } },
+                        '& ul, & ol': { m: 0, mb: 1, pl: 2.5, '&:last-child': { mb: 0 } },
+                        '& li': { mb: 0.4 },
+                        '& strong': { fontWeight: 700, color: '#1a365d' },
+                        '& h1, & h2, & h3, & h4': {
+                          mt: 1,
+                          mb: 0.5,
+                          fontWeight: 800,
+                          color: '#1a365d',
+                          fontSize: '0.95rem',
+                        },
+                        '& code': {
+                          bgcolor: '#f1f5f9',
+                          px: 0.6,
+                          py: 0.2,
+                          borderRadius: 1,
+                          fontFamily: 'monospace',
+                          fontSize: '0.8rem',
+                        },
+                        '& table': {
+                          width: '100%',
+                          borderCollapse: 'collapse',
+                          my: 1,
+                          fontSize: '0.8rem',
+                        },
+                        '& th, & td': {
+                          border: '1px solid #e0e4e8',
+                          px: 1,
+                          py: 0.5,
+                          textAlign: 'left',
+                        },
+                        '& th': { bgcolor: '#f4f6f8', fontWeight: 700 },
+                      }}
+                    >
+                      <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                        {msg.content}
+                      </ReactMarkdown>
+                    </Box>
+                  )}
                 </Paper>
               </Box>
             );
