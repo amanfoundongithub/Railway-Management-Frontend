@@ -19,6 +19,9 @@ Railway Management is a modern railway reservation application that helps users 
 - Live train status and schedule pages
 - Admin dashboard for system overview and train inventory management
 - Role-based access for customer and admin workflows
+- Floating **NXT_RAIL AI Concierge** chat assistant for PNR, route, cab, hotel, and E-catering queries
+- Gemini-powered function tools with active PNR context and suggested quick prompts
+- Markdown chat responses with tables, lists, and journey or booking details
 
 ## Tech Stack
 
@@ -29,6 +32,8 @@ Railway Management is a modern railway reservation application that helps users 
 - Axios
 - js-cookie
 - react-to-pdf
+- react-markdown
+- remark-gfm
 
 ## Project Structure
 
@@ -50,6 +55,7 @@ src/
     my-tickets/        # ticket history
     pnr-status/        # PNR lookup
     cabs/              # cab booking flow
+    ai-concierge/       # Gemini chat widget and API service
   utils/                # shared API and cookie helpers
 ```
 
@@ -89,6 +95,20 @@ REACT_APP_API_URL=http://localhost:5001/api
 ```
 
 The Axios client uses this value as the base URL and attaches the auth token from cookies when present.
+
+## AI Concierge
+
+The AI Concierge is available as a floating chat drawer on every page. It supports:
+
+- PNR lookup and train route inspection
+- Station E-catering vendor and menu search
+- Cab vendor lookup and distance/fare estimates
+- Retiring room and hotel lookup
+- Cab, hotel, and E-catering booking requests
+
+Enter a 10-digit PNR in the PNR field or include it in the chat. The widget sends the active PNR and conversation history to `POST /api/ai-concierge/chat`, and renders the response as Markdown.
+
+The frontend can run without a Gemini key when the backend AI service is not being used, but chat requests require the user to be authenticated and the backend `GEMINI_API_KEY` and `GEMINI_MODEL` values to be configured. For booking actions, the assistant presents the exact service and total first and proceeds only after explicit confirmation.
 
 ## Local Development
 
