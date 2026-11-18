@@ -1,146 +1,134 @@
-# Railway Management
+# NXT_RAIL Management Frontend
 
-This is the frontend for Railway Management, a full-stack railway booking and operations platform. The backend for this project is available [here](https://github.com/amanfoundongithub/Railway-Management-backend).
+React client for the NXT_RAIL railway reservation and operations platform. It provides passenger booking journeys, PNR and live-status tools, travel add-ons, an AI concierge, and administrative inventory management.
 
-## Overview
+**Related service:** [NXT_RAIL Backend](https://github.com/amanfoundongithub/Railway-Management-backend)
 
-Railway Management is a modern railway reservation application that helps users search trains, book tickets, manage bookings, and access additional travel services. It supports both passenger-facing workflows and admin operations for railway inventory and service administration.
+## Features
 
-## Key Features
+- Train search with source, destination, date, class, and quota filters
+- Passenger details, seat selection, fare summary, payment, and confirmation flow
+- PNR lookup, live train status, and train schedule views
+- Booking history, ticket PDF generation, and cancellation
+- E-catering, cab, and hotel booking flows
+- Floating NXT_RAIL AI Concierge with PNR context
+- Markdown responses, including lists, tables, and journey details
+- Customer and admin navigation with role-aware UI controls
+- Animated page transitions and responsive Material UI components
 
-- Train search and filtering by source, destination, date, class, and quota
-- Passenger booking flow with seat selection and fare summary
-- Payment and booking confirmation workflow
-- PNR status checking and ticket lookup
-- Ticket history and management for users
-- Ticket cancellation support
-- E-catering ordering for train journeys
-- Cab and hotel booking add-ons
-- Live train status and schedule pages
-- Admin dashboard for system overview and train inventory management
-- Role-based access for customer and admin workflows
-- Floating **NXT_RAIL AI Concierge** chat assistant for PNR, route, cab, hotel, and E-catering queries
-- Gemini-powered function tools with active PNR context and suggested quick prompts
-- Markdown chat responses with tables, lists, and journey or booking details
+## Technology
 
-## Tech Stack
+| Category | Technology |
+| --- | --- |
+| UI | React 19, Material UI 9 |
+| Routing | React Router DOM 7 |
+| HTTP | Axios |
+| Animation | Framer Motion |
+| Maps | Leaflet / React Leaflet |
+| Content | React Markdown, remark-gfm |
+| Build | Create React App |
 
-- React 19
-- React Router DOM
-- Material UI (MUI)
-- Framer Motion
-- Axios
-- js-cookie
-- react-to-pdf
-- react-markdown
-- remark-gfm
+## Prerequisites
+
+- Node.js 18 or newer
+- npm
+- A running instance of the NXT_RAIL backend
+
+## Quick Start
+
+1. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+2. Create the local environment file:
+
+   ```bash
+   cp .env.example .env
+   ```
+
+3. Set the backend API URL in `.env`:
+
+   ```env
+   REACT_APP_API_URL=http://localhost:5001/api
+   ```
+
+4. Start the development server:
+
+   ```bash
+   npm start
+   ```
+
+5. Open `http://localhost:3000`.
+
+Restart the React development server after changing environment variables.
+
+## Application Routes
+
+| Route | Purpose |
+| --- | --- |
+| `/` | Search trains |
+| `/search-results` | Filter and select train results |
+| `/book` | Passenger and booking details |
+| `/payment` | Payment flow |
+| `/ticket/confirmation` | Booking confirmation and ticket PDF |
+| `/pnr-status` | PNR lookup |
+| `/live-status` | Live train status |
+| `/schedule` | Train schedule |
+| `/cancel` | Ticket cancellation |
+| `/my-tickets` | Booking history |
+| `/profile` | User profile |
+| `/e-catering` | Station catering |
+| `/cabs` | Cab booking |
+| `/hotels` | Hotel and retiring-room booking |
+| `/login` | Sign in |
+| `/register` | Create an account |
+| `/admin` | Admin dashboard |
+| `/admin/add-train` | Add and configure a train |
+
+## AI Concierge
+
+The floating concierge can inspect PNR context and help users discover:
+
+- Catering vendors and menus at upcoming stations
+- Cab vendors and fare estimates
+- Station hotels and retiring rooms
+- Cab, hotel, and catering booking actions
+
+It sends the active PNR and conversation history to `POST /api/ai-concierge/chat`. The assistant presents an exact selection and total before an action is confirmed. Frontend functionality does not require a Gemini key; concierge responses require the backend to be running and configured for Gemini.
 
 ## Project Structure
 
 ```text
 src/
-  app/                  # routing, theming, transitions
-  header/              # shared navbar and auth actions
-  screens/
-    admin/             # admin dashboard and train setup
-    auth/              # login and registration
-    booking/           # search, booking, payment, confirmation flow
-    cancel-tickets/    # cancellation workflow
-    e-catering/        # catering UI
-    get-train-schedule/# train schedule pages
-    home/              # landing page and search form
-    hotels/            # hotel booking UI
-    live-map/          # live status pages
-    my-profile/        # user profile
-    my-tickets/        # ticket history
-    pnr-status/        # PNR lookup
-    cabs/              # cab booking flow
-    ai-concierge/       # Gemini chat widget and API service
-  utils/                # shared API and cookie helpers
+├── app/             # Router and application shell
+├── header/          # Navigation and authentication controls
+├── screens/         # Passenger and admin feature areas
+├── utils/           # Axios and shared browser helpers
+├── App.jsx
+└── index.js
 ```
 
-## Application Routes
+## Available Scripts
 
-- `/` — home page and search
-- `/search-results` — train results with filters
-- `/book` — booking and passenger form
-- `/payment` — payment flow
-- `/ticket/confirmation` — booking confirmation and ticket PDF
-- `/pnr-status` — PNR status lookup
-- `/live-status` — live train status
-- `/schedule` — train schedule
-- `/cancel` — cancel booking
-- `/my-tickets` — user booking list
-- `/profile` — profile page
-- `/login` — login
-- `/register` — register
-- `/e-catering` — e-catering
-- `/cabs` — cab booking
-- `/hotels` — hotel booking
-- `/admin` — admin dashboard
-- `/admin/add-train` — add train wizard
+| Command | Description |
+| --- | --- |
+| `npm start` | Run the development server |
+| `npm test` | Start the test runner |
+| `npm run build` | Create an optimized production build |
+| `npm run eject` | Export Create React App configuration (not reversible) |
 
-## Environment Setup
-
-This app expects a backend API URL in an environment variable:
+## Production Build
 
 ```bash
-cp .env.example .env
+npm run build
 ```
 
-Then update `.env` if needed:
-
-```env
-REACT_APP_API_URL=http://localhost:5001/api
-```
-
-The Axios client uses this value as the base URL and attaches the auth token from cookies when present.
-
-## AI Concierge
-
-The AI Concierge is available as a floating chat drawer on every page. It supports:
-
-- PNR lookup and train route inspection
-- Station E-catering vendor and menu search
-- Cab vendor lookup and distance/fare estimates
-- Retiring room and hotel lookup
-- Cab, hotel, and E-catering booking requests
-
-Enter a 10-digit PNR in the PNR field or include it in the chat. The widget sends the active PNR and conversation history to `POST /api/ai-concierge/chat`, and renders the response as Markdown.
-
-The frontend can run without a Gemini key when the backend AI service is not being used, but chat requests require the user to be authenticated and the backend `GEMINI_API_KEY` and `GEMINI_MODEL` values to be configured. For booking actions, the assistant presents the exact service and total first and proceeds only after explicit confirmation.
-
-## Local Development
-
-Install dependencies:
-
-```bash
-npm install
-```
-
-Start the app:
-
-```bash
-npm start
-```
-
-Open:
-
-```text
-http://localhost:3000
-```
-
-## Scripts
-
-```bash
-npm start      # run the app in development mode
-npm test       # run tests
-npm run build  # create a production build
-npm run eject  # expose CRA configuration (not usually needed)
-```
+Deploy the generated `build/` directory with a static host configured to serve `index.html` for unknown routes. Set `REACT_APP_API_URL` to the public backend API URL before building.
 
 ## Notes
 
-- This frontend is designed to work with the backend project linked above.
-- Authentication and role checks are handled in the UI for protected admin and user flows.
-- The app uses a booking context to persist selected train and booking state during the reservation journey.
+- Authentication tokens are stored in browser cookies and added to Axios requests.
+- The booking context preserves selected journey and booking state across the reservation flow.
+- UI role checks are convenience controls; the backend remains responsible for authorization.
